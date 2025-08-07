@@ -15,6 +15,7 @@
 
 ## 命名規則
 - フィールド _camel
+- パブリックフィールド Pascal
 - ローカル   camel
 - 関数       Pascal
-- コピー系   _Pascal
+- インターフェース IPascal
