@@ -1,0 +1,14 @@
+{
+  "friendlyName": "Apple iPhone 15",
+  "version": 1,
+  "screens": [
+    {
+      "width": 2556,
+      "height": 1179,
+      "dpi": 450.0
+    }
+  ],
+  "systemInfo": {
+    "operatingSystem": "IOS"
+  }
+}
