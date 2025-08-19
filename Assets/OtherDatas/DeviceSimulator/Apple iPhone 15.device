@@ -5,10 +5,28 @@
     {
       "width": 2556,
       "height": 1179,
-      "dpi": 450.0
+      "dpi": 460.0,
+      "presentation":
+      {
+        "overlayPath": "Assets/_MembersFolder/Miura/Image/Device/Apple_iPhone15.png",
+        "borderSize": 
+        {
+          "x": 51.0,
+          "y": 51.0,
+          "z": 60,
+          "w": 60
+        }
+      }
     }
   ],
-  "systemInfo": {
-    "operatingSystem": "IOS"
+  "systemInfo": 
+  {
+    "operatingSystem": "iOS 17.0.3",
+    "graphicsDependentData": [
+      {
+        "graphicsDeviceType": "16",
+        "graphicsDeviceVersion": "Metal"
+      }
+    ]
   }
 }
