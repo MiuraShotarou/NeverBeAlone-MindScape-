@@ -16,9 +16,9 @@ public class TestRoad : MonoBehaviour
     public void DataRoad()
     {
         savePath = Path.Combine(Application.persistentDataPath, "TestSaveData.json");
-        // string json = File.ReadAllText(savePath);
+        string json = File.ReadAllText(savePath);
         // SaveData data = JsonUtility.FromJson<SaveData>(json);
-        // _roadText.text = json;
+        _roadText.text = json;
         Debug.Log($"セーブデータのロード先のパスは{savePath}");
     }
 }
