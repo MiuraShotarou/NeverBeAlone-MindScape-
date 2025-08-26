@@ -1,0 +1,44 @@
+{
+  "friendlyName": "Apple iPhone 15",
+  "version": 1,
+  "screens": [
+    {
+      "width": 2556,
+      "height": 1179,
+      "dpi": 460.0,
+      "orientations": 
+      [{
+        "orientation": "1",
+        "safeArea": 
+        {
+          "serializedVersion": "2",
+          "x": 130.0,
+          "y": -22.0,
+          "width": 2300.0,
+          "height": 1210.0
+        }
+      }],
+      "presentation":
+      {
+        "overlayPath": "Assets/_MembersFolder/Miura/Image/Device/Apple_iPhone15.png",
+        "borderSize": 
+        {
+          "x": 51.0,
+          "y": 51.0,
+          "z": 60,
+          "w": 60
+        }
+      }
+    }
+  ],
+  "systemInfo": 
+  {
+    "operatingSystem": "iOS 17.0.3",
+    "graphicsDependentData": [
+      {
+        "graphicsDeviceType": "16",
+        "graphicsDeviceVersion": "Metal"
+      }
+    ]
+  }
+}
