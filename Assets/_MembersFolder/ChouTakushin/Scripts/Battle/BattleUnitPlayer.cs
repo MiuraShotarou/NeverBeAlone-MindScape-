@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BattleUnitPlayer : BattleUnitBase
 {
-    private Animator _animator;
     private GameObject _actionTarget = null;
     private AttackType _attackType;
 
@@ -19,42 +18,33 @@ public class BattleUnitPlayer : BattleUnitBase
         Normal,
         OneMore
     } 
-    void Start()
-    {
-        _animator = GetComponent<Animator>();
-    }
-
-    void Update()
-    {
-        
-    }
 
     /// <summary>
     /// テスト用攻撃メソッド
     /// </summary>
     public void TestAttack()
     {
-        _battleHandler.PlayerOneMoreFlg = false;
+        _loopHandler.PlayerOneMoreFlg = false;
         _animator.Play("Attack1");
     }
     
     public void TestOneMoreAttack()
     {
-        _battleHandler.PlayerOneMoreFlg = true;
+        _loopHandler.PlayerOneMoreFlg = true;
         _animator.Play("Attack1");
     }
 
     public void OnAttackAnimationEnd()
     {
-        Debug.Log(_actionTarget.GetComponent<BattleUnitBase>()._unitName + "に" + _attack + "ダメージ");
-        if (_battleHandler.PlayerOneMoreFlg)
-        {
-            _battleHandler.BattleState = BattleState.TurnStart;
-        }
-        else
-        {
-            _battleHandler.BattleState = BattleState.TurnEnd;
-        }
+        _actionTarget.GetComponent<BattleUnitBase>().OnAttacked(_attack);
+        // if (_battleLoopHandler.PlayerOneMoreFlg)
+        // {
+        //     _battleLoopHandler.BattleState = BattleState.TurnStart;
+        // }
+        // else
+        // {
+        //     _battleLoopHandler.BattleState = BattleState.TurnEnd;
+        // }
     }
 
     public void SetActionTarget(GameObject target)
@@ -65,7 +55,7 @@ public class BattleUnitPlayer : BattleUnitBase
 
     public void ExecuteAction()
     {
-        _battleHandler.BattleState = BattleState.Busy;
+        _loopHandler.BattleState = BattleState.Busy;
         switch (_attackType)
         {
             case AttackType.Normal:
@@ -92,5 +82,25 @@ public class BattleUnitPlayer : BattleUnitBase
             default:
                 break;
         }
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        _damageText.gameObject.SetActive(true);
+        _damageText.text = damage.ToString();
+        // 対象のscreenPosition
+        Vector3 targetScreenPos = _mainCamera.WorldToScreenPoint(transform.position);
+        Vector2 uiPos;
+        // 対象のscreenPositionをUIのanchoredPositionに変換する
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _UICanvas.transform as RectTransform,
+            targetScreenPos,
+            null,   // Overlayの場合はnullでOK
+            out uiPos
+        );
+        _damageText.rectTransform.anchoredPosition = uiPos;
+        _damageText.gameObject.GetComponent<Animator>().Play("ShowDamage");
+        _hp -= damage;
+        Debug.Log(_unitName + "がダメージを受ける：" + damage + "。　残りHP：" + _hp);
     }
 }
