@@ -43,6 +43,10 @@ Material:
   - RayTracingPrepass
   - MOTIONVECTORS
   - DepthOnly
+<<<<<<< HEAD
+  - SHADOWCASTER
+=======
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -350,3 +354,16 @@ MonoBehaviour:
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
     m_Values: 
+--- !u!114 &7914142164814629760
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
