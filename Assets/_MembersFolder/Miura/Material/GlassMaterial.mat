@@ -1,6 +1,10 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 --- !u!114 &-2726395995881882801
+=======
+--- !u!114 &-9203914598747150706
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -35,6 +39,13 @@ Material:
     RenderType: Transparent
   disabledShaderPasses:
   - DepthOnly
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  - SHADOWCASTER
+=======
+>>>>>>> ee617d8c25a699ceaca4b3b3d4c4f6ce7d01c76a
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -131,7 +142,28 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 0.92222226, b: 0, a: 0.39607844}
+<<<<<<< HEAD
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+=======
+<<<<<<< HEAD
+    - _Color: {r: 1, g: 0.92222226, b: 0, a: 0.39607844}
+=======
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+>>>>>>> ee617d8c25a699ceaca4b3b3d4c4f6ce7d01c76a
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &9187818125228769462
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
