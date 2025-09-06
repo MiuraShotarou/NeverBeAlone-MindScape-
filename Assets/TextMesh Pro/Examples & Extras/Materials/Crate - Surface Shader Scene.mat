@@ -139,8 +139,12 @@ Material:
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 <<<<<<< HEAD
+--- !u!114 &5473969745611371948
+=======
+<<<<<<< HEAD
 =======
 --- !u!114 &5957570218380660901
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,4 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 7
+<<<<<<< HEAD
+=======
 >>>>>>> ee617d8c25a699ceaca4b3b3d4c4f6ce7d01c76a
+>>>>>>> 77a98adea043583aec5fa0a0acff3323c8a4e900
