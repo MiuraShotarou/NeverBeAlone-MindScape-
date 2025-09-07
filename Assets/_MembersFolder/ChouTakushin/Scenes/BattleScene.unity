@@ -184,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22262639920f43d6be32430e4e58350d, type: 2}
+  - {fileID: -1492356926085363525, guid: 26ed6d2f45b18054480e824a9d0f9c3c, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -243,18 +243,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 1067520226}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: Player
-  _hp: 100
-  _sp: 50
-  _dex: 6
-  _attack: 20
-  _defense: 5
-  _isDead: 0
-  _attackAdjustment: 1.1
-  _defenseAdjustment: 1.1
-  _icon: {fileID: 1067520226}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 128
+  AttackBase: 96
+  AttackScaleBase: 1
+  AttackWeakpointScaleBase: 1.1
+  AttackResistanceScaleBase: 0.8
+  DefenseBase: 101
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 1.2
+  DefenseResistanceScaleBase: 0.8
+  DexBase: 11
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 1.25
+  RegenerateBase: 0.1
+  MaxTensionBase: 1000
+  TentionUpRateBase: 1
+  TentionDownRateBase: 1
+  MaxHp: 128
+  Hp: 128
+  MaxTension: 1000
+  Tension: 0
+  TensionLevel: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 11
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
 --- !u!95 &8131425
 Animator:
   serializedVersion: 5
@@ -1105,6 +1127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 473272284}
   - component: {fileID: 473272283}
+  - component: {fileID: 473272285}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1189,6 +1212,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &473272285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473272282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &599813941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,7 +1732,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2445,7 +2491,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a26614f60b6181d4bbbe4a17fd407679, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2525,18 +2571,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 115489258}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: EnemyB
-  _hp: 80
-  _sp: 30
-  _dex: 5
-  _attack: 7
-  _defense: 3
-  _isDead: 0
-  _attackAdjustment: 1
-  _defenseAdjustment: 1
-  _icon: {fileID: 115489258}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 150
+  AttackBase: 120
+  AttackScaleBase: 1
+  AttackWeakpointScaleBase: 1.1
+  AttackResistanceScaleBase: 0.8
+  DefenseBase: 50
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 1.2
+  DefenseResistanceScaleBase: 0.8
+  DexBase: 15
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 1.25
+  RegenerateBase: 0.1
+  MaxTensionBase: 1000
+  TentionUpRateBase: 1
+  TentionDownRateBase: 1
+  MaxHp: 150
+  Hp: 150
+  MaxTension: 1000
+  Tension: 0
+  TensionLevel: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
   _playerGo: {fileID: 8131419}
 --- !u!1 &1746963820
 GameObject:
@@ -2731,7 +2799,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a26614f60b6181d4bbbe4a17fd407679, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2829,18 +2897,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 2095016872}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: EnemyA
-  _hp: 100
-  _sp: 30
-  _dex: 7
-  _attack: 10
-  _defense: 3
-  _isDead: 0
-  _attackAdjustment: 1
-  _defenseAdjustment: 1
-  _icon: {fileID: 2095016872}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 200
+  AttackBase: 150
+  AttackScaleBase: 1
+  AttackWeakpointScaleBase: 1.1
+  AttackResistanceScaleBase: 0.8
+  DefenseBase: 50
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 1.2
+  DefenseResistanceScaleBase: 0.8
+  DexBase: 8
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 1.25
+  RegenerateBase: 0.1
+  MaxTensionBase: 1000
+  TentionUpRateBase: 1
+  TentionDownRateBase: 1
+  MaxHp: 200
+  Hp: 200
+  MaxTension: 1000
+  Tension: 0
+  TensionLevel: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 8
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
   _playerGo: {fileID: 8131419}
 --- !u!1 &1925322498
 GameObject:
