@@ -205,8 +205,8 @@ MonoBehaviour:
 
     ~MindScape~'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: de5fee772b18de04dab30af5b81f0109, type: 2}
-  m_sharedMaterial: {fileID: 8438526524799081232, guid: de5fee772b18de04dab30af5b81f0109, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -608,8 +608,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PressToStart
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f7a672aeba6b8de479264c6e61eb87c8, type: 2}
-  m_sharedMaterial: {fileID: -6307370728829605295, guid: f7a672aeba6b8de479264c6e61eb87c8, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -920,6 +920,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1634419982}
   - component: {fileID: 1634419981}
+  - component: {fileID: 1634419983}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1004,6 +1005,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 147, y: 49, z: 50.528}
+--- !u!114 &1634419983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634419980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1788950947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,8 +1232,8 @@ MonoBehaviour:
 
     NevereBeAlone'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aa1438786f1db724082ff981c3118136, type: 2}
-  m_sharedMaterial: {fileID: -3931260546208753560, guid: aa1438786f1db724082ff981c3118136, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

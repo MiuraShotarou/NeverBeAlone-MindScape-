@@ -22,7 +22,22 @@ public enum Emotion
 /// <summary>
 /// QTE判定結果
 /// </summary>
+[Serializable]
 public enum RouletteStatus
 {
     Stop, Rolling, Miss, Good, Excellent
+}
+
+/// <summary>
+/// 効果適用種別
+/// </summary>
+[Serializable]
+public enum EffectApplyType
+{
+    Always,
+    OnBattleStart,
+    OnTurnStart,
+    OnTurnEnd,
+    OnAttackExecute,
+    OnAttackHit
 }

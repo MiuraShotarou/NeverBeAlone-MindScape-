@@ -12,22 +12,22 @@ public class PlayerData
     private int _maxtension;
     private float _baseAttack;
     private int _baseDefense;
-    private int _agility; //•q·«
+    private int _agility; //æ•æ·æ€§
     private int _baseEvadeRate;
     private int _baseCriticalRate;
     private int _baseCriticalDamageRate;
     private int _baseFluctuationRate;
     private int _baseTensionUpRate;
-    private int _movement; // s“®—Í
-    //private int ‹C—ÍH
+    private int _movement; // è¡Œå‹•åŠ›
+    //private int æ°—åŠ›ï¼Ÿ
 
-    private int _equipmentCrystal; // ‘•”õ•iFŒ‹»
-    private int _equipmentJewel; // ‘•”õ•iF•óÎ
+    private int _equipmentCrystal; // è£…å‚™å“ï¼šçµæ™¶
+    private int _equipmentJewel; // è£…å‚™å“ï¼šå®çŸ³
 
-    private List<string> _itemsAccessory; // Š•¨FƒAƒNƒZƒTƒŠ
-    private List<string> _itemsUsable; // Š•¨Fg—pƒAƒCƒeƒ€
+    private List<string> _itemsAccessory; // æ‰€æŒç‰©ï¼šã‚¢ã‚¯ã‚»ã‚µãƒª
+    private List<string> _itemsUsable; // æ‰€æŒç‰©ï¼šä½¿ç”¨ã‚¢ã‚¤ãƒ†ãƒ 
 
-    private List<string> _skills; // ƒXƒLƒ‹
+    private List<string> _skills; // ã‚¹ã‚­ãƒ«
 
-    private List<string> _smartphone; // ƒXƒ}ƒz‹@”\
+    private List<string> _smartphone; // ã‚¹ãƒãƒ›æ©Ÿèƒ½
 }

@@ -86,13 +86,13 @@ public class BattleEventController : MonoBehaviour
     {
         // テスト用
         BattleUnitEnemyBase unit = (BattleUnitEnemyBase)_loopHandler.CurrentBattleUnit;
-        if (!unit._isDead)
+        if (!unit.IsDead)
         {
             unit.DoAttack1(_objects.PlayerUnits[0]);
         }
         else
         {
-            Common.LogDebugLine(this, "EnemyTakeAction()", unit._unitName + "が死んでます。ターン終了。");
+            CommonUtils.LogDebugLine(this, "EnemyTakeAction()", unit._unitName + "が死んでます。ターン終了。");
             _loopHandler.BattleState = BattleState.TurnEnd;
         }
     }
@@ -101,16 +101,16 @@ public class BattleEventController : MonoBehaviour
     /// </summary>
     public void BattleUnitTakeAction()
     {
-        Common.LogDebugLine(this, nameof(BattleUnitTakeAction), "UnitName: " + _loopHandler.CurrentBattleUnit._unitName);
+        CommonUtils.LogDebugLine(this, nameof(BattleUnitTakeAction), "UnitName: " + _loopHandler.CurrentBattleUnit._unitName);
         
         if (_loopHandler.CurrentBattleUnit is BattleUnitPlayer)
         {
-            Common.LogDebugLine(this, nameof(BattleUnitTakeAction), "ShowCommandMenu.");
+            CommonUtils.LogDebugLine(this, nameof(BattleUnitTakeAction), "ShowCommandMenu.");
             ShowCommandMenu();
         }
         else
         {
-            Common.LogDebugLine(this, nameof(BattleUnitTakeAction), "EnemyTakeAction.");
+            CommonUtils.LogDebugLine(this, nameof(BattleUnitTakeAction), "EnemyTakeAction.");
             EnemyTakeAction();
         }
     }
@@ -126,14 +126,14 @@ public class BattleEventController : MonoBehaviour
         _uiController.ShowTurnTable();
         foreach (var unit in BattleUnitList)
         {
-            unit._icon.gameObject.SetActive(true);
-            _uiController.AddImageAsFirstSibling(_uiController.TurnTable, unit._icon);
+            unit.Icon.gameObject.SetActive(true);
+            _uiController.AddImageAsFirstSibling(_uiController.TurnTable, unit.Icon);
         }
         _loopHandler.BattleState = BattleState.TurnStart;
     }
     public void UpdateTurnTable()
     {
-        _uiController.SetImageAsLastSibling(_uiController.TurnTable, _loopHandler.CurrentBattleUnit._icon);
+        _uiController.SetImageAsLastSibling(_uiController.TurnTable, _loopHandler.CurrentBattleUnit.Icon);
     }
     
     public void SortBattleUnits()
@@ -145,7 +145,7 @@ public class BattleEventController : MonoBehaviour
             BattleUnitList.AddRange(_objects.EnemyUnits);
             BattleUnitList.Sort((a, b) =>
             {
-                return b.GetComponent<BattleUnitBase>()._dex - a.GetComponent<BattleUnitBase>()._dex;
+                return b.GetComponent<BattleUnitBase>().Dex - a.GetComponent<BattleUnitBase>().Dex;
             });
             // プレイヤーを戦闘に差し込む
             BattleUnitList.InsertRange(0, _objects.PlayerUnits);
@@ -159,7 +159,7 @@ public class BattleEventController : MonoBehaviour
             BattleUnitList.InsertRange(0, _objects.PlayerUnits);
             BattleUnitList.Sort((a, b) =>
             {
-                return b.GetComponent<BattleUnitBase>()._dex - a.GetComponent<BattleUnitBase>()._dex;
+                return b.GetComponent<BattleUnitBase>().Dex - a.GetComponent<BattleUnitBase>().Dex;
             });
             _loopHandler.BattleUnitQueue = new Queue<BattleUnitBase>(BattleUnitList);
         }

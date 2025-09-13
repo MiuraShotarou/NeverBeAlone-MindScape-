@@ -14,6 +14,7 @@ public class BattleUnitEnemyB : BattleUnitEnemyBase
     
     public void OnAttackAnimationEnd()
     {
-        _actionTarget.OnAttacked(_attack);
+        float finalAttack = CalcFinalAttack();
+        _actionTarget.OnAttacked(finalAttack);
     }
 }
