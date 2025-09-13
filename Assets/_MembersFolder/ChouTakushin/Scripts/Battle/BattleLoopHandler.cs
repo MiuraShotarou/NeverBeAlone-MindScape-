@@ -127,7 +127,7 @@ public class BattleLoopHandler : MonoBehaviour
         if (CurrentBattleUnit is BattleUnitEnemyBase)
         {
             _battleState = BattleState.TurnEnd;
-            Common.LogDebugLine(this, "JudgeTurnEnd()", "敵側。結果：" + _battleState);
+            CommonUtils.LogDebugLine(this, "JudgeTurnEnd()", "敵側。結果：" + _battleState);
             return;
         }
 
@@ -139,7 +139,7 @@ public class BattleLoopHandler : MonoBehaviour
         {
             _battleState = BattleState.TurnEnd;
         }
-        Common.LogDebugLine(this, "JudgeTurnEnd()","プレイヤー。結果：" + _battleState);
+        CommonUtils.LogDebugLine(this, "JudgeTurnEnd()","プレイヤー。結果：" + _battleState);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class BattleLoopHandler : MonoBehaviour
         // 敵全滅判定
         foreach (BattleUnitEnemyBase unit in _objects.EnemyUnits)
         {
-            if (!unit._isDead)
+            if (!unit.IsDead)
             {
                 enemyWipeout = false;
                 break;
@@ -162,7 +162,7 @@ public class BattleLoopHandler : MonoBehaviour
         // プレイヤー全滅判定
         foreach (BattleUnitPlayer unit in _objects.PlayerUnits)
         {
-            if (!unit._isDead)
+            if (!unit.IsDead)
             {
                 playerWipeout = false;
                 break;

@@ -25,7 +25,7 @@ public class MouseSelectHandler : MonoBehaviour
                 GameObject clickedObj = hit.collider.gameObject;
                 BattleUnitBase clickedUnit = clickedObj.GetComponent<BattleUnitBase>();
                 // クリック対象が敵の場合のみ、対象選択を確定する
-                if (clickedUnit is BattleUnitEnemyBase && !clickedUnit._isDead)
+                if (clickedUnit is BattleUnitEnemyBase && !clickedUnit.IsDead)
                 {
                     _player.SetActionTarget(clickedObj);
                     _battleLoopHandler.BattleState = BattleState.Busy;

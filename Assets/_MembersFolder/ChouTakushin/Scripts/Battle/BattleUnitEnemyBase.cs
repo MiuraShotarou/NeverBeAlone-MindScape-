@@ -12,22 +12,22 @@ public abstract class BattleUnitEnemyBase : BattleUnitBase
 
     public override void TakeDamage(int damage)
     {
-        _damageText.gameObject.SetActive(true);
-        _damageText.text = damage.ToString();
+        DamageText.gameObject.SetActive(true);
+        DamageText.text = damage.ToString("0");
         // 対象のscreenPosition
         Vector3 targetScreenPos = _mainCamera.WorldToScreenPoint(transform.position);
         Vector2 uiPos;
         // 対象のscreenPositionをUIのanchoredPositionに変換する
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _UICanvas.transform as RectTransform,
+            UICanvas.transform as RectTransform,
             targetScreenPos,
             null,   // Overlayの場合はnullでOK
             out uiPos
         );
-        _damageText.rectTransform.anchoredPosition = uiPos;
+        DamageText.rectTransform.anchoredPosition = uiPos;
         
-        _damageText.gameObject.GetComponent<Animator>().Play("ShowDamage");
-        _hp -= damage;
-        Debug.Log(_unitName + "がダメージを受ける：" + damage + "。　残りHP：" + _hp);
+        DamageText.gameObject.GetComponent<Animator>().Play("ShowDamage");
+        Hp -= damage;
+        Debug.Log(_unitName + "がダメージを受ける：" + damage + "。　残りHP：" + Hp);
     }
 }

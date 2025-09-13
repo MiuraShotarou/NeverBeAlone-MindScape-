@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// ゲーム全体で使える共通処理
 /// </summary>
-public static class Common
+public static class CommonUtils
 {
     public static float GetDamageScale(Emotion source, Emotion target)
     {
@@ -24,5 +24,22 @@ public static class Common
     public static void LogDebugLine<T>(T t, string methodName, string message)
     {
         Debug.Log(t.GetType() + "." + methodName + ": " + message);
+    }
+
+    public static float CalcFinalDamage(BattleUnitBase unit)
+    {
+        float rst;
+        
+        // rst = (unit.AttackBase + unit.AttackModified)
+        return 0f;
+    }
+    public static float CalcFinalDefense(BattleUnitBase unit)
+    {
+        return 0f;
+    }
+
+    public static float GetDamageBlur()
+    {
+        return Random.Range(0.95f, 1.05f);
     }
 }
