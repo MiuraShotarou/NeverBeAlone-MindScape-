@@ -1,0 +1,44 @@
+{
+  "friendlyName": "SHARP AQUOS sense6s SHG07",
+  "version": 1,
+  "screens": [
+    {
+      "width": 2432,
+      "height": 1080,
+      "dpi": 436.0,
+      "orientations":
+      [{
+        "orientation": "1",
+        "safeArea":
+        {
+          "serializedVersion": "2",
+          "x": 62,
+          "y": -20.0,
+          "width": 2360.0,
+          "height": 1125.0
+        }
+      }],
+      "presentation":
+      {
+        "overlayPath": "Assets/_MembersFolder/Miura/Image/Device/SHARP_AQUOS_sense6s_SHG07.png",
+        "borderSize":
+        {
+          "x": 51.0,
+          "y": 51.0,
+          "z": 60,
+          "w": 60
+        }
+      }
+    }
+  ],
+  "systemInfo":
+  {
+    "operatingSystem": "Android 13",
+    "graphicsDependentData": [
+      {
+        "graphicsDeviceType": "11",
+        "graphicsDeviceVersion": "OpenGL ES 3.2 V@145.0 (GIT@I86b60582e4)"
+      }
+    ]
+  }
+}
