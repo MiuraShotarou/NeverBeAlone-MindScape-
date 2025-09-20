@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: b78271103a8aa8e42ab211b31972f955
-  m_SerializeEntries:
-  - m_GUID: 68b16dfeae843334fa9b7e855859215a
-    m_Address: "Assets/_MembersFolder/Miura/Image/\u30B9\u30AF\u30EA\u30FC\u30F3\u30B7\u30E7\u30C3\u30C8
-      2025-07-19 231756.png"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8bae0094133d1674dadb472940e838c0, type: 2}
   m_SchemaSet:
