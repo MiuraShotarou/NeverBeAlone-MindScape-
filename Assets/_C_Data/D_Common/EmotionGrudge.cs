@@ -7,6 +7,7 @@ public class EmotionGrudge : EmotionBase, IAttackModifier, IDexModifier
     public EmotionGrudge(int level)
     {
         _name = "怨念";
+        _emotion = Emotion.Grudge;
         _level = level;
     }
     

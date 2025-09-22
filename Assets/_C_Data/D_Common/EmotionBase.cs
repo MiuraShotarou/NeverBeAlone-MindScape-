@@ -7,5 +7,6 @@ using UnityEngine;
 public abstract class EmotionBase
 {
     protected string _name;
+    protected Emotion _emotion;
     protected int _level;
 }

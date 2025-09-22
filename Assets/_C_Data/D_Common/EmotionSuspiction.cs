@@ -7,6 +7,7 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
     public EmotionSuspicion(int level)
     {
         _name = "猜疑";
+        _emotion = Emotion.Suspicion;
         _level = level;
     }
     public float ModifyAttack(float attack)
