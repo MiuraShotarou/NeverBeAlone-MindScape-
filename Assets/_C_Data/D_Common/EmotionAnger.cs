@@ -7,6 +7,7 @@ public class EmotionAnger : EmotionBase, IAttackModifier, ICriticalRateModifier
     public EmotionAnger(int level)
     {
         _name = "怒り";
+        _emotion = Emotion.Anger;
         _level = level;
     }
 
