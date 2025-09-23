@@ -7,6 +7,7 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
     public EmotionHatred(int level)
     {
         _name = "嫌悪";
+        _emotion = Emotion.Hatred;
         _level = level;
     }
 
