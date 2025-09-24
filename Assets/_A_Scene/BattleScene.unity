@@ -243,18 +243,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 1067520226}
+  DamageText: {fileID: 0}
+  UICanvas: {fileID: 0}
   _unitName: Player
-  _hp: 100
-  _sp: 50
-  _dex: 6
-  _attack: 20
-  _defense: 5
-  _isDead: 0
-  _attackAdjustment: 1.1
-  _defenseAdjustment: 1.1
-  _icon: {fileID: 1067520226}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 0
+  AttackBase: 0
+  AttackScaleBase: 0
+  AttackWeakpointScaleBase: 0
+  AttackResistanceScaleBase: 0
+  DefenseBase: 0
+  DefenseScaleBase: 0
+  DefenseWeakpointScaleBase: 0
+  DefenseResistanceScaleBase: 0
+  DexBase: 0
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 0
+  RegenerateBase: 0
+  MaxTensionBase: 0
+  TentionUpRateBase: 0
+  TentionDownRateBase: 0
+  MaxHp: 0
+  Hp: 0
+  MaxTension: 0
+  Tension: 0
+  TensionLevel: 0
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
+  ConditionFlag: 0
 --- !u!95 &8131425
 Animator:
   serializedVersion: 5
@@ -1105,6 +1128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 473272284}
   - component: {fileID: 473272283}
+  - component: {fileID: 473272285}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1189,6 +1213,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &473272285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473272282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &599813941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,18 +2572,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 115489258}
+  DamageText: {fileID: 0}
+  UICanvas: {fileID: 0}
   _unitName: EnemyB
-  _hp: 80
-  _sp: 30
-  _dex: 5
-  _attack: 7
-  _defense: 3
-  _isDead: 0
-  _attackAdjustment: 1
-  _defenseAdjustment: 1
-  _icon: {fileID: 115489258}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 0
+  AttackBase: 0
+  AttackScaleBase: 0
+  AttackWeakpointScaleBase: 0
+  AttackResistanceScaleBase: 0
+  DefenseBase: 0
+  DefenseScaleBase: 0
+  DefenseWeakpointScaleBase: 0
+  DefenseResistanceScaleBase: 0
+  DexBase: 0
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 0
+  RegenerateBase: 0
+  MaxTensionBase: 0
+  TentionUpRateBase: 0
+  TentionDownRateBase: 0
+  MaxHp: 0
+  Hp: 0
+  MaxTension: 0
+  Tension: 0
+  TensionLevel: 0
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
+  ConditionFlag: 0
   _playerGo: {fileID: 8131419}
 --- !u!1 &1746963820
 GameObject:
@@ -2829,18 +2899,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  Icon: {fileID: 2095016872}
+  DamageText: {fileID: 0}
+  UICanvas: {fileID: 0}
   _unitName: EnemyA
-  _hp: 100
-  _sp: 30
-  _dex: 7
-  _attack: 10
-  _defense: 3
-  _isDead: 0
-  _attackAdjustment: 1
-  _defenseAdjustment: 1
-  _icon: {fileID: 2095016872}
-  _damageText: {fileID: 1746963823}
-  _UICanvas: {fileID: 46830099}
+  MaxHpBase: 0
+  AttackBase: 0
+  AttackScaleBase: 0
+  AttackWeakpointScaleBase: 0
+  AttackResistanceScaleBase: 0
+  DefenseBase: 0
+  DefenseScaleBase: 0
+  DefenseWeakpointScaleBase: 0
+  DefenseResistanceScaleBase: 0
+  DexBase: 0
+  EvadeRateBase: 0
+  CriticalRateBase: 0
+  CriticalScaleBase: 0
+  RegenerateBase: 0
+  MaxTensionBase: 0
+  TentionUpRateBase: 0
+  TentionDownRateBase: 0
+  MaxHp: 0
+  Hp: 0
+  MaxTension: 0
+  Tension: 0
+  TensionLevel: 0
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
+  IsDead: 0
+  SkillEffects: []
+  ConditionFlag: 0
   _playerGo: {fileID: 8131419}
 --- !u!1 &1925322498
 GameObject:
