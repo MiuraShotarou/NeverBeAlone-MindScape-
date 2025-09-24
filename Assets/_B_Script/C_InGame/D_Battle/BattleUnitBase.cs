@@ -54,6 +54,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("感情状態")]public Dictionary<Emotion, EmotionBase> Emotions;
     [SerializeField, Tooltip("現在感情")]public EmotionBase CurrentEmotion;
     [SerializeField, Tooltip("所持バフ")]public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
+    [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
     
 
     public delegate void JudgeSurvival();
