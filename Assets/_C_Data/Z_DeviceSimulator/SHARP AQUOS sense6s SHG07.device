@@ -20,7 +20,7 @@
       }],
       "presentation":
       {
-        "overlayPath": "Assets/_MembersFolder/Miura/Image/Device/SHARP_AQUOS_sense6s_SHG07.png",
+        "overlayPath": "Assets/_G_Image/Z_DeviceSimulator/SHARP_AQUOS_sense6s_SHG07.png",
         "borderSize":
         {
           "x": 51.0,
