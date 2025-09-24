@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
-  Icon: {fileID: 0}
+  Icon: {fileID: 1067520226}
   DamageText: {fileID: 0}
   UICanvas: {fileID: 0}
   _unitName: Player
@@ -277,6 +277,7 @@ MonoBehaviour:
   EvadeRate: 0
   IsDead: 0
   SkillEffects: []
+  ConditionFlag: 0
 --- !u!95 &8131425
 Animator:
   serializedVersion: 5
@@ -2627,7 +2628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
-  Icon: {fileID: 0}
+  Icon: {fileID: 115489258}
   DamageText: {fileID: 0}
   UICanvas: {fileID: 0}
   _unitName: EnemyB
@@ -2661,6 +2662,7 @@ MonoBehaviour:
   EvadeRate: 0
   IsDead: 0
   SkillEffects: []
+  ConditionFlag: 0
   _playerGo: {fileID: 8131419}
 --- !u!1 &1746963820
 GameObject:
@@ -2953,7 +2955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
-  Icon: {fileID: 0}
+  Icon: {fileID: 2095016872}
   DamageText: {fileID: 0}
   UICanvas: {fileID: 0}
   _unitName: EnemyA
@@ -2987,6 +2989,7 @@ MonoBehaviour:
   EvadeRate: 0
   IsDead: 0
   SkillEffects: []
+  ConditionFlag: 0
   _playerGo: {fileID: 8131419}
 --- !u!1 &1925322498
 GameObject:
