@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using UnityEditor.DeviceSimulation;
 
-public class DevelopTest : MonoBehaviour
+public class DeveloperTest : MonoBehaviour
 {
     // UnityEditor.DeviceSimulation.ScreenSimulation.CalculateSafeAreaAndCutouts();//KeyNotFound
     // UnityEditor.DeviceSimulation.DeviceSimulatorMain.InitSimulation();

@@ -13,46 +13,14 @@ public class DevelopCameraController : MonoBehaviour
     private float _rotSpeed = 40f;
     private int _clampPosY = 1;
     private int _clampRotX = 90;
-    //
     private Vector2 _moveInput;
-    // public void On2DComposite(InputValue value) //ここの戻り値を調べるところから
-    // {
-    //     // V / H どちらも取得している
-    //     _moveInput = value.Get<Vector2>();
-    //     Debug.Log("InputAction" + _moveInput);
-    // }
-    void Start()
-    {
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="context"></param>
-    protected void OnMove(InputAction.CallbackContext context) //
-    {
-        _moveInput = context.ReadValue<Vector2>();
-    }
-    protected void OnLook(InputAction.CallbackContext context)
-    {
-        _rotateDelta = context.ReadValue<Vector2>();
-    }
-
     void Update()
     {
-        // _moveDirection.y = _moveInput.y;
-        // _moveDirection.x = _moveInput.x;
-        
-        _moveDirection.y = NewInput.GetAxis("Vertical");
-        // _moveDirection.y = Input.GetAxis("Vertical");
-        // _moveDirection.x = Input.GetAxis("Horizontal");
-        // _moveDirection.y = Keyboard.current.wKey.isPressed ? 1 : 0;
-        // _moveDirection.y = Keyboard.current.sKey.isPressed ? -1 : 0;
-        // _moveDirection.x = Keyboard.current.aKey.isPressed ? 1 : 0;
-        // _moveDirection.x = Keyboard.current.dKey.isPressed ? -1 : 0;
-        //要はdirectionが取れればそれで良い
-        if (_moveInput.x != 0 || _moveInput.y != 0)
+        _moveDirection.y = NewInput.GetAxisRaw("Vertical");
+        _moveDirection.x = NewInput.GetAxisRaw("Horizontal");
+        // Debug.Log(_moveDirection);
+        if (_moveDirection.x != 0 || _moveDirection.y != 0)
         {
-            // Debug.Log("Move");
             transform.position += transform.forward * _moveDirection.y * _moveSpeed * Time.deltaTime;
             transform.position += transform.right * _moveDirection.x * _moveSpeed * Time.deltaTime;
             if (_isDontFly)
@@ -60,6 +28,8 @@ public class DevelopCameraController : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, _clampPosY, transform.position.z);
             }
         }
+        _rotateDelta.x = NewInput.GetAxis("Mouse X");
+        _rotateDelta.y = NewInput.GetAxis("Mouse Y");
         // Vector2 _rotateDelta = Mouse.current.delta.ReadValue(); // 前フレームとの差分
         int ajdustY = -1;
         if (_rotateDelta.x != 0  || _rotateDelta.y != 0)
