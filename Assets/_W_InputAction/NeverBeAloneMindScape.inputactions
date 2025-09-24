@@ -4,12 +4,12 @@
     "maps": [
         {
             "name": "Player",
-            "id": "ee0ac267-b0b1-43cb-93c8-4dead5997884",
+            "id": "56cf116a-dc02-49fc-81f3-3db406e0708c",
             "actions": [
                 {
                     "name": "Move",
                     "type": "Value",
-                    "id": "f1a1646e-1b86-4db7-a359-bedf3e396e9a",
+                    "id": "5eb69d41-de3b-4b69-a527-9e2963ba6019",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -18,7 +18,7 @@
                 {
                     "name": "Look",
                     "type": "Value",
-                    "id": "5260de95-587d-416f-a894-f944a3273633",
+                    "id": "695f5a5d-9552-49ed-9924-c1c055b7a528",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -27,7 +27,7 @@
                 {
                     "name": "Fire",
                     "type": "Button",
-                    "id": "90c878b3-6340-4323-ab71-1f5453478ebb",
+                    "id": "c52f2920-fbd2-48fa-ac6e-ee580f0a921d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -202,6 +202,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1263b414-2446-4316-b71e-adbf7448896f",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Joystick;Touch",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -259,12 +270,12 @@
         },
         {
             "name": "UI",
-            "id": "28db26e1-5b04-45e0-acfb-c6e048e47f49",
+            "id": "74681642-796b-4451-81a9-5d596e095874",
             "actions": [
                 {
                     "name": "Navigate",
                     "type": "PassThrough",
-                    "id": "dac4780f-0ce5-4a76-a2e0-500cb4dab580",
+                    "id": "13fe43aa-5275-45c2-b142-520b9319c217",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -273,7 +284,7 @@
                 {
                     "name": "Submit",
                     "type": "Button",
-                    "id": "f7960bdb-e2c6-41fc-b1d9-047398d9e227",
+                    "id": "d5176d1a-cafe-4e60-b647-2a21ff2906c9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -282,7 +293,7 @@
                 {
                     "name": "Cancel",
                     "type": "Button",
-                    "id": "49a43fb4-1e3a-43bb-aa31-f428280bedbb",
+                    "id": "b845d97f-21e5-43f9-9eac-3ea8332d66a0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -291,7 +302,7 @@
                 {
                     "name": "Point",
                     "type": "PassThrough",
-                    "id": "120e9126-43bc-4e19-9f37-c0790e938fa1",
+                    "id": "96abf80c-4a5f-4a27-b6f8-1290e67e69fa",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -300,7 +311,7 @@
                 {
                     "name": "Click",
                     "type": "PassThrough",
-                    "id": "4d2e3f26-8a57-4d27-ac51-a4cb1217e59f",
+                    "id": "4d1122ab-bf59-4bc0-8cb7-84fd44446265",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -309,7 +320,7 @@
                 {
                     "name": "ScrollWheel",
                     "type": "PassThrough",
-                    "id": "e8426eb0-9371-424f-9c87-c8d0ba511f6d",
+                    "id": "0f05fd99-ac5a-4761-b1ee-2e9d95cceb2c",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -318,7 +329,7 @@
                 {
                     "name": "MiddleClick",
                     "type": "PassThrough",
-                    "id": "1be0fd2e-5c21-4295-91d2-58b62dbff120",
+                    "id": "5e5775a0-2208-41ec-9eb4-a44ec61d958d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -327,7 +338,7 @@
                 {
                     "name": "RightClick",
                     "type": "PassThrough",
-                    "id": "cbd8a364-1652-4a52-be2b-ac4fa2089f27",
+                    "id": "7dab14c4-a4cb-4bf6-a367-796a1d118881",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -336,7 +347,7 @@
                 {
                     "name": "TrackedDevicePosition",
                     "type": "PassThrough",
-                    "id": "fd741175-54b4-490e-8e52-29cbf3cf8c81",
+                    "id": "48d8772e-adad-4b95-9535-e960fc74a1b0",
                     "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
@@ -345,7 +356,7 @@
                 {
                     "name": "TrackedDeviceOrientation",
                     "type": "PassThrough",
-                    "id": "861a21bc-fd08-4bd3-a779-bbc784f78394",
+                    "id": "8bb25d4e-82f3-4d8c-8550-66e7698931cc",
                     "expectedControlType": "Quaternion",
                     "processors": "",
                     "interactions": "",

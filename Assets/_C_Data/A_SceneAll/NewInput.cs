@@ -6,10 +6,28 @@ using UnityEngine.InputSystem;
 /// </summary>
 public static class NewInput
 {
-    public static void OnMove(InputAction.CallbackContext context)
+    private static InputAcitonMonoBehaviour _inputAcitonMonoBehaviourInstance;
+    private static InputAcitonMonoBehaviour _InputAcitonMonoBehaviourInstance => _inputAcitonMonoBehaviourInstance ??= new GameObject().AddComponent<InputAcitonMonoBehaviour>();
+    public static float GetAxis(string axisName)
     {
-        Vector2 moveInput = context.ReadValue<Vector2>(); //stringの引数で取得出来るようにする
+        switch (axisName)
+        {
+            case "Horizontal":
+                return _InputAcitonMonoBehaviourInstance._MoveInput.y;
+            case "Vertical":
+                return _InputAcitonMonoBehaviourInstance._MoveInput.x;
+        }
+        return 0;
     }
+    // public Vector2 OnMove(InputAction.CallbackContext context)
+    // {
+    //     Vector2 moveInput = context.ReadValue<Vector2>(); //stringの引数で取得出来るようにする
+    //     return moveInput;
+    // }
+    // public void OnLook(InputAction.CallbackContext context)
+    // {
+    //     Vector2 lookInput = context.ReadValue<Vector2>();
+    // }
 
     public static float GetAxisRaw(string axisName) //stringを引数に持つ
     {
