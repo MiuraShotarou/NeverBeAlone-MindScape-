@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TestEffect : SkillEffectBase, IAttackModifier
 {
-    public TestEffect(string name, EffectApplyType type)
+    public TestEffect(string name, ConditionActivationType type)
     {
         EffectName = name;
         ApplyType = type;

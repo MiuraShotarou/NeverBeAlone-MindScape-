@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics;
+using System.Runtime.Serialization;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+//using static System.Net.Mime.MediaTypeNames;
 using Random = UnityEngine.Random;
 
 public abstract class BattleUnitBase : MonoBehaviour
@@ -51,11 +54,11 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("敏捷性")] public int Dex;
     [SerializeField, Tooltip("回避率")] public int EvadeRate;
     [SerializeField, Tooltip("死亡フラグ")] public bool IsDead;
-    [SerializeField, Tooltip("感情状態")]public Dictionary<Emotion, EmotionBase> Emotions;
-    [SerializeField, Tooltip("現在感情")]public EmotionBase CurrentEmotion;
-    [SerializeField, Tooltip("所持バフ")]public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
+    [SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions;
+    /*[SerializeField, Tooltip("現在感情")]*/ public EmotionBase CurrentEmotion = new EmotionVoid(1);
+    [SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
-    
+
 
     public delegate void JudgeSurvival();
     protected void Start()
@@ -72,7 +75,7 @@ public abstract class BattleUnitBase : MonoBehaviour
         _loopHandler = _objects.BattleLoopHandler;
         _animator = gameObject.GetComponent<Animator>();
         _objects.BattleEventController.DoJudgeSurvival += DoJudgeSurvival;
-        
+
     }
     /// <summary>
     /// 被ダメージ処理
@@ -114,16 +117,16 @@ public abstract class BattleUnitBase : MonoBehaviour
     /// <summary>
     /// 攻撃を受ける時の処理
     /// </summary>
-    public virtual void OnAttacked(float finalAttack)
+    public virtual void OnAttacked(float damage, Emotion emotion)
     {
-        TakeDamage(CalculateFinalDamageTaken(finalAttack));
+        TakeDamage(CalculateFinalDamageTaken(damage));
     }
 
-    protected virtual int CalculateFinalDamageTaken(float finalAttack)
+    protected virtual int CalculateFinalDamageTaken(float damage)
     {
         float finalDefense = CalcFinalDefense();
         float damageBlurScale = Random.Range(0.95f, 1.05f);
-        int finalDamageTaken = Mathf.RoundToInt((finalAttack - finalDefense) * damageBlurScale);
+        int finalDamageTaken = Mathf.RoundToInt((damage - finalDefense) * damageBlurScale);
         if (finalDamageTaken < 0)
         {
             finalDamageTaken = 0;
@@ -174,7 +177,7 @@ public abstract class BattleUnitBase : MonoBehaviour
         float scaleMod = CalcAttackScaleMod();
         float finalAttack = (AttackBase + valueMod) * (AttackScaleBase + scaleMod);
         CommonUtils.LogDebugLine(this, "CalcFinalAttack()", "攻撃側：" + _unitName);
-        CommonUtils.LogDebugLine(this, "CalcFinalAttack()", 
+        CommonUtils.LogDebugLine(this, "CalcFinalAttack()",
             "基礎攻撃力：" + AttackBase
                      + ", 攻撃ボーナス：" + valueMod
                      + ", 基礎攻撃力倍率：" + AttackScaleBase
@@ -192,7 +195,7 @@ public abstract class BattleUnitBase : MonoBehaviour
         float scaleMod = CalcDefenseScaleMod();
         float finalDefense = (DefenseBase + valueMod) * (DefenseScaleBase + scaleMod);
         CommonUtils.LogDebugLine(this, "CalcFinalDefense()", "防御側：" + _unitName);
-        CommonUtils.LogDebugLine(this, "CalcFinalDefense()", 
+        CommonUtils.LogDebugLine(this, "CalcFinalDefense()",
             "基礎防御力：" + DefenseBase
                      + ", 防御ボーナス：" + valueMod
                      + ", 基礎防御力倍率：" + DefenseScaleBase
@@ -213,14 +216,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         {
             mod = emotionModifier.ModifyAttack(mod);
         }
-        
+
         // TODO テンションボーナスを適用【未実装】
-        
+
         // 所持バフの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)
         {
             IAttackModifier modifier = effect as IAttackModifier;
-            if(modifier != null)
+            if (modifier != null)
             {
                 mod = modifier.ModifyAttack(mod);
             }
@@ -240,14 +243,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         {
             mod = emotionModifier.ModifyAttackScale(mod);
         }
-                
+
         // TODO テンションボーナスを適用【未実装】
-        
+
         // 所持バフの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)
         {
             IAttackScaleModifier modifier = effect as IAttackScaleModifier;
-            if(modifier != null)
+            if (modifier != null)
             {
                 mod = modifier.ModifyAttackScale(mod);
             }
@@ -268,14 +271,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         {
             mod = emotionModifier.ModifyDefense(mod);
         }
-        
+
         // TODO テンションボーナスを適用【未実装】
-        
+
         // 所持バフの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)
         {
             IDefenseModifier modifier = effect as IDefenseModifier;
-            if(modifier != null)
+            if (modifier != null)
             {
                 mod = modifier.ModifyDefense(mod);
             }
@@ -295,14 +298,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         {
             mod = emotionModifier.ModifyDefenseScale(mod);
         }
-        
+
         // TODO テンションボーナスを適用【未実装】
-        
+
         // 所持バフの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)
         {
             IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
-            if(modifier != null)
+            if (modifier != null)
             {
                 mod = modifier.ModifyDefenseScale(mod);
             }

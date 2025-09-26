@@ -244,8 +244,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
   Icon: {fileID: 1067520226}
-  DamageText: {fileID: 0}
-  UICanvas: {fileID: 0}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: Player
   MaxHpBase: 0
   AttackBase: 0
@@ -2629,8 +2629,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
   Icon: {fileID: 115489258}
-  DamageText: {fileID: 0}
-  UICanvas: {fileID: 0}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: EnemyB
   MaxHpBase: 0
   AttackBase: 0
@@ -2956,8 +2956,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
   Icon: {fileID: 2095016872}
-  DamageText: {fileID: 0}
-  UICanvas: {fileID: 0}
+  DamageText: {fileID: 1746963823}
+  UICanvas: {fileID: 46830099}
   _unitName: EnemyA
   MaxHpBase: 0
   AttackBase: 0

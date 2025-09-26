@@ -32,7 +32,7 @@ public enum RouletteStatus
 /// 効果適用種別
 /// </summary>
 [Serializable]
-public enum EffectApplyType
+public enum ConditionActivationType
 {
     Always,
     OnBattleStart,

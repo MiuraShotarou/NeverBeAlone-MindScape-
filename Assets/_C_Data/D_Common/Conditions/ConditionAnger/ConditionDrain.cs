@@ -18,12 +18,12 @@ public class ConditionDrain : ConditionBase
 
     public override void ApplyCondition()
     {
-        _targetHp = Target.Hp;
+        _targetHp = _target.Hp;
     }
 
     public override void ReapplyCondition()
     {
-        ActiveTurns = Random.Range(1, 3);
+        _activeTurns = Random.Range(1, 3);
     }
 
     public override void ActivateConditionEffect()
@@ -35,6 +35,6 @@ public class ConditionDrain : ConditionBase
 
     public override void RemoveCondition()
     {
-        ActiveTurns = 0;
+        _activeTurns = 0;
     }
 }

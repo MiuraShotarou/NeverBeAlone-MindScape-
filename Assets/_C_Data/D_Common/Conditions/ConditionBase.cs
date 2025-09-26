@@ -1,28 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class ConditionBase : MonoBehaviour
+public abstract class ConditionBase : ScriptableObject
 {
-    private Condition _condition;
-    protected Condition ConditionName
-    {
-        get { return _condition; }
-        set { _condition = value; }
-    }
-
-    private int _activeTurns = 1;
+    protected Condition _condition;
     /// <summary>継続ターン数</summary>
-    protected int ActiveTurns
-    {
-        get { return _activeTurns; }
-        set { _activeTurns = Mathf.Clamp(value, 1, 3); }
-    }
+    protected int _activeTurns = 1;
+    protected ConditionActivationType _type;
+    protected BattleUnitBase _target = default;
 
-    protected BattleUnitBase Target = default;
-
-    /// <summary>状態異常のクラスとビットフラグを紐づける</summary>
+    /// <summary>コンストラクタ。状態異常のクラスとビットフラグを紐づける</summary>
     public ConditionBase(Condition condition)
     {
         _condition = condition;
@@ -44,7 +35,7 @@ public abstract class ConditionBase : MonoBehaviour
     /// <param name="targetCondition"></param>
     public void ApplyConditionToTarget(BattleUnitBase target)
     {
-        Target = target;
+        _target = target;
         Condition targetCondition = target.ConditionFlag;
 
         if ((targetCondition & _condition) == _condition)
