@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
-public class ConditionSelfharm : ConditionBase
+/// <summary>束縛（猜疑）次のターンまで行動不能</summary>
+public class ConditionRestraint : ConditionBase
 {
 
-    private Emotion _emotion = Emotion.Anger;
+    private Emotion _emotion = Emotion.Suspicion;
     [SerializeField] private int _damage = default;
 
-    /// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
-    public ConditionSelfharm(Condition condition) : base(condition)
+    /// <summary>不安（猜疑）自身に猜疑属性継続ダメージ</summary>
+    public ConditionRestraint(Condition condition) : base(condition)
     {
-        _name = "自傷";
-        _type = ConditionActivationType.OnTurnEnd;
+        _name = "束縛";
+        _type = ConditionActivationType.OnTurnStart;
     }
 
     public override void ApplyCondition()
@@ -30,9 +30,14 @@ public class ConditionSelfharm : ConditionBase
     {
         if (_activeTurns == 0) return;
 
-        _target.GetComponent<BattleUnitBase>().OnAttacked(_damage, _emotion);
         _activeTurns -= 1;
         CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "が発動しました");
+        var battleLoopHandler = FindObjectOfType<BattleLoopHandler>();
+
+        if (battleLoopHandler != null)
+        {
+            battleLoopHandler.BattleState = BattleState.TurnEnd;
+        }
 
         if (_activeTurns == 0)
         {

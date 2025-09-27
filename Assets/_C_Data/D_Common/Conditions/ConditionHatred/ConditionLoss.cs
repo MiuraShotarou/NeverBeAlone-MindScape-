@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
-public class ConditionSelfharm : ConditionBase
+/// <summary>喪失（嫌悪）自身に嫌悪属性継続ダメージ</summary>
+public class ConditionLoss : ConditionBase
 {
 
-    private Emotion _emotion = Emotion.Anger;
+    private Emotion _emotion = Emotion.Hatred;
     [SerializeField] private int _damage = default;
 
-    /// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
-    public ConditionSelfharm(Condition condition) : base(condition)
+    /// <summary>喪失（嫌悪）自身に嫌悪属性継続ダメージ</summary>
+    public ConditionLoss(Condition condition) : base(condition)
     {
-        _name = "自傷";
+        _name = "喪失";
         _type = ConditionActivationType.OnTurnEnd;
     }
 

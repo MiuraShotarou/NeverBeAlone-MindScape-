@@ -2,39 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>与えたダメージ×0.1回復</summary>
+/// <summary>ドレイン（怒り）与えたダメージ * 0.1 回復する</summary>
 public class ConditionDrain : ConditionBase
 {
 
     private Emotion _emotion = Emotion.Anger;
-    private float _hpRestoreRate = 0.1f;
-    private int _targetHp = default;
+    [SerializeField] private int _damageDealt = 10;
+    [SerializeField] private float _hpRestoreScale = 0.1f;
 
-    /// <summary>状態異常のクラスとビットフラグを紐づける</summary>
+    /// <summary>ドレイン（怒り）与えたダメージ * 0.1 回復する</summary>
     public ConditionDrain(Condition condition) : base(condition)
     {
-        //基底クラスで定義済み。何も書かなくてOK
+        _name = "ドレイン";
+        _type = ConditionActivationType.OnAttackExecute;
     }
 
     public override void ApplyCondition()
     {
-        _targetHp = Target.Hp;
+        
     }
 
     public override void ReapplyCondition()
     {
-        ActiveTurns = Random.Range(1, 3);
+        
     }
 
     public override void ActivateConditionEffect()
     {
-        //与えたダメージ
-        int damage = 0;
-        _targetHp += (int)(damage * _hpRestoreRate);
+        // TODO 自分が敵に与えたダメージを持ってくる
+        //_damageDealt = 
+        int restoringHp = Mathf.RoundToInt(_damageDealt * _hpRestoreScale);
+        restoringHp *= -1;
+        _target.GetComponent<BattleUnitBase>().TakeDamage(restoringHp);
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "が発動しました");
     }
 
     public override void RemoveCondition()
     {
-        ActiveTurns = 0;
+        
     }
 }
