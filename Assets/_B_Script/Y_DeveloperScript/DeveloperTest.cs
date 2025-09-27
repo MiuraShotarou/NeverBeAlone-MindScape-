@@ -1,11 +1,10 @@
 using UnityEngine;
-
+using UnityEditor.DeviceSimulation;
 public class DeveloperTest : MonoBehaviour
 {
     [SerializeField, Header("ループ用音源をセットしてください")]
     AudioClip _audioClip;
     AudioSource _audioSource;
-
     bool _isDone;
     // UnityEditor.DeviceSimulation.ScreenSimulation.CalculateSafeAreaAndCutouts();//KeyNotFound
     // UnityEditor.DeviceSimulation.DeviceSimulatorMain.InitSimulation();
