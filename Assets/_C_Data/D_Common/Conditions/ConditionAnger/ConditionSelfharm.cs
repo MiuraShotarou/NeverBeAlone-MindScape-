@@ -2,41 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>怒り属性継続ダメージ</summary>
+/// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
 public class ConditionSelfharm : ConditionBase
 {
 
     private Emotion _emotion = Emotion.Anger;
-    private int _damage = default;
-    private int _targetHp = default;
+    [SerializeField] private int _damage = default;
 
-    /// <summary>状態異常のクラスとビットフラグを紐づける</summary>
+    /// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
     public ConditionSelfharm(Condition condition) : base(condition)
     {
-        //基底クラスで定義済み。何も書かなくてOK
+        _name = "自傷";
+        _type = ConditionActivationType.OnTurnEnd;
     }
 
     public override void ApplyCondition()
     {
-        ActiveTurns = Random.Range(1, 3);
-        _targetHp = Target.Hp;
+        _activeTurns = Random.Range(1, 4);
     }
 
     public override void ReapplyCondition()
     {
-        ActiveTurns = Random.Range(1, 3);
+        _activeTurns += Random.Range(1, 3);
     }
 
     public override void ActivateConditionEffect()
     {
-        if (ActiveTurns == 0) return;
+        if (_activeTurns == 0) return;
 
-        _targetHp -= _damage;
-        ActiveTurns -= 1;
+        _target.GetComponent<BattleUnitBase>().OnAttacked(_damage, _emotion);
+        _activeTurns -= 1;
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "が発動しました");
+
+        if (_activeTurns == 0)
+        {
+            RemoveConditionFromTarget(_target);
+        }
     }
 
     public override void RemoveCondition()
     {
-        ActiveTurns = 0;
+        _activeTurns = 0;
     }
 }

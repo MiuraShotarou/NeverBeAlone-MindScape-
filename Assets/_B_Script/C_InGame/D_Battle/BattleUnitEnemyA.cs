@@ -16,6 +16,6 @@ public class BattleUnitEnemyA : BattleUnitEnemyBase
     public void OnAttackAnimationEnd()
     {
         float finalAttack = CalcFinalAttack();
-        _actionTarget.GetComponent<BattleUnitBase>().OnAttacked(finalAttack);
+        _actionTarget.GetComponent<BattleUnitBase>().OnAttacked(finalAttack, CurrentEmotion.Emotion);
     }
 }

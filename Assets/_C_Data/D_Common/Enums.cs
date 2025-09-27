@@ -32,7 +32,7 @@ public enum RouletteStatus
 /// 効果適用種別
 /// </summary>
 [Serializable]
-public enum EffectApplyType
+public enum ConditionActivationType
 {
     Always,
     OnBattleStart,
@@ -43,7 +43,7 @@ public enum EffectApplyType
 }
 
 /// <summary>
-/// 状態以上（バフ・デバフ）
+/// 状態異常（バフ・デバフ）
 /// </summary>
 [Serializable]
 [Flags]
