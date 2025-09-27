@@ -16,7 +16,7 @@ public class InGamePhoneController : MonoBehaviour
 
     void Update()
     {
-        // === スマホタッチ ===
+        // === スマホ用 ===
         if (Touchscreen.current != null)
         {
             var touch = Touchscreen.current.primaryTouch;
@@ -35,8 +35,7 @@ public class InGamePhoneController : MonoBehaviour
             }
         }
 
-        // === PCデバッグ ===
-#if UNITY_EDITOR || UNITY_STANDALONE
+        // === PC用 ===
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             startPos = Mouse.current.position.ReadValue();
@@ -48,7 +47,6 @@ public class InGamePhoneController : MonoBehaviour
             if (delta.x < -swipeSpeed && !isSlided) ShowPhone();
             else if (delta.x > swipeSpeed && isSlided) HidePhone();
         }
-#endif
     }
 
     private void ShowPhone()
