@@ -7,13 +7,13 @@ using UnityEngine;
 
 public abstract class ConditionBase : ScriptableObject
 {
+    protected string _name;
     protected Condition _condition;
     /// <summary>継続ターン数</summary>
     protected int _activeTurns = 1;
     protected ConditionActivationType _type;
     protected BattleUnitBase _target = default;
 
-    /// <summary>コンストラクタ。状態異常のクラスとビットフラグを紐づける</summary>
     public ConditionBase(Condition condition)
     {
         _condition = condition;

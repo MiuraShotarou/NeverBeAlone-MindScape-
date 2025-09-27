@@ -43,7 +43,7 @@ public enum ConditionActivationType
 }
 
 /// <summary>
-/// 状態以上（バフ・デバフ）
+/// 状態異常（バフ・デバフ）
 /// </summary>
 [Serializable]
 [Flags]

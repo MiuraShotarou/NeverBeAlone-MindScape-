@@ -119,6 +119,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     /// </summary>
     public virtual void OnAttacked(float damage, Emotion emotion)
     {
+        // TODO 攻撃と自身の属性を考慮したダメージ計算
         TakeDamage(CalculateFinalDamageTaken(damage));
     }
 
