@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class InGamePanelController : MonoBehaviour
 {
+    [Header("Ø‚è‘Ö‚¦‘ÎÛƒpƒlƒ‹")]
     [SerializeField] GameObject _panel;
     void Start()
     {
