@@ -52,35 +52,35 @@ public class BattleEventController : MonoBehaviour
     public void OnBattleIntroFinished()
     {
         _uiController.DeactivateStartText();
-        _loopHandler.BattleState = BattleState.Roulette;
+        _loopHandler.BattleState = BattleState.QTE;
     }
     
     /// <summary>
     /// 【DEBUG】 QTE開始
     /// </summary>
-    public void PlayRoulette()
+    public void QTEStart()
     {
-        _uiController.ShowRoulettePanel();
-        _loopHandler.RouletteResult = RouletteStatus.Rolling;
+        _uiController.ActuiveQTEPanel();
+        _loopHandler.ResultQTE = ResultQTE.Rolling;
     }
-    public void SetRouletteResult(string rst)
+    public void QTEEnd(string rst)
     {
         switch (rst)
         {
             case "Miss":
-                _loopHandler.RouletteResult = RouletteStatus.Miss;
+                _loopHandler.ResultQTE = ResultQTE.Miss;
                 break;
             case "Good":
-                _loopHandler.RouletteResult = RouletteStatus.Good;
+                _loopHandler.ResultQTE = ResultQTE.Good;
                 break;
             case "Excellent":
-                _loopHandler.RouletteResult = RouletteStatus.Excellent;
+                _loopHandler.ResultQTE = ResultQTE.Excellent;
                 break;
             default:
                 break;
         }
         _uiController.DeactivateRoulettePanel();
-        _loopHandler.BattleState = BattleState.RouletteEnd;
+        _loopHandler.BattleState = BattleState.QTEFinished;
     }
     public void EnemyTakeAction()
     {
@@ -139,7 +139,7 @@ public class BattleEventController : MonoBehaviour
     public void SortBattleUnits()
     {
         // QTE判定がMiss以外の場合
-        if(_loopHandler.RouletteResult != RouletteStatus.Miss)
+        if(_loopHandler.ResultQTE != ResultQTE.Miss)
         {
             // エネミーを先にターンテーブルに入れて、ソートする
             BattleUnitList.AddRange(_objects.EnemyUnits);

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+/// <summary>
+/// 開発用のカメラ移動を行うクラス
+/// </summary>
 public class DevelopCameraController : MonoBehaviour
 {
     [SerializeField] private bool _isDontFly;
@@ -14,6 +16,7 @@ public class DevelopCameraController : MonoBehaviour
     private int _clampPosY = 1;
     private int _clampRotX = 90;
     private Vector2 _moveInput;
+
     void Update()
     {
         _moveDirection.y = NewInput.GetAxisRaw("Vertical");
@@ -28,11 +31,12 @@ public class DevelopCameraController : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, _clampPosY, transform.position.z);
             }
         }
+
         _rotateDelta.x = NewInput.GetAxis("Mouse X");
         _rotateDelta.y = NewInput.GetAxis("Mouse Y");
         // Vector2 _rotateDelta = Mouse.current.delta.ReadValue(); // 前フレームとの差分
         int ajdustY = -1;
-        if (_rotateDelta.x != 0  || _rotateDelta.y != 0)
+        if (_rotateDelta.x != 0 || _rotateDelta.y != 0)
         {
             Vector3 updateRot = transform.rotation.eulerAngles;
             updateRot.y += _rotateDelta.x * Time.deltaTime * _rotSpeed;

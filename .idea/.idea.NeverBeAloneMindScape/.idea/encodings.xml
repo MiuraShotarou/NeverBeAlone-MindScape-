@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Assets/_B_Script/C_InGame/E_UI/InGamePhoneController.cs" charset="Shift_JIS" />
+    <file url="file://$PROJECT_DIR$/Assets/_B_Script/C_InGame/E_UI/InGameUIController.cs" charset="Shift_JIS" />
+    <file url="file://$PROJECT_DIR$/Assets/_B_Script/C_InGame/InGamePhoneController.cs" charset="Shift_JIS" />
+    <file url="file://$PROJECT_DIR$/Assets/_B_Script/C_InGame/InGameUIController.cs" charset="Shift_JIS" />
     <file url="file://$PROJECT_DIR$/Assets/_C_Data/D_Common/Conditions/ConditionAnger/ConditionDrain.cs" charset="Shift_JIS" />
     <file url="file://$PROJECT_DIR$/Assets/_C_Data/D_Common/Conditions/ConditionBase.cs" charset="Shift_JIS" />
+    <file url="file://$PROJECT_DIR$/Assets/_C_Data/D_Common/Conditions/ConditionGrudge/ConditionGnaw.cs" charset="Shift_JIS" />
   </component>
 </project>
