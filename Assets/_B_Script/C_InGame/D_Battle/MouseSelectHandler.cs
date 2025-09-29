@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem; // ← 追加
 
 public class MouseSelectHandler : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MouseSelectHandler : MonoBehaviour
     private BattleLoopHandler _battleLoopHandler;
     private BattleUIController _uiController;
     private BattleUnitPlayer _player;
+
     void Start()
     {
         _mainCamera = Camera.main;
@@ -16,14 +18,22 @@ public class MouseSelectHandler : MonoBehaviour
         _battleLoopHandler = _objects.BattleLoopHandler;
         _player = _objects.PlayerUnits[0];
     }
-    void Update() {
-        
-        if (Input.GetMouseButtonDown(0) && _battleLoopHandler.BattleState == BattleState.WaitForTargetSelect) {
-            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+    void Update()
+    {
+        // --- New Input System ---
+        // Input.GetMouseButtonDown(0) → Mouse.current.leftButton.wasPressedThisFrame
+        // Input.mousePosition → Mouse.current.position.ReadValue()
+        if (Mouse.current.leftButton.wasPressedThisFrame &&
+            _battleLoopHandler.BattleState == BattleState.WaitForTargetSelect)
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()); // ← New Input
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray, out hit))
+            {
                 GameObject clickedObj = hit.collider.gameObject;
                 BattleUnitBase clickedUnit = clickedObj.GetComponent<BattleUnitBase>();
+
                 // クリック対象が敵の場合のみ、対象選択を確定する
                 if (clickedUnit is BattleUnitEnemyBase && !clickedUnit.IsDead)
                 {
