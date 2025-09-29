@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// InGameSceneのUIを制御する。UI起動の原点（中枢）として機能させること
+/// </summary>
 public class BattleUIController : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objectManager;
-    [SerializeField] public GameObject RoulettePanel = default;
     [SerializeField] public GameObject CommandPanel = default;
     [SerializeField] public GameObject TurnTable = default;
     [SerializeField] private Text _victoryText;
     [SerializeField] private Text _gameoverText;
     [SerializeField] private Text _startText = default;
     [SerializeField] private Text _targetSelectText = default;
+    [Header("QTE_UI.cs")]
+    [SerializeField] private GameObject _QTEPanel = default;
+    [Header("TransitionPhoneController.cs")]
+    [SerializeField] private GameObject _phonePanel = default;
 
     public void ShowStartText()
     {
@@ -47,13 +52,19 @@ public class BattleUIController : MonoBehaviour
     {
         _victoryText.gameObject.SetActive(true);
     }
-    public void ShowRoulettePanel()
+    /// <summary>
+    /// BattleState.QTE 時にマイフレーム呼び出される
+    /// </summary>
+    public void ActuiveQTEPanel()
     {
-        RoulettePanel.SetActive(true);
+        _QTEPanel.SetActive(true);
     }
+    /// <summary>
+    /// QTEEnd関数の最後にて一度だけ呼び出される
+    /// </summary>
     public void DeactivateRoulettePanel()
     {
-        RoulettePanel.SetActive(false);
+        _QTEPanel.SetActive(false);
     }
     public void ShowCommandPanel()
     {
