@@ -123,4 +123,12 @@ public sealed class QTE_UI : MonoBehaviour
         playableGraph.Play();
         // if ()
     }
+    /// <summary>
+    /// 確率に重みをつける処理（フェーズ１終了時に追加でよい）。
+    /// </summary>
+    /// <returns></returns>
+    float AddWeighted()
+    {
+        return 0;
+    }
 }
