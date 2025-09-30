@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
@@ -115,11 +117,25 @@ public sealed class QTE_UI : MonoBehaviour
     {
         return 0;
     }
+
+    private void Update()
+    {
+        //実行環境がWindowsの時のみコンパイラが走る
+        #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            
+        }};
+        #elif UNITY_ANDROID || UNITY_IOS
+        if ()
+    }
+
     /// <summary>
     /// QTEPinの角度を取得し、QTE判定を取得する。Pinをストップさせるボタンを押した時に一度だけ呼び出される
     /// </summary>
     void JudgmentQTEResult()
     {
+        //AnimationEventだとユーザーの入力タイミングをコントロールする事ができない → Uppdate使わざるを得ない
         string result = "";
         //if (Pin.Rot.z <= excellent.Rot.z && excellent.Rot.z - (excellent.Rot.z * excellentFillAmount) =< Pin.Rot.z){result = excellent}
         //else if (Pin.Rot.z <= good.Rot.z && good.Rot.z - (good.Rot.z * goodFillAmount) =< Pin.Rot.z){result = good})
