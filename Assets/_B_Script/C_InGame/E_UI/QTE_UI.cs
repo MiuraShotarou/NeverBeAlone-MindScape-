@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Playables;
+using UnityEngine.UI;
 using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
@@ -28,8 +28,9 @@ public sealed class QTE_UI : MonoBehaviour
     [SerializeField] GameObject i_QTE_Circle_Miss;
     [SerializeField] GameObject i_QTE_Circle_Good;
     [SerializeField] GameObject i_QTE_Circle_Excellent;
-    Animator _animator;
-    PlayableGraph _playableGraph;
+    private ObjectManager _objectManager;
+    private Animator _animator;
+    private PlayableGraph _playableGraph;
     private void Awake()
     {
         i_QTE_Pin = transform.GetChild(0).gameObject;
@@ -40,7 +41,7 @@ public sealed class QTE_UI : MonoBehaviour
         _animator.enabled = false;
     }
     /// <summary>
-    /// ランダムなタイミングにAnimationEvnetを挿入し、そこで初めてQTEが発動する
+    /// ランダムなタイミングにAnimationEvnetを挿入し、QTEの発動タイミングを決定する
     /// </summary>
     private void OnEnable()
     {
@@ -66,62 +67,45 @@ public sealed class QTE_UI : MonoBehaviour
         _playableGraph.Play();
     }
     /// <summary>
-    /// OnEnableから生成されたAnimationEVentの発火で呼び出される
+    /// QTEのランダム要素を決定し、最後にQTEのアニメーションを再生する。OnEnableにて生成されたAnimationEVentから一度だけ呼び出される。
     /// </summary>
     private void QTE()
     {
         Debug.Log("QTE");
-        //animationCurveの使い方
-        // animationClip.SetCurve(
-        //     relativePath: string,        // 対象のオブジェクトまでのパス
-        //     type: System.Type,           // 対象コンポーネントの型
-        //     propertyName: string,        // プロパティ名（"localPosition.x" など）
-        //     curve: AnimationCurve        // アニメーションカーブ
-        // );
-        
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Stop();
+            _playableGraph.Destroy();
+        }
         //<ランダムで決める要素>
         //ピンの速度（QTE出現時間）
         float qteTime = Random.Range(_showMini, _showMax);
-        //Good判定の面積を決定 →　※重み付けにする
+        //Good判定の面積を決定 → ※重み付けにする
         float goodFillAmount = Random.Range(_circle_Good_FillAmountMini, _circle_Good_FillAmountMax);
         //Excellentエリアの面積を配列の中から決定 → ※重み付けにする
         float excellentFillAmount = _circle_Excellent_FillAmountArray[Random.Range(0, _circle_Excellent_FillAmountArray.Length)];
         //Goodの出現位置
-        //Goodの出現位置に伴ってExellentの出現位置も決定する
-        //
-        //Excellentエリアの面積縮小に伴ってGoodエリアの出現位置制限（Random.Range(ExcellentAreaLeftEdge, EccellentAreaRightEdge)）
-        
-        
-        int pinStartRotation = 0;
-        AnimationCurve animationCurveX = AnimationCurve.Linear(0f, pinStartRotation, 1f, pinStartRotation + 360);//PinのrotZ
-        // AnimationCurve animationCurveY = AnimationCurve.Linear(0f, _selectedPieceObj.transform.position.y, 1f, _targetSquere._SquerePiecePosition.y);
-        // float adjustScale = _selectedPieceObj.transform.localScale.y + (_selectedSquere._SquereTilePos.y - _targetSquere._SquereTilePos.y) * 0.143f;
-        // AnimationCurve animationCurveSX = AnimationCurve.Linear(0f, _selectedPieceObj.transform.localScale.x, 1f, adjustScale);
-        // AnimationCurve animationCurveSY = AnimationCurve.Linear(0f, _selectedPieceObj.transform.localScale.y, 1f, adjustScale);
-        // AnimationCurve animationCurveSZ = AnimationCurve.Linear(0f, _selectedPieceObj.transform.localScale.z, 1f, adjustScale);
-        // //"Run"という名前のついたanimationClipからコピーを新規作成
-        // AnimationClip animationClip = _selectedPieceRuntimeAnimator.animationClips.FirstOrDefault(clip => clip.name.Contains("Run"));
-        // //新しく作成・編集したAnimationCurveをAnimationClipに代入する
-        // animationClip.SetCurve("", typeof(Transform), "localPosition.x", animationCurveX);
-        // animationClip.SetCurve("", typeof(Transform), "localPosition.y", animationCurveY);
-        // animationClip.SetCurve("", typeof(Transform), "localScale.x", animationCurveSX);
-        // animationClip.SetCurve("", typeof(Transform), "localScale.y", animationCurveSY);
-        // animationClip.SetCurve("", typeof(Transform), "localScale.z", animationCurveSZ);
-        //PlayableGraphを作成
-        AnimationClip clip = new AnimationClip();
-        AnimationEvent animEvent = new AnimationEvent();
-        clip.AddEvent(animEvent); //いらないかも
-        
-        PlayableGraph playableGraph = PlayableGraph.Create();
-        //AnimationClipPlayableを作成
-        AnimationClipPlayable animationClipPlayable = AnimationClipPlayable.Create(playableGraph, clip);
-        //AnimationPlayableOutputを作成してAnimatorと連結
-        AnimationPlayableOutput animationPlayableOutput = AnimationPlayableOutput.Create(playableGraph, "AnimOutput", _animator);
+        float goodRightEdge = Random.Range(360 * _circle_Good_FillAmountMax, 360); //理不尽な場所に出現する可能性があるので最小値のみ制限を設ける
+        //Excellentの出現位置
+        float excellentRightEdge = Random.Range(goodRightEdge - 360 * goodFillAmount + 360 * excellentFillAmount, goodRightEdge); //Excellentの右端（出現位置） == (goodの左端 + 360 * excellentFillAmount), goodの右端
+        //<ランダムに決まった値をオブジェクトやアニメーションクリップに反映>
+        i_QTE_Circle_Good.transform.rotation = Quaternion.Euler(0, 0, goodRightEdge);
+        i_QTE_Circle_Excellent.transform.rotation = Quaternion.Euler(0, 0, excellentRightEdge);
+        i_QTE_Circle_Good.GetComponent<Image>().fillAmount = goodFillAmount;
+        i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount = excellentFillAmount;
+        AnimationCurve curvePinRotationZ = AnimationCurve.Linear(0f, 0f, qteTime, 0f + 360f);
+        //<PlayableGraphの作成>
+        //"QTE"という名前のついたanimationClipからコピーを新規作成
+        AnimationClip animationClip = _animator.runtimeAnimatorController.animationClips.FirstOrDefault(clip => clip.name.Contains("QTE"));
+        // animationClipにanimationCurveを挿入する
+        animationClip.SetCurve(i_QTE_Pin.name, typeof(Transform), "localEulerAngles.z", curvePinRotationZ);
+        _playableGraph = PlayableGraph.Create();
+        AnimationClipPlayable animationClipPlayable = AnimationClipPlayable.Create(_playableGraph, animationClip);
+        AnimationPlayableOutput animationPlayableOutput = AnimationPlayableOutput.Create(_playableGraph, "AnimOutput", _animator);
         animationPlayableOutput.SetSourcePlayable(animationClipPlayable);
         //再生
-        _animator.enabled = true;//いらないかも
-        playableGraph.Play();
-        // if ()
+        _animator.enabled = true;
+        _playableGraph.Play();
     }
     /// <summary>
     /// 確率に重みをつける処理（フェーズ１終了時に追加でよい）。
@@ -130,5 +114,16 @@ public sealed class QTE_UI : MonoBehaviour
     float AddWeighted()
     {
         return 0;
+    }
+    /// <summary>
+    /// QTEPinの角度を取得し、QTE判定を取得する。Pinをストップさせるボタンを押した時に一度だけ呼び出される
+    /// </summary>
+    void JudgmentQTEResult()
+    {
+        string result = "";
+        //if (Pin.Rot.z <= excellent.Rot.z && excellent.Rot.z - (excellent.Rot.z * excellentFillAmount) =< Pin.Rot.z){result = excellent}
+        //else if (Pin.Rot.z <= good.Rot.z && good.Rot.z - (good.Rot.z * goodFillAmount) =< Pin.Rot.z){result = good})
+        //else (result = miss)
+        _objectManager.BattleEventController.QTEEnd(result);
     }
 }
