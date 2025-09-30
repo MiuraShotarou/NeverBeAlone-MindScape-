@@ -5,7 +5,6 @@ using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
-
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
 /// </summary>
@@ -27,16 +26,15 @@ public sealed class QTE_UI : MonoBehaviour
     [Header("Good判定を取れる面積（振れ幅）")]
     [Header("(C)QTE下にあるオブジェクトをすべてアタッチ")]
     [SerializeField] GameObject i_QTE_Pin;
-    [SerializeField] GameObject i_QTE_Circle_Miss;
     [SerializeField] GameObject i_QTE_Circle_Good;
     [SerializeField] GameObject i_QTE_Circle_Excellent;
-    private ObjectManager _objectManager;
+    private ObjectManager _objectManager; //取得先がないので注意
     private Animator _animator;
     private PlayableGraph _playableGraph;
+    private bool _isCanQTEEvent = false;
     private void Awake()
     {
         i_QTE_Pin = transform.GetChild(0).gameObject;
-        i_QTE_Circle_Miss = transform.GetChild(1).gameObject;
         i_QTE_Circle_Good = transform.GetChild(2).gameObject;
         i_QTE_Circle_Excellent = transform.GetChild(3).gameObject;
         _animator = GetComponent<Animator>();
@@ -108,38 +106,76 @@ public sealed class QTE_UI : MonoBehaviour
         //再生
         _animator.enabled = true;
         _playableGraph.Play();
+        //音源の再生（AnimationEventでも良い）
+        _isCanQTEEvent = true;
     }
     /// <summary>
     /// 確率に重みをつける処理（フェーズ１終了時に追加でよい）。
     /// </summary>
     /// <returns></returns>
-    float AddWeighted()
+    private float AddWeighted()
     {
         return 0;
     }
-
+    /// <summary>
+    /// 最適化したいのであればここのメソッドを別MonoBehaviourにすること
+    /// </summary>
     private void Update()
     {
-        //実行環境がWindowsの時のみコンパイラが走る
-        #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (_isCanQTEEvent)
         {
-            
-        }};
-        #elif UNITY_ANDROID || UNITY_IOS
-        if ()
+            //実行環境がPCの時のみコンパイラが走る
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                _isCanQTEEvent = false;
+                JudgmentQTEResult();
+            }
+            //実行環境がモバイル端末の時のみコンパイラが走る
+#elif UNITY_ANDROID || UNITY_IOS
+            if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+            {
+                _isCanQTEEvent = false;
+                JudgmentQTEResult();
+            }
+#endif
+        }
     }
-
     /// <summary>
     /// QTEPinの角度を取得し、QTE判定を取得する。Pinをストップさせるボタンを押した時に一度だけ呼び出される
     /// </summary>
     void JudgmentQTEResult()
     {
-        //AnimationEventだとユーザーの入力タイミングをコントロールする事ができない → Uppdate使わざるを得ない
         string result = "";
-        //if (Pin.Rot.z <= excellent.Rot.z && excellent.Rot.z - (excellent.Rot.z * excellentFillAmount) =< Pin.Rot.z){result = excellent}
-        //else if (Pin.Rot.z <= good.Rot.z && good.Rot.z - (good.Rot.z * goodFillAmount) =< Pin.Rot.z){result = good})
-        //else (result = miss)
+        if (i_QTE_Pin.transform.rotation.z <= i_QTE_Circle_Excellent.transform.rotation.z
+            &&
+            i_QTE_Circle_Excellent.transform.rotation.z - i_QTE_Circle_Excellent.transform.rotation.z * i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.z)
+        {
+            result = "Excellent";
+        }
+        else if (i_QTE_Pin.transform.rotation.z <= i_QTE_Circle_Good.transform.rotation.z
+                 &&
+                 i_QTE_Circle_Good.transform.rotation.z - (i_QTE_Circle_Good.transform.rotation.z * i_QTE_Circle_Good.GetComponent<Image>().fillAmount) <= i_QTE_Pin.transform.rotation.z)
+        {
+            result = "Good";
+        }
+        else
+        {
+            result = "Miss";
+        }
         _objectManager.BattleEventController.QTEEnd(result);
+    }
+    /// <summary>
+    /// _objectManager.BattleEventController.QTEEnd後にメソッド経由で一度だけ呼び出される
+    /// </summary>
+    void OnDisable()
+    {
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Stop();
+            _playableGraph.Destroy();
+        }
+        _animator.enabled = false;
+        //この後、QTE確定後の演出（Animation）は違うところで呼び出すこと
     }
 }
