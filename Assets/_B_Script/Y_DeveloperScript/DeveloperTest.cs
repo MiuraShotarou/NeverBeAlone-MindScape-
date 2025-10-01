@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// BuildScene用のクラス
+/// </summary>
 public class DeveloperTest : MonoBehaviour
 {
     [SerializeField, Header("ループ用音源をセットしてください")]

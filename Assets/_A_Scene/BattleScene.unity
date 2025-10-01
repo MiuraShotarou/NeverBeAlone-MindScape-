@@ -432,6 +432,7 @@ MonoBehaviour:
   - {fileID: 1713202100}
   PlayableHandler: {fileID: 1983684624}
   PlayableDirector: {fileID: 1983684625}
+  AudioManager: {fileID: 0}
 --- !u!1 &46830096
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1446,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1028228414}
         m_TargetAssemblyTypeName: BattleEventController, Assembly-CSharp
-        m_MethodName: SetRouletteResult
+        m_MethodName: QTEEnd
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1706,13 +1707,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectManager: {fileID: 32751112}
-  RoulettePanel: {fileID: 293337821}
   CommandPanel: {fileID: 619844797}
   TurnTable: {fileID: 2096283354}
   _victoryText: {fileID: 1009225385}
   _gameoverText: {fileID: 27952619}
   _startText: {fileID: 1999588526}
   _targetSelectText: {fileID: 101839739}
+  _QTEPanel: {fileID: 0}
+  _phonePanel: {fileID: 0}
 --- !u!4 &875708477
 Transform:
   m_ObjectHideFlags: 0
@@ -2436,7 +2438,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1028228414}
         m_TargetAssemblyTypeName: BattleEventController, Assembly-CSharp
-        m_MethodName: SetRouletteResult
+        m_MethodName: QTEEnd
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3155,7 +3157,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1028228414}
         m_TargetAssemblyTypeName: BattleEventController, Assembly-CSharp
-        m_MethodName: SetRouletteResult
+        m_MethodName: QTEEnd
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -23,8 +23,9 @@ public enum Emotion
 /// QTE判定結果
 /// </summary>
 [Serializable]
-public enum RouletteStatus
+public enum ResultQTE
 {
+    //stop, rolling 削除の方向性を検討
     Stop, Rolling, Miss, Good, Excellent
 }
 
@@ -86,4 +87,41 @@ public enum Condition
     Restraint = 1 << 16,
     /// <summary>囮（おとり）</summary>
     Decoy = 1 << 17,
+}
+/// <summary>
+/// 戦闘時フェーズ
+/// </summary>
+[Serializable]
+public enum BattleState
+{
+    /// <summary>戦闘状態：待機</summary>
+    Idle,
+    /// <summary>戦闘状態：初期化</summary>
+    Init,
+    /// <summary>戦闘状態：戦闘開始</summary>
+    Intro,
+    /// <summary>戦闘状態：QTE中</summary>
+    QTE,
+    /// <summary>戦闘状態：QTE完了</summary>
+    QTEFinished,
+    /// <summary>戦闘状態：ターン開始</summary>
+    TurnStart,
+    /// <summary>戦闘状態：コマンド待ち</summary>
+    WaitForCommand,
+    /// <summary>戦闘状態：コマンド待ち</summary>
+    WaitForTargetSelect,
+    /// <summary>戦闘状態：行動実行中</summary>
+    Busy,
+    /// <summary>戦闘状態：Unit死活判定</summary>
+    JudgeUnitSurvive,
+    /// <summary>ターン終了判定</summary>
+    JudgeTurnEnd,
+    /// <summary>戦闘状態：ターン終了</summary>
+    TurnEnd,
+    /// <summary>戦闘状態：戦闘終了</summary>
+    BattleEnd,
+    /// <summary>戦闘状態：勝利</summary>
+    Victory,
+    /// <summary>戦闘状態：GameOver</summary>
+    GameOver
 }

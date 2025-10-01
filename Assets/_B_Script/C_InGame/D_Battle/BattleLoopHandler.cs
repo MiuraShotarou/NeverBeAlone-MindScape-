@@ -11,7 +11,7 @@ public class BattleLoopHandler : MonoBehaviour
     [HideInInspector] public BattleUnitBase CurrentBattleUnit = null;
     private bool _playerOneMoreFlg = false;
     private BattleState _battleState;
-    private RouletteStatus _rouletteResult = RouletteStatus.Stop;
+    private ResultQTE _resultQte = global::ResultQTE.Stop;
     private BattleEventController _battleEvents;
     
     public BattleState BattleState
@@ -20,10 +20,10 @@ public class BattleLoopHandler : MonoBehaviour
         set { _battleState = value; }
     }
 
-    public RouletteStatus RouletteResult
+    public ResultQTE ResultQTE
     {
-        get { return _rouletteResult; }
-        set { _rouletteResult = value; }
+        get => _resultQte;
+        set => _resultQte = value;
     }
     public bool PlayerOneMoreFlg
     {
@@ -52,12 +52,12 @@ public class BattleLoopHandler : MonoBehaviour
                 // 戦闘開始Animation再生
                 _battleEvents.PlayBattleIntro();
                 break;
-            case BattleState.Roulette:
+            case BattleState.QTE:
                 _battleState = BattleState.WaitForCommand;
                 // QTE実行
-                _battleEvents.PlayRoulette();
+                _battleEvents.QTEStart();
                 break;
-            case BattleState.RouletteEnd:
+            case BattleState.QTEFinished:
                 _battleState = BattleState.Busy;
                 // 行動順決定
                 _battleEvents.SortBattleUnits();

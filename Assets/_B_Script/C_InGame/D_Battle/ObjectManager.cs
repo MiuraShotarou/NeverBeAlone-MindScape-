@@ -14,4 +14,5 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] public List<BattleUnitEnemyBase> EnemyUnits;
     [SerializeField] public GameObject PlayableHandler = default;
     [SerializeField] public PlayableDirector PlayableDirector = default;
+    [SerializeField] public AudioManager AudioManager = default;
 }
