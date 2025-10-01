@@ -60,7 +60,7 @@ public class BattleEventController : MonoBehaviour
     /// </summary>
     public void QTEStart()
     {
-        _uiController.ActuiveQTEPanel();
+        _uiController.ActiveQTEPanel();
         _loopHandler.ResultQTE = ResultQTE.Rolling;
     }
     public void QTEEnd(string rst)
@@ -79,9 +79,9 @@ public class BattleEventController : MonoBehaviour
             default:
                 break;
         }
-        _uiController.DeactivateRoulettePanel();
+        _uiController.DeactivateQTEPanel();
         _loopHandler.BattleState = BattleState.QTEFinished;
-        Debug.Log(_loopHandler.ResultQTE);
+        // Debug.Log(_loopHandler.ResultQTE);
     }
     public void EnemyTakeAction()
     {
@@ -124,7 +124,8 @@ public class BattleEventController : MonoBehaviour
     }
     public void InitTurnTable()
     {
-        _uiController.ShowTurnTable();
+        _uiController.ActiveBattleUI();
+        //↓ここでUI制御を行うのは設計的によくない↓
         foreach (var unit in BattleUnitList)
         {
             unit.Icon.gameObject.SetActive(true);
