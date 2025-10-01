@@ -81,6 +81,7 @@ public class BattleEventController : MonoBehaviour
         }
         _uiController.DeactivateRoulettePanel();
         _loopHandler.BattleState = BattleState.QTEFinished;
+        Debug.Log(_loopHandler.ResultQTE);
     }
     public void EnemyTakeAction()
     {
