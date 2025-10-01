@@ -10,25 +10,28 @@ using Random = UnityEngine.Random;
 /// </summary>
 public sealed class QTE_UI : MonoBehaviour
 {
-    [Header("QTE発生タイミング（振れ幅）")]
+    [Header("QTE発生タイミング（ランダム）")]
     [SerializeField] private float _timingMini;
     [SerializeField] private float _timingMax;
+    [Header("QTE発生からのウェイトタイム"), Range(1f, 10f)] 
+    [SerializeField] private float _waitTime;
     [Header("Pinの出現位置（Rotation）をランダムにするか否か")]
     [SerializeField] private bool _isPinGenerateRandum;
-    [Header("QTE出現時間（振れ幅）"), Range(0.1f, 2f)] 
+    [Header("QTE出現時間（ランダム）"), Range(0.1f, 2f)] 
     [SerializeField] private float _showMini;
+    [Range(0.1f, 2f)]
     [SerializeField] private float _showMax;
-    [Header("Good判定を取れる面積（振れ幅）"), Range(0.1f, 1f)]
+    [Header("Good判定を取れる面積（ランダム）"), Range(0.1f, 1f)]
     [SerializeField] private float _circle_Good_FillAmountMini; //Imgae.fillAmount
+    [Range(0.1f, 1f)]
     [SerializeField] private float _circle_Good_FillAmountMax;
     [Header("Excellent判定を取れる面積（固定値）"), Range(0.01f, 0.1f)]
     [SerializeField] private float[] _circle_Excellent_FillAmountArray;
-    [Header("Good判定を取れる面積（振れ幅）")]
     [Header("(C)QTE下にあるオブジェクトをすべてアタッチ")]
-    [SerializeField] GameObject i_QTE_Pin;
-    [SerializeField] GameObject i_QTE_Circle_Good;
-    [SerializeField] GameObject i_QTE_Circle_Excellent;
-    private ObjectManager _objectManager; //取得先がないので注意
+    [SerializeField] private GameObject i_QTE_Pin;
+    [SerializeField] private GameObject i_QTE_Circle_Good;
+    [SerializeField] private GameObject i_QTE_Circle_Excellent;
+    [SerializeField] private ObjectManager _objectManager; //取得先がないので注意
     private Animator _animator;
     private PlayableGraph _playableGraph;
     private bool _isCanQTEEvent = false;
@@ -89,14 +92,23 @@ public sealed class QTE_UI : MonoBehaviour
         //Excellentの出現位置
         float excellentRightEdge = Random.Range(goodRightEdge - 360 * goodFillAmount + 360 * excellentFillAmount, goodRightEdge); //Excellentの右端（出現位置） == (goodの左端 + 360 * excellentFillAmount), goodの右端
         //<ランダムに決まった値をオブジェクトやアニメーションクリップに反映>
+        Debug.Log($"{i_QTE_Circle_Good.transform.rotation}");
         i_QTE_Circle_Good.transform.rotation = Quaternion.Euler(0, 0, goodRightEdge);
+        Debug.Log($"{i_QTE_Circle_Good.transform.rotation}");
+        //Quaternion =(x,y,z,w)=(V sin(θ/2),cos(θ/2))
         i_QTE_Circle_Excellent.transform.rotation = Quaternion.Euler(0, 0, excellentRightEdge);
         i_QTE_Circle_Good.GetComponent<Image>().fillAmount = goodFillAmount;
         i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount = excellentFillAmount;
-        AnimationCurve curvePinRotationZ = AnimationCurve.Linear(0f, 0f, qteTime, 0f + 360f);
+        AnimationCurve curvePinRotationZ = AnimationCurve.Linear(_waitTime, 0f, _waitTime + qteTime, 0f + 360f);
         //<PlayableGraphの作成>
         //"QTE"という名前のついたanimationClipからコピーを新規作成
-        AnimationClip animationClip = _animator.runtimeAnimatorController.animationClips.FirstOrDefault(clip => clip.name.Contains("QTE"));
+        AnimationClip animationClip = new AnimationClip();
+        //QTE時間内にボタンが押されなかったときのAnimationEvent(Miss判定)を登録する
+        AnimationEvent animEvent = new AnimationEvent();
+        animEvent.time = _waitTime + qteTime;
+        animEvent.functionName = "JudgmentQTEResult";
+        animEvent.stringParameter = "Miss";
+        animationClip.AddEvent(animEvent);
         // animationClipにanimationCurveを挿入する
         animationClip.SetCurve(i_QTE_Pin.name, typeof(Transform), "localEulerAngles.z", curvePinRotationZ);
         _playableGraph = PlayableGraph.Create();
@@ -125,20 +137,20 @@ public sealed class QTE_UI : MonoBehaviour
         if (_isCanQTEEvent)
         {
             //実行環境がPCの時のみコンパイラが走る
-#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+// #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 _isCanQTEEvent = false;
                 JudgmentQTEResult();
             }
             //実行環境がモバイル端末の時のみコンパイラが走る
-#elif UNITY_ANDROID || UNITY_IOS
+// #elif UNITY_ANDROID || UNITY_IOS
             if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
             {
                 _isCanQTEEvent = false;
                 JudgmentQTEResult();
             }
-#endif
+// #endif
         }
     }
     /// <summary>
@@ -147,15 +159,16 @@ public sealed class QTE_UI : MonoBehaviour
     void JudgmentQTEResult()
     {
         string result = "";
-        if (i_QTE_Pin.transform.rotation.z <= i_QTE_Circle_Excellent.transform.rotation.z
+        Debug.Log($"{i_QTE_Circle_Good.transform.rotation.eulerAngles}, {i_QTE_Pin.transform.eulerAngles}");
+        if (i_QTE_Pin.transform.rotation.eulerAngles.z <= i_QTE_Circle_Excellent.transform.rotation.eulerAngles.z
             &&
-            i_QTE_Circle_Excellent.transform.rotation.z - i_QTE_Circle_Excellent.transform.rotation.z * i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.z)
+            i_QTE_Circle_Excellent.transform.rotation.eulerAngles.z - 360 * i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.eulerAngles.z)
         {
             result = "Excellent";
         }
-        else if (i_QTE_Pin.transform.rotation.z <= i_QTE_Circle_Good.transform.rotation.z
+        else if (i_QTE_Pin.transform.rotation.eulerAngles.z <= i_QTE_Circle_Good.transform.rotation.eulerAngles.z
                  &&
-                 i_QTE_Circle_Good.transform.rotation.z - (i_QTE_Circle_Good.transform.rotation.z * i_QTE_Circle_Good.GetComponent<Image>().fillAmount) <= i_QTE_Pin.transform.rotation.z)
+                 i_QTE_Circle_Good.transform.rotation.eulerAngles.z - 360 * i_QTE_Circle_Good.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.z)
         {
             result = "Good";
         }
