@@ -9,6 +9,8 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
         _name = "嫌悪";
         _emotion = Emotion.Hatred;
         _level = level;
+        _weakEmotion = Emotion.Anger;
+        _resistantEmotion = Emotion.Grudge;
     }
 
     public float ModifyAttack(float attack)
