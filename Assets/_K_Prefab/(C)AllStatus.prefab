@@ -3722,7 +3722,7 @@ GameObject:
   - component: {fileID: 8309943046960075077}
   - component: {fileID: 7945112738046112696}
   m_Layer: 5
-  m_Name: (P)Status
+  m_Name: (P)AllStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
