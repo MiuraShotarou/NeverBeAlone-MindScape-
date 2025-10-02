@@ -62,7 +62,7 @@ public class BattleLoopHandler : MonoBehaviour
                 // 行動順決定
                 _battleEvents.SortBattleUnits();
                 // ターンテーブルUI表示
-                _battleEvents.InitTurnTable();
+                _battleEvents.InitTurnTable(); //_statusPanel下のオブジェクトを触るように変更する必要がある
                 break;
             case BattleState.TurnStart:
                 _battleState = BattleState.WaitForCommand;
