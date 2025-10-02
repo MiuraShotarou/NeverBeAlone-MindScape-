@@ -7,6 +7,12 @@ public class BattleUnitEnemyA : BattleUnitEnemyBase
 {
     private BattleUnitBase _actionTarget;
 
+    //テスト用
+    private void Awake()
+    {
+        CurrentEmotion = new EmotionHatred(1);
+    }
+
     public override void DoAttack1(BattleUnitBase targetGo)
     {
         _actionTarget = targetGo;

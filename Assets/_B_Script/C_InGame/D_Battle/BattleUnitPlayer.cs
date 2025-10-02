@@ -17,13 +17,19 @@ public class BattleUnitPlayer : BattleUnitBase
     {
         Normal,
         OneMore
-    } 
+    }
+
+    //テスト用
+    private void Awake()
+    {
+        CurrentEmotion = new EmotionAnger(1);
+    }
 
     /// <summary>
     /// テスト用攻撃メソッド
     /// </summary>
     public void TestAttack()
-    {
+    {   
         _loopHandler.PlayerOneMoreFlg = false;
         _animator.Play("Attack1");
     }
@@ -37,7 +43,9 @@ public class BattleUnitPlayer : BattleUnitBase
     public void OnAttackAnimationEnd()
     {
         float finalAttack = CalcFinalAttack();
-        _actionTarget.GetComponent<BattleUnitBase>().OnAttacked(finalAttack, CurrentEmotion.Emotion);
+        var targetBattleUnitBase = _actionTarget.GetComponent<BattleUnitBase>();
+        targetBattleUnitBase.OnAttacked(finalAttack, CurrentEmotion.Emotion);
+
     }
 
     public void SetActionTarget(GameObject target)

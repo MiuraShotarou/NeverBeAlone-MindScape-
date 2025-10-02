@@ -55,10 +55,10 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("回避率")] public int EvadeRate;
     [SerializeField, Tooltip("死亡フラグ")] public bool IsDead;
     [SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions;
-    /*[SerializeField, Tooltip("現在感情")]*/ public EmotionBase CurrentEmotion = new EmotionVoid(1);
+    [SerializeField, Tooltip("現在感情")] public EmotionBase CurrentEmotion = new EmotionVoid(1);
     [SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
-
+    [SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = {1, 1, 1, 1, 1};
 
     public delegate void JudgeSurvival();
     protected void Start()
@@ -76,6 +76,12 @@ public abstract class BattleUnitBase : MonoBehaviour
         _animator = gameObject.GetComponent<Animator>();
         _objects.BattleEventController.DoJudgeSurvival += DoJudgeSurvival;
 
+        //Emotion EnumとEmotionクラスの紐づけ。いらないかも
+        //Emotions.Add(Emotion.Void, new EmotionVoid(EmotionLevels[(int)Emotion.Void]));
+        //Emotions.Add(Emotion.Anger, new EmotionAnger(EmotionLevels[(int)Emotion.Anger]));
+        //Emotions.Add(Emotion.Grudge, new EmotionGrudge(EmotionLevels[(int)Emotion.Grudge]));
+        //Emotions.Add(Emotion.Hatred, new EmotionHatred(EmotionLevels[(int)Emotion.Hatred]));
+        //Emotions.Add(Emotion.Suspicion, new EmotionSuspicion(EmotionLevels[(int)Emotion.Suspicion]));
     }
     /// <summary>
     /// 被ダメージ処理
@@ -119,13 +125,24 @@ public abstract class BattleUnitBase : MonoBehaviour
     /// </summary>
     public virtual void OnAttacked(float damage, Emotion emotion)
     {
-        // TODO 攻撃と自身の属性を考慮したダメージ計算
-        TakeDamage(CalculateFinalDamageTaken(damage));
+        TakeDamage(CalculateFinalDamageTaken(damage, emotion));
     }
 
-    protected virtual int CalculateFinalDamageTaken(float damage)
+    protected virtual int CalculateFinalDamageTaken(float damage, Emotion emotion)
     {
         float finalDefense = CalcFinalDefense();
+
+        if (emotion == CurrentEmotion.WeakEmotion)
+        {
+            finalDefense *= DefenseWeakpointScaleBase;
+            CommonUtils.LogDebugLine(this, "CulculateFinalDamageTaken()", "弱点, 防御" + DefenseWeakpointScaleBase + "倍, 防御力：" + finalDefense);
+        }
+        else if (emotion == CurrentEmotion.ResistantEmotion)
+        {
+            finalDefense *= DefenseResistanceScaleBase;
+            CommonUtils.LogDebugLine(this, "CulculateFinalDamageTaken()", "耐性, 防御" + DefenseResistanceScaleBase + "倍, 防御力：" + finalDefense);
+        }
+
         float damageBlurScale = Random.Range(0.95f, 1.05f);
         int finalDamageTaken = Mathf.RoundToInt((damage - finalDefense) * damageBlurScale);
         if (finalDamageTaken < 0)
