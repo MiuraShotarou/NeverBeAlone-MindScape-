@@ -88,6 +88,7 @@ public class BattleLoopHandler : MonoBehaviour
             case BattleState.Victory:
                 _battleState = BattleState.Busy;
                 _uiController.ShowVictoryText();
+                UpdatePlayerStatus(); // プレイヤーの状態更新を追加
                 break;
             case BattleState.GameOver:
                 _battleState = BattleState.Busy;
@@ -186,4 +187,22 @@ public class BattleLoopHandler : MonoBehaviour
         }
         Debug.Log("JudgeBattleEnd実行。結果：" + _battleState);
     }
+
+    /// <summary>
+    /// 戦闘終了後にプレイヤーに経験値を付与するだけ
+    /// </summary>
+    void UpdatePlayerStatus()
+    {
+        int totalExp = 0;
+
+        // 敵全員の経験値を合計
+        foreach (var enemy in _objects.EnemyUnits)
+            totalExp += enemy.ExpReward;
+
+        // プレイヤー全員に加算
+        foreach (var player in _objects.PlayerUnits)
+            player.ExpAmmount += totalExp;
+        Debug.Log("現在総経験値: " + totalExp);
+    }
+
 }

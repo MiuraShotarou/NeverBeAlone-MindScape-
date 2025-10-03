@@ -44,6 +44,8 @@ public abstract class BattleUnitBase : MonoBehaviour
     [Space(20)]
     [SerializeField, Tooltip("最大正気度")] public int MaxHp;
     [SerializeField, Tooltip("現在正気度")] public int Hp;
+    [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
+    [SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
     [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
     [SerializeField, Tooltip("テンションレベル")] public int TensionLevel;
@@ -59,6 +61,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
     [SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = {1, 1, 1, 1, 1};
+
 
     public delegate void JudgeSurvival();
     protected void Start()

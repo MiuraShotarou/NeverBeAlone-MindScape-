@@ -91,7 +91,7 @@ public class BattleUIController : MonoBehaviour
         _skillPanel.SetActive(true);
         _phonePanel.SetActive(true);
         _allStatusPanel.SetActive(true);
-        _QTEPanel.SetActive(true);
+        //_QTEPanel.SetActive(true);
         _levelUpPanel.SetActive(true);
     }
     public void DeactivateTurnTable()
