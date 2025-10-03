@@ -5,22 +5,23 @@ using UnityEngine;
 
 public class GenerateMessage : MonoBehaviour
 {
-    [SerializeField] TextAsset _currentCSV;
+    [SerializeField] TextAsset _csv;
     TextMeshProUGUI _tmp;
+    string[] _textArray;
     void Start()
     {
         //普通に代入すると、csvの中身がそのまま出力されてしまう
+        //string( or int )をキーに指定したDictionaryを作成する
         _tmp = GetComponent<TextMeshProUGUI>();
-        string[] lines = _testMessage.text.Split('\n');
-        foreach (string line in lines)
+        _textArray = _csv.text.Split('\n');
+        foreach (string text in _textArray)
         {
-            string[] values = line.Split(',');
+            // string[] values = .Split(',');
         }
-        _tmp.text = _testMessage.text;
+        _tmp.text = _csv.text;
     }
-
-    TextAsset CSVLoad()
-    {
-        //
-    }
+    // TextAsset CSVLoadAddressable()
+    // {
+    //     //
+    // }
 }
