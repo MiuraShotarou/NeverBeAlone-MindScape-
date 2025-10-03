@@ -9,6 +9,8 @@ public class EmotionGrudge : EmotionBase, IAttackModifier, IDexModifier
         _name = "怨念";
         _emotion = Emotion.Grudge;
         _level = level;
+        _weakEmotion = Emotion.Hatred;
+        _resistantEmotion = Emotion.Suspicion;
     }
     
     public float ModifyAttack(float attack)

@@ -13,4 +13,14 @@ public abstract class EmotionBase
         get { return _emotion; }
     }
     protected int _level;
+    protected Emotion _weakEmotion;
+    public Emotion WeakEmotion
+    {
+        get { return _weakEmotion; }
+    }
+    protected Emotion _resistantEmotion;
+    public Emotion ResistantEmotion
+    {
+        get { return _resistantEmotion; }
+    }
 }

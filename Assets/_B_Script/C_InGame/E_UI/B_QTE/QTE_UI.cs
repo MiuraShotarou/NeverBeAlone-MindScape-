@@ -19,7 +19,7 @@ public sealed class QTE_UI : MonoBehaviour
     [SerializeField] private bool _isPinGenerateRandum;
     [Header("QTE出現時間（ランダム）"), Range(0.1f, 2f)] 
     [SerializeField] private float _showMini;
-    [Range(0.1f, 2f)]
+    [Range(0.1f, 5f)]
     [SerializeField] private float _showMax;
     [Header("Good判定を取れる面積（ランダム）"), Range(0.1f, 1f)]
     [SerializeField] private float _circle_Good_FillAmountMini; //Imgae.fillAmount
@@ -92,11 +92,8 @@ public sealed class QTE_UI : MonoBehaviour
         //Excellentの出現位置
         float excellentRightEdge = Random.Range(goodRightEdge - 360 * goodFillAmount + 360 * excellentFillAmount, goodRightEdge); //Excellentの右端（出現位置） == (goodの左端 + 360 * excellentFillAmount), goodの右端
         //<ランダムに決まった値をオブジェクトやアニメーションクリップに反映>
-        Debug.Log($"{i_QTE_Circle_Good.transform.rotation}");
-        i_QTE_Circle_Good.transform.rotation = Quaternion.Euler(0, 0, goodRightEdge);
-        Debug.Log($"{i_QTE_Circle_Good.transform.rotation}");
-        //Quaternion =(x,y,z,w)=(V sin(θ/2),cos(θ/2))
-        i_QTE_Circle_Excellent.transform.rotation = Quaternion.Euler(0, 0, excellentRightEdge);
+        i_QTE_Circle_Good.transform.localEulerAngles = new Vector3(0, 0, goodRightEdge);
+        i_QTE_Circle_Excellent.transform.localEulerAngles = new Vector3(0, 0, excellentRightEdge);
         i_QTE_Circle_Good.GetComponent<Image>().fillAmount = goodFillAmount;
         i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount = excellentFillAmount;
         AnimationCurve curvePinRotationZ = AnimationCurve.Linear(_waitTime, 0f, _waitTime + qteTime, 0f + 360f);
@@ -159,7 +156,6 @@ public sealed class QTE_UI : MonoBehaviour
     void JudgmentQTEResult()
     {
         string result = "";
-        Debug.Log($"{i_QTE_Circle_Good.transform.rotation.eulerAngles}, {i_QTE_Pin.transform.eulerAngles}");
         if (i_QTE_Pin.transform.rotation.eulerAngles.z <= i_QTE_Circle_Excellent.transform.rotation.eulerAngles.z
             &&
             i_QTE_Circle_Excellent.transform.rotation.eulerAngles.z - 360 * i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.eulerAngles.z)
@@ -168,7 +164,7 @@ public sealed class QTE_UI : MonoBehaviour
         }
         else if (i_QTE_Pin.transform.rotation.eulerAngles.z <= i_QTE_Circle_Good.transform.rotation.eulerAngles.z
                  &&
-                 i_QTE_Circle_Good.transform.rotation.eulerAngles.z - 360 * i_QTE_Circle_Good.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.z)
+                 i_QTE_Circle_Good.transform.rotation.eulerAngles.z - 360 * i_QTE_Circle_Good.GetComponent<Image>().fillAmount <= i_QTE_Pin.transform.rotation.eulerAngles.z)
         {
             result = "Good";
         }

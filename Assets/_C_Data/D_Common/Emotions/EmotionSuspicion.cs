@@ -9,7 +9,10 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
         _name = "猜疑";
         _emotion = Emotion.Suspicion;
         _level = level;
+        _weakEmotion = Emotion.Grudge;
+        _resistantEmotion = Emotion.Anger;
     }
+
     public float ModifyAttack(float attack)
     {
         float mod = 2 * _level;
