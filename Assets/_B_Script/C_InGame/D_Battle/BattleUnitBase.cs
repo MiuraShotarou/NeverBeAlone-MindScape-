@@ -46,6 +46,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("現在正気度")] public int Hp;
     [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
     [SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
+    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安
     [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
     [SerializeField, Tooltip("テンションレベル")] public int TensionLevel;

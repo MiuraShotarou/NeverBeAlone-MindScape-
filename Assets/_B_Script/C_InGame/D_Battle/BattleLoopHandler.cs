@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class BattleLoopHandler : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
+    [SerializeField] private PlayerData playerData;
     private BattleUIController _uiController = default;
 
     public Queue<BattleUnitBase> BattleUnitQueue = default;
@@ -13,7 +13,7 @@ public class BattleLoopHandler : MonoBehaviour
     private BattleState _battleState;
     private ResultQTE _resultQte = global::ResultQTE.Stop;
     private BattleEventController _battleEvents;
-    
+
     public BattleState BattleState
     {
         get { return _battleState; }
@@ -30,12 +30,14 @@ public class BattleLoopHandler : MonoBehaviour
         get => _playerOneMoreFlg;
         set => _playerOneMoreFlg = value;
     }
-    
+
     void Start()
     {
         _uiController = _objects.UIController;
         _battleEvents = gameObject.GetComponent<BattleEventController>();
         _battleState = BattleState.Init;
+
+        InitializePlayersFromData(); // 追加
     }
 
     void Update()
@@ -44,30 +46,24 @@ public class BattleLoopHandler : MonoBehaviour
         {
             case BattleState.Init:
                 _battleState = BattleState.Busy;
-                // 初期設定
                 _battleEvents.InitBattleData();
                 break;
             case BattleState.Intro:
                 _battleState = BattleState.Busy;
-                // 戦闘開始Animation再生
                 _battleEvents.PlayBattleIntro();
                 break;
             case BattleState.QTE:
                 _battleState = BattleState.WaitForCommand;
-                // QTE実行
                 _battleEvents.QTEStart();
                 break;
             case BattleState.QTEFinished:
                 _battleState = BattleState.Busy;
-                // 行動順決定
                 _battleEvents.SortBattleUnits();
-                // ターンテーブルUI表示
-                _battleEvents.InitTurnTable(); //_statusPanel下のオブジェクトを触るように変更する必要がある
+                _battleEvents.InitTurnTable();
                 break;
             case BattleState.TurnStart:
                 _battleState = BattleState.WaitForCommand;
                 InitializeOnTurnStart();
-                // 行動Unit取得
                 CurrentBattleUnit = BattleUnitQueue.Peek().GetComponent<BattleUnitBase>();
                 _battleEvents.UpdateTurnTable();
                 _battleEvents.BattleUnitTakeAction();
@@ -82,13 +78,13 @@ public class BattleLoopHandler : MonoBehaviour
                 break;
             case BattleState.TurnEnd:
                 _battleState = BattleState.Busy;
-                // ターン終了処理
                 EndTurn();
                 break;
             case BattleState.Victory:
                 _battleState = BattleState.Busy;
                 _uiController.ShowVictoryText();
-                UpdatePlayerStatus(); // プレイヤーの状態更新を追加
+                UpdatePlayerStatus(); // 追加
+                UpdatePlayerDataFromPlayers(); // 追加
                 break;
             case BattleState.GameOver:
                 _battleState = BattleState.Busy;
@@ -100,31 +96,21 @@ public class BattleLoopHandler : MonoBehaviour
                 break;
         }
     }
-    /// <summary>
-    /// ターン開始時の初期処理
-    /// </summary>
+
     public void InitializeOnTurnStart()
     {
         _playerOneMoreFlg = false;
     }
 
-    /// <summary>
-    /// ターン終了処理
-    /// </summary>
     public void EndTurn()
     {
-        // 行動隊列の先頭unitを行動配列の最後尾に移動
         BattleUnitBase unitToDequeue = BattleUnitQueue.Dequeue();
         BattleUnitQueue.Enqueue(unitToDequeue);
         _battleState = BattleState.TurnStart;
     }
 
-    /// <summary>
-    /// ターン終了判定処理
-    /// </summary>
     public void JudgeTurnEnd()
     {
-        // 敵行動の場合、ターン終了とする（敵はOneMoreしない認識）
         if (CurrentBattleUnit is BattleUnitEnemyBase)
         {
             _battleState = BattleState.TurnEnd;
@@ -140,17 +126,14 @@ public class BattleLoopHandler : MonoBehaviour
         {
             _battleState = BattleState.TurnEnd;
         }
-        CommonUtils.LogDebugLine(this, "JudgeTurnEnd()","プレイヤー。結果：" + _battleState);
+        CommonUtils.LogDebugLine(this, "JudgeTurnEnd()", "プレイヤー。結果：" + _battleState);
     }
 
-    /// <summary>
-    /// 戦闘終了の判定処理
-    /// </summary>
     public void JudgeBattleEnd()
     {
         bool playerWipeout = true;
         bool enemyWipeout = true;
-        // 敵全滅判定
+
         foreach (BattleUnitEnemyBase unit in _objects.EnemyUnits)
         {
             if (!unit.IsDead)
@@ -160,7 +143,6 @@ public class BattleLoopHandler : MonoBehaviour
             }
         }
 
-        // プレイヤー全滅判定
         foreach (BattleUnitPlayer unit in _objects.PlayerUnits)
         {
             if (!unit.IsDead)
@@ -172,37 +154,53 @@ public class BattleLoopHandler : MonoBehaviour
 
         if (playerWipeout)
         {
-            // プレイヤーが全滅の場合、GameOver
             _battleState = BattleState.GameOver;
         }
         else if (enemyWipeout)
         {
-            // プレイヤー生存、敵が全滅の場合、戦闘勝利
             _battleState = BattleState.Victory;
         }
         else
         {
-            // プレイヤーと敵が両方生存の場合、戦闘継続し、ターン終了判定に移行
             _battleState = BattleState.JudgeTurnEnd;
         }
+
         Debug.Log("JudgeBattleEnd実行。結果：" + _battleState);
     }
 
-    /// <summary>
-    /// 戦闘終了後にプレイヤーに経験値を付与するだけ
-    /// </summary>
-    void UpdatePlayerStatus()
+    public void UpdatePlayerStatus()
     {
-        int totalExp = 0;
-
-        // 敵全員の経験値を合計
+        int totalExp = 0; // この戦闘で獲得する総経験値
         foreach (var enemy in _objects.EnemyUnits)
             totalExp += enemy.ExpReward;
 
-        // プレイヤー全員に加算
         foreach (var player in _objects.PlayerUnits)
+        {
             player.ExpAmmount += totalExp;
-        Debug.Log("現在総経験値: " + totalExp);
+        }
     }
 
+    void InitializePlayersFromData() // 追加
+    {
+        foreach (var player in _objects.PlayerUnits)
+        {
+            player.Hp = playerData.hp;
+            player.MaxHp = playerData.maxHp;
+            player.ExpAmmount = playerData.exp;
+            player.Level = playerData.level;
+        }
+        Debug.Log("Player初期化: Exp=" + playerData.exp + ", HP=" + playerData.hp);
+    }
+
+    void UpdatePlayerDataFromPlayers() // 追加
+    {
+        foreach (var player in _objects.PlayerUnits)
+        {
+            playerData.exp = player.ExpAmmount;
+            playerData.level = player.Level;
+            playerData.hp = player.Hp;
+            playerData.maxHp = player.MaxHp;
+        }
+        Debug.Log("PlayerData更新: Exp=" + playerData.exp + ", HP=" + playerData.hp);
+    }
 }
