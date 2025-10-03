@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
 /// </summary>
-public sealed class QTE_UI : MonoBehaviour
+public sealed class QTE_UI : ColorPallet
 {
     [Header("QTE発生タイミング（ランダム）")]
     [SerializeField] private float _timingMini;
@@ -74,7 +74,6 @@ public sealed class QTE_UI : MonoBehaviour
     /// </summary>
     private void QTE()
     {
-        Debug.Log("QTE");
         if (_playableGraph.IsValid())
         {
             _playableGraph.Stop();
@@ -134,20 +133,20 @@ public sealed class QTE_UI : MonoBehaviour
         if (_isCanQTEEvent)
         {
             //実行環境がPCの時のみコンパイラが走る
-// #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 _isCanQTEEvent = false;
                 JudgmentQTEResult();
             }
             //実行環境がモバイル端末の時のみコンパイラが走る
-// #elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS
             if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
             {
                 _isCanQTEEvent = false;
                 JudgmentQTEResult();
             }
-// #endif
+#endif
         }
     }
     /// <summary>
