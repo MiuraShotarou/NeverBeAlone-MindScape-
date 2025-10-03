@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; // ← 追加
+using UnityEngine.InputSystem; // ← New Input System
 
 public class MouseSelectHandler : MonoBehaviour
 {
@@ -21,20 +21,38 @@ public class MouseSelectHandler : MonoBehaviour
 
     void Update()
     {
-        // --- New Input System ---
-        // Input.GetMouseButtonDown(0) → Mouse.current.leftButton.wasPressedThisFrame
-        // Input.mousePosition → Mouse.current.position.ReadValue()
-        if (Mouse.current.leftButton.wasPressedThisFrame &&
-            _battleLoopHandler.BattleState == BattleState.WaitForTargetSelect)
+        // 早期リターン
+        if (_battleLoopHandler.BattleState != BattleState.WaitForTargetSelect)
+            return;
+
+        Vector2 screenPos;
+        bool pressed = false; // タップ検知用フラグ
+
+        // --- PC用 ---
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Ray ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()); // ← New Input
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            screenPos = Mouse.current.position.ReadValue();
+            pressed = true;
+        }
+        // --- スマホ用 ---
+        else if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
+            screenPos = Touchscreen.current.primaryTouch.position.ReadValue();
+            pressed = true;
+        }
+        else
+        {
+            return;
+        }
+
+        if (pressed)
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(screenPos);
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 GameObject clickedObj = hit.collider.gameObject;
                 BattleUnitBase clickedUnit = clickedObj.GetComponent<BattleUnitBase>();
 
-                // クリック対象が敵の場合のみ、対象選択を確定する
                 if (clickedUnit is BattleUnitEnemyBase && !clickedUnit.IsDead)
                 {
                     _player.SetActionTarget(clickedObj);
