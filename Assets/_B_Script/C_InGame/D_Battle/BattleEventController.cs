@@ -128,10 +128,6 @@ public class BattleEventController : MonoBehaviour
         //↓ここでUI制御を行うのは設計的によくない↓
         foreach (var unit in BattleUnitList)
         {
-            // if (unit.Icon != null)
-            // {
-            Debug.Log(unit._unitName);
-            // }
             unit.Icon.gameObject.SetActive(true);
             _uiController.AddImageAsFirstSibling(_uiController.TurnTable, unit.Icon);
         }
