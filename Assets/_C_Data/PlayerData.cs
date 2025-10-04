@@ -1,33 +1,43 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData
+/// <summary>
+/// プレイヤーデータ
+/// ScriptableObjectとしてアセット化して管理する
+/// </summary>
+[CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptables/Create PlayerData")]
+public class PlayerData : ScriptableObject
 {
-    private int _level;
-    private int _exp;
-    private int _hp;
-    private int _maxhp;
-    private int _tension;
-    private int _maxtension;
-    private float _baseAttack;
-    private int _baseDefense;
-    private int _agility; //敏捷性
-    private int _baseEvadeRate;
-    private int _baseCriticalRate;
-    private int _baseCriticalDamageRate;
-    private int _baseFluctuationRate;
-    private int _baseTensionUpRate;
-    private int _movement; // 行動力
-    //private int 気力？
+    [Header("基本ステータス")]
+    public int level;
+    public int exp;
+    public int hp;
+    public int maxHp;
+    public int tension;
+    public int maxTension;
 
-    private int _equipmentCrystal; // 装備品：結晶
-    private int _equipmentJewel; // 装備品：宝石
+    [Header("能力値")]
+    public float baseAttack;
+    public int baseDefense;
+    public int agility;
+    public int baseEvadeRate;
+    public int baseCriticalRate;
+    public int baseCriticalDamageRate;
+    public int baseFluctuationRate;
+    public int baseTensionUpRate;
+    public int movement;
 
-    private List<string> _itemsAccessory; // 所持物：アクセサリ
-    private List<string> _itemsUsable; // 所持物：使用アイテム
+    [Header("装備品")]
+    public int equipmentCrystal;
+    public int equipmentJewel;
 
-    private List<string> _skills; // スキル
+    [Header("所持品")]
+    public List<string> itemsAccessory = new List<string>();
+    public List<string> itemsUsable = new List<string>();
 
-    private List<string> _smartphone; // スマホ機能
+    [Header("スキル")]
+    public List<string> skills = new List<string>();
+
+    [Header("スマホ機能")]
+    public List<string> smartphone = new List<string>();
 }

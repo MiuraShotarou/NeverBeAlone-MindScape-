@@ -247,9 +247,9 @@ MonoBehaviour:
   DamageText: {fileID: 1746963823}
   UICanvas: {fileID: 46830099}
   _unitName: Player
-  MaxHpBase: 100
-  AttackBase: 0
-  AttackScaleBase: 0
+  MaxHpBase: 1000
+  AttackBase: 35
+  AttackScaleBase: 5
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
   DefenseBase: 0
@@ -264,8 +264,10 @@ MonoBehaviour:
   MaxTensionBase: 0
   TentionUpRateBase: 0
   TentionDownRateBase: 0
-  MaxHp: 100
-  Hp: 100
+  MaxHp: 800
+  Hp: 800
+  ExpReward: 0
+  ExpAmmount: 0
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -536,8 +538,7 @@ RectTransform:
   - {fileID: 1746963821}
   - {fileID: 27952618}
   - {fileID: 1009225384}
-  - {fileID: 573327685}
-  - {fileID: 721005668}
+  - {fileID: 1477895807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1968,12 +1969,12 @@ MonoBehaviour:
   _gameoverText: {fileID: 27952619}
   _startText: {fileID: 1999588526}
   _targetSelectText: {fileID: 101839739}
-  _statusPanel: {fileID: 721005667}
-  _skillPanel: {fileID: 721005667}
-  _phonePanel: {fileID: 721005667}
-  _allStatusPanel: {fileID: 721005667}
-  _QTEPanel: {fileID: 2081582301}
-  _levelUpPanel: {fileID: 721005667}
+  _statusPanel: {fileID: 1477895806}
+  _skillPanel: {fileID: 1477895806}
+  _phonePanel: {fileID: 1477895806}
+  _allStatusPanel: {fileID: 1477895806}
+  _QTEPanel: {fileID: 293337821}
+  _levelUpPanel: {fileID: 1477895806}
 --- !u!4 &875708477
 Transform:
   m_ObjectHideFlags: 0
@@ -2745,7 +2746,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390109611}
   m_CullTransparentMesh: 1
---- !u!1 &1531499182
+--- !u!1 &1477895806
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2753,132 +2754,57 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1531499183}
-  - component: {fileID: 1531499185}
-  - component: {fileID: 1531499184}
+  - component: {fileID: 1477895807}
+  - component: {fileID: 1477895809}
+  - component: {fileID: 1477895808}
   m_Layer: 5
-  m_Name: (I)QTE_Circle_Excellent
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1531499183
+--- !u!224 &1477895807
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531499182}
-  m_LocalRotation: {x: 0, y: 0, z: 0.99939084, w: 0.03489959}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 2081582302}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 176}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1531499184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531499182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 0.39215687}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e6e91b71321109047a25fca998278961, type: 3}
-  m_Type: 3
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 0.03
-  m_FillClockwise: 1
-  m_FillOrigin: 2
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1531499185
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531499182}
-  m_CullTransparentMesh: 1
---- !u!1 &1632767995
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1632767996}
-  - component: {fileID: 1632767998}
-  - component: {fileID: 1632767997}
-  m_Layer: 5
-  m_Name: (I)QTE_Pin
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1632767996
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632767995}
-  m_LocalRotation: {x: 0, y: 0, z: 0.34529823, w: 0.938493}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 1477895806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -8}
+  m_LocalScale: {x: 0.10907, y: 0.10907, z: 0.10907}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2081582302}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 40.4}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 40, y: 95}
-  m_Pivot: {x: 0.5, y: 0}
---- !u!114 &1632767997
+  m_Father: {fileID: 46830100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 834, y: -37}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1477895808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632767995}
+  m_GameObject: {fileID: 1477895806}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 947187ee1bb84b54a87eb2db0592d5a2, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2887,13 +2813,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1632767998
+--- !u!222 &1477895809
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632767995}
+  m_GameObject: {fileID: 1477895806}
   m_CullTransparentMesh: 1
 --- !u!1 &1713202093
 GameObject:
@@ -3043,7 +2969,7 @@ MonoBehaviour:
   DamageText: {fileID: 1746963823}
   UICanvas: {fileID: 46830099}
   _unitName: EnemyB
-  MaxHpBase: 100
+  MaxHpBase: 45
   AttackBase: 0
   AttackScaleBase: 0
   AttackWeakpointScaleBase: 0
@@ -3060,8 +2986,10 @@ MonoBehaviour:
   MaxTensionBase: 0
   TentionUpRateBase: 0
   TentionDownRateBase: 0
-  MaxHp: 100
-  Hp: 100
+  MaxHp: 0
+  Hp: 0
+  ExpReward: 10
+  ExpAmmount: 0
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -3371,9 +3299,9 @@ MonoBehaviour:
   DamageText: {fileID: 1746963823}
   UICanvas: {fileID: 46830099}
   _unitName: EnemyA
-  MaxHpBase: 100
-  AttackBase: 0
-  AttackScaleBase: 0
+  MaxHpBase: 200
+  AttackBase: 73
+  AttackScaleBase: 2
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
   DefenseBase: 0
@@ -3388,8 +3316,10 @@ MonoBehaviour:
   MaxTensionBase: 0
   TentionUpRateBase: 0
   TentionDownRateBase: 0
-  MaxHp: 100
-  Hp: 100
+  MaxHp: 200
+  Hp: 200
+  ExpReward: 10
+  ExpAmmount: 0
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
