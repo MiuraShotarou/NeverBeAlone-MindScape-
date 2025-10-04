@@ -268,6 +268,7 @@ MonoBehaviour:
   Hp: 800
   ExpReward: 0
   ExpAmmount: 0
+  Level: 1
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -539,6 +540,8 @@ RectTransform:
   - {fileID: 27952618}
   - {fileID: 1009225384}
   - {fileID: 1477895807}
+  - {fileID: 573327685}
+  - {fileID: 721005668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2333,6 +2336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objects: {fileID: 32751112}
+  playerData: {fileID: 11400000, guid: 74bc781877faf4f4688f7668845c5a8d, type: 2}
   CurrentBattleUnit: {fileID: 0}
 --- !u!4 &1028228412
 Transform:
@@ -2990,6 +2994,7 @@ MonoBehaviour:
   Hp: 0
   ExpReward: 10
   ExpAmmount: 0
+  Level: 1
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -3320,6 +3325,7 @@ MonoBehaviour:
   Hp: 200
   ExpReward: 10
   ExpAmmount: 0
+  Level: 1
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -3886,10 +3892,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1632767996}
   - {fileID: 561265878}
   - {fileID: 1900417523}
-  - {fileID: 1531499183}
   m_Father: {fileID: 573327685}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
