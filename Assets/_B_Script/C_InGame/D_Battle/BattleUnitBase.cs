@@ -87,11 +87,6 @@ public abstract class BattleUnitBase : MonoBehaviour
         //Emotions.Add(Emotion.Hatred, new EmotionHatred(EmotionLevels[(int)Emotion.Hatred]));
         //Emotions.Add(Emotion.Suspicion, new EmotionSuspicion(EmotionLevels[(int)Emotion.Suspicion]));
     }
-    /// <summary>
-    /// 被ダメージ処理
-    /// </summary>
-    /// <param name="damage">ダメージ値</param>
-    public abstract void TakeDamage(int damage);
 
     public virtual void OnDeath()
     {
@@ -131,7 +126,17 @@ public abstract class BattleUnitBase : MonoBehaviour
     {
         TakeDamage(CalculateFinalDamageTaken(damage, emotion));
     }
-
+    /// <summary>
+    /// 被ダメージ処理
+    /// </summary>
+    /// <param name="damage">ダメージ値</param>
+    public abstract void TakeDamage(int damage);
+    
+    /// <summary>
+    /// 行っていること
+    /// 弱点・耐性の判断と計算
+    /// 乱数の追加
+    /// </summary>
     protected virtual int CalculateFinalDamageTaken(float damage, Emotion emotion)
     {
         float finalDefense = CalcFinalDefense();
@@ -259,7 +264,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public float CalcAttackScaleMod()
     {
         float mod = 0;
-        // 感情ボーナスを適用
+        // 感情ボーナスを適用 仕様的にはいらないはず
         IAttackScaleModifier emotionModifier = CurrentEmotion as IAttackScaleModifier;
         if (emotionModifier != null)
         {

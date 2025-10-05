@@ -61,6 +61,7 @@ public class BattleLoopHandler : MonoBehaviour
                 _battleEvents.SortBattleUnits();
                 _battleEvents.InitTurnTable();
                 break;
+                // エンカウント後はここから下の処理がターン経過ごとに一度だけ呼び出される
             case BattleState.TurnStart:
                 _battleState = BattleState.WaitForCommand;
                 InitializeOnTurnStart();

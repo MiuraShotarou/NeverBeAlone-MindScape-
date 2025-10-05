@@ -5,7 +5,7 @@ using UnityEngine;
 public class BattleUnitPlayer : BattleUnitBase
 {
     private GameObject _actionTarget = null;
-    private AttackType _attackType;
+    private bool _isOneMoreAttack;
 
     public GameObject ActionTarget
     {
@@ -13,31 +13,35 @@ public class BattleUnitPlayer : BattleUnitBase
         set => _actionTarget = value;
     }
 
-    enum AttackType
-    {
-        Normal,
-        OneMore
-    }
+    // //テスト用
+    // private void Awake()
+    // {
+    //     CurrentEmotion = new EmotionAnger(1);
+    // }
 
-    //テスト用
-    private void Awake()
+    public void SetAttackType(bool isOneMoreAttack)
     {
-        CurrentEmotion = new EmotionAnger(1);
+        _isOneMoreAttack = isOneMoreAttack;
     }
 
     /// <summary>
-    /// テスト用攻撃メソッド
+    /// RayCastで取得したゲームオブジェクトから敵の情報を取得する
     /// </summary>
-    public void TestAttack()
-    {   
-        _loopHandler.PlayerOneMoreFlg = false;
-        _animator.Play("Attack1");
-    }
-    
-    public void TestOneMoreAttack()
+    public void SetActionTarget(GameObject target)
     {
-        _loopHandler.PlayerOneMoreFlg = true;
+        _actionTarget = target;
+        TestAttack();
+    }
+
+    /// <summary>
+    /// テスト用攻撃メソッド。TestOneMoreAttack()と統合した。
+    /// </summary>
+    private void TestAttack()
+    {
+        _loopHandler.BattleState = BattleState.Busy; //削除するのはOKかもしれない
+        _loopHandler.PlayerOneMoreFlg = _isOneMoreAttack;
         _animator.Play("Attack1");
+        OnAttackAnimationEnd();
     }
 
     public void OnAttackAnimationEnd()
@@ -45,44 +49,6 @@ public class BattleUnitPlayer : BattleUnitBase
         float finalAttack = CalcFinalAttack();
         var targetBattleUnitBase = _actionTarget.GetComponent<BattleUnitBase>();
         targetBattleUnitBase.OnAttacked(finalAttack, CurrentEmotion.Emotion);
-
-    }
-
-    public void SetActionTarget(GameObject target)
-    {
-        _actionTarget = target;
-        ExecuteAction();
-    }
-
-    public void ExecuteAction()
-    {
-        _loopHandler.BattleState = BattleState.Busy;
-        switch (_attackType)
-        {
-            case AttackType.Normal:
-                TestAttack();
-                break;
-            case AttackType.OneMore:
-                TestOneMoreAttack();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void SetAttackType(string type)
-    {
-        switch (type)
-        {
-            case "Normal":
-                _attackType = AttackType.Normal;
-                break;
-            case "OneMore":
-                _attackType = AttackType.OneMore;
-                break;
-            default:
-                break;
-        }
     }
 
     public override void TakeDamage(int damage)
