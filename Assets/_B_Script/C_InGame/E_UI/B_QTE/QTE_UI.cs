@@ -31,7 +31,7 @@ public sealed class QTE_UI : ColorPallet
     [SerializeField] private GameObject i_QTE_Pin;
     [SerializeField] private GameObject i_QTE_Circle_Good;
     [SerializeField] private GameObject i_QTE_Circle_Excellent;
-    [SerializeField] private ObjectManager _objectManager; //取得先がないので注意
+    [SerializeField] private ObjectManager _objectManager;
     private Animator _animator;
     private PlayableGraph _playableGraph;
     private bool _isCanQTEEvent = false;

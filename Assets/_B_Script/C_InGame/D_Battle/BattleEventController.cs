@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 
 public class BattleEventController : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
+    // SortBattleUnitsが呼ばれないかぎりnull → そもそも削除したい
     [HideInInspector] public List<BattleUnitBase> BattleUnitList = new List<BattleUnitBase>();
     private BattleLoopHandler _loopHandler;
     private BattleUIController _uiController = default;
@@ -17,7 +19,7 @@ public class BattleEventController : MonoBehaviour
     /// </summary>
     public delegate void JudgeSurvival();
     public JudgeSurvival DoJudgeSurvival;
-    // Start is called before the first frame update
+
     void Start()
     {
         _loopHandler = _objects.BattleLoopHandler;
@@ -25,15 +27,10 @@ public class BattleEventController : MonoBehaviour
         _director = _objects.PlayableDirector;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     public void InitBattleData()
     {
         // TODO 初期化処理
+        var PlayerUnit = BattleUnitList.Where(unit => unit is BattleUnitPlayer); //新規作成でPlayerUnitを作成しても良いかもね？
         _loopHandler.BattleState = BattleState.Intro;
     }
     /// <summary>
@@ -116,12 +113,6 @@ public class BattleEventController : MonoBehaviour
         }
     }
 
-    public void OnPlayerChooseAction()
-    {
-        _uiController.DeactivateCommandPanel();
-        _uiController.ShowTargetSelectText();
-        _loopHandler.BattleState = BattleState.WaitForTargetSelect;
-    }
     public void InitTurnTable()
     {
         _uiController.ActiveBattleUI();

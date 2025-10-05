@@ -131,7 +131,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     /// </summary>
     /// <param name="damage">ダメージ値</param>
     public abstract void TakeDamage(int damage);
-    
+
     /// <summary>
     /// 行っていること
     /// 弱点・耐性の判断と計算
@@ -272,6 +272,10 @@ public abstract class BattleUnitBase : MonoBehaviour
         }
 
         // TODO テンションボーナスを適用【未実装】
+        
+        // スキル利用による倍率変動変動を適用
+        // これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
+        // スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
 
         // 所持バフの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)

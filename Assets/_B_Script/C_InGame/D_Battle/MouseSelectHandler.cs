@@ -7,16 +7,15 @@ public class MouseSelectHandler : MonoBehaviour
 {
     private Camera _mainCamera;
     [SerializeField] private ObjectManager _objects;
+    [SerializeField] private Skill_UI _skillUI;
     private BattleLoopHandler _battleLoopHandler;
     private BattleUIController _uiController;
-    private BattleUnitPlayer _player;
 
-    void Start()
+    void Awake()
     {
         _mainCamera = Camera.main;
         _uiController = _objects.UIController;
         _battleLoopHandler = _objects.BattleLoopHandler;
-        _player = _objects.PlayerUnits[0];
     }
 
     void Update()
@@ -55,9 +54,9 @@ public class MouseSelectHandler : MonoBehaviour
 
                 if (clickedUnit is BattleUnitEnemyBase && !clickedUnit.IsDead)
                 {
-                    _player.SetActionTarget(clickedObj);
+                    _skillUI.SetTargetObject(clickedObj); //コードは汚いが、ターゲットオブジェクトを渡さなくてはならないため
+                    _uiController.DeactivateTargetSelectText(); //Deactive → OnDisable → Playerの行動処理
                     _battleLoopHandler.BattleState = BattleState.Busy;
-                    _uiController.DeactivateTargetSelectText();
                 }
             }
         }

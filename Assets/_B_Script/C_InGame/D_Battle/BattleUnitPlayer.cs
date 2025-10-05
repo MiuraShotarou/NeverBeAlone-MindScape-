@@ -5,6 +5,7 @@ using UnityEngine;
 public class BattleUnitPlayer : BattleUnitBase
 {
     private GameObject _actionTarget = null;
+    private string _decideSkillKey = "" ;
     private bool _isOneMoreAttack;
 
     public GameObject ActionTarget
@@ -19,17 +20,14 @@ public class BattleUnitPlayer : BattleUnitBase
     //     CurrentEmotion = new EmotionAnger(1);
     // }
 
-    public void SetAttackType(bool isOneMoreAttack)
-    {
-        _isOneMoreAttack = isOneMoreAttack;
-    }
-
     /// <summary>
-    /// RayCastで取得したゲームオブジェクトから敵の情報を取得する
+    /// Skill_UI.csからOnDisableで呼び出される。Playerの行動が確定する。
+    /// ここのメソッド内にターン確定後のメソッドをすべて羅列したい
     /// </summary>
-    public void SetActionTarget(GameObject target)
+    public void DecidePlayerMove(string skillName ,GameObject target)
     {
         _actionTarget = target;
+
         TestAttack();
     }
 

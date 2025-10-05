@@ -8,12 +8,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptables/Create SkillData")]
 public class SkillData : ScriptableObject
 {
-    [Header("スキル名")]
+    [Header("スキル名")] //アドレスとして利用する
     public string skillName;
     [Header("スキル効果説明")]
-    public string skillDescription;
+    public string skillDescription; //UI用の文字列
     [Header("正気度コスト")]
-    public int sanityCost;
+    public int sanityCost; //
     [Header("命中率")]
     public int accuracy;
     [Header("攻撃倍率")]
