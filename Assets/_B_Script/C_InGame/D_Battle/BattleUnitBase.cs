@@ -50,6 +50,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
     [SerializeField, Tooltip("テンションレベル")] public int TensionLevel;
+    // [SerializeField, Tooltip("テンションランク")] public Tension CurrentTension;
     [SerializeField, Tooltip("攻撃力加算値")] public float AttackMod;
     [SerializeField, Tooltip("攻撃力倍率加算値")] public float AttackScaleMod;
     [SerializeField, Tooltip("防御力加算値")] public float DefenseMod;
@@ -246,7 +247,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 
         // TODO テンションボーナスを適用【未実装】
 
-        // 所持バフの効果を適用
+        // スキルエフェクトの効果を適用
         foreach (SkillEffectBase effect in SkillEffects)
         {
             IAttackModifier modifier = effect as IAttackModifier;
@@ -273,7 +274,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 
         // TODO テンションボーナスを適用【未実装】
         
-        // スキル利用による倍率変動変動を適用
+        // スキル利用による倍率変動を適用
         // これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
         // スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
 

@@ -28,6 +28,7 @@ public class BattleUnitPlayer : BattleUnitBase
     {
         _actionTarget = target;
         _decideSkillKey = skillName;
+
         TestAttack();
     }
 
@@ -39,10 +40,20 @@ public class BattleUnitPlayer : BattleUnitBase
         _loopHandler.BattleState = BattleState.Busy; //削除するのはOKかもしれない
         _loopHandler.PlayerOneMoreFlg = _decideSkillKey.Contains("OneMore")? true : false;
         _animator.Play("Attack1");
-        OnAttackAnimationEnd();
+        // 攻撃範囲の変動 → 敵を選択する段階から反映させていないといけない
+        // スキルの使用条件 → スキルレベル、スキルごとに存在する使用条件をUIの段階で決めておく必要がある
+        // ステータスの変動 → スキルによるステータスの変動は、状態異常とは別で数値で管理する(SkillEffect)。
+        // 状態異常の付与（ランダム要素あり）
+        // 攻撃倍率の変動
+        // スキルによる条件判定（弱点かどうか、敵・自身のバフ・デバフの数、攻撃後のOneMoreフラグ、敵の数カウント）
+        // 攻撃回数の反映
+        // スキルが持っている属性の反映
+        // 感情の切り替え
+        // 囮の考慮
+        Attack();
     }
 
-    public void OnAttackAnimationEnd()
+    public void Attack()
     {
         float finalAttack = CalcFinalAttack();
         var targetBattleUnitBase = _actionTarget.GetComponent<BattleUnitBase>();

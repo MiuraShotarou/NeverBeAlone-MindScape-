@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// ゲーム全体で保持する必要のあるデータを格納する。
+/// </summary>
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
     public PlayerData PlayerData;
+    public 
 
     void Awake()
     {

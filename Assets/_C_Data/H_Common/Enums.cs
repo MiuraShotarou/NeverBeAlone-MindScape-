@@ -20,6 +20,21 @@ public enum Emotion
     Suspicion
 }
 /// <summary>
+/// テンションランク（興奮度・エネルギーレベル）
+/// </summary>
+[Serializable]
+public enum Tension
+{
+    /// <summary>平静状態</summary>
+    Calm,
+    /// <summary>興奮状態</summary>
+    Excited,
+    /// <summary>楽しい状態</summary>
+    Joyful,
+    /// <summary>覚醒状態</summary>
+    Awakened
+}
+/// <summary>
 /// QTE判定結果
 /// </summary>
 [Serializable]
