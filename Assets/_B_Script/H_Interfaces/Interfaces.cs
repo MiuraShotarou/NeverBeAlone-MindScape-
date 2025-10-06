@@ -27,18 +27,13 @@ interface IDexModifier
 {
     float ModifyDex(int level, float dex);
 }
-
+///<summary>回復力</summary>
 interface IRegenModifier
 {
     float ModifyRegen(int level, float regen);
 }
-
+///<summary>回避率</summary>
 interface IEvadeRateModifier
 {
     float ModifyEvadeRate(int level, float evadeRate);
-}
-
-interface INeedTensionModifier
-{
-    Tension ModifyNeedTension(int level, Tension needTension);
 }

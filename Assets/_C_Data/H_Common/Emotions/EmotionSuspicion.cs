@@ -13,19 +13,31 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
         _resistantEmotion = Emotion.Anger;
     }
 
-    public float ModifyAttack(float attack)
+    public float ModifyAttack(int emotionLevel, float attack)
     {
-        float mod = 2 * _level;
-        return attack + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return attack + 2f;
+                break;
+        }
     }
-    public float ModifyDex(float dex)
+    public float ModifyDex(int emotionLevel, float dex)
     {
-        float mod = 2 * _level;
-        return dex + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return dex + 2f;
+                break;
+        }
     }
-    public float ModifyEvadeRate(float evadeRate)
+    public float ModifyEvadeRate(int emotionLevel, float evadeRate)
     {
-        float mod = 0.1f * _level;
-        return evadeRate + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return evadeRate + 0.1f;
+                break;
+        }
     }
 }

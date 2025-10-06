@@ -13,19 +13,31 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
         _resistantEmotion = Emotion.Grudge;
     }
 
-    public float ModifyAttack(float attack)
+    public float ModifyAttack(int emotionLevel ,float attack)
     {
-        float mod = 1 * _level;
-        return attack + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return attack + 1f;
+                break;
+        }
     }
-    public float ModifyDefense(float def)
+    public float ModifyDefense(int emotionLevel ,float def)
     {
-        float mod = 4 * _level;
-        return def + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return def + 4f;
+                break;
+        }
     }
-    public float ModifyRegen(float regen)
+    public float ModifyRegen(int emotionLevel ,float regen)
     {
-        float mod = 0.05f * _level;
-        return regen + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return regen + 0.05f;
+                break;
+        }
     }
 }

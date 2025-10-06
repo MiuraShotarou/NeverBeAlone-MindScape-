@@ -13,15 +13,23 @@ public class EmotionAnger : EmotionBase, IAttackModifier, ICriticalRateModifier
         _resistantEmotion = Emotion.Hatred;
     }
 
-    public float ModifyAttack(float attack)
+    public float ModifyAttack(int emotionLevel, float attack)
     {
-        float mod = 5 * _level;
-        return attack + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return attack + 5f;
+                break;
+        }
     }
 
-    public float ModifyCriticalRate(float criticalRate)
+    public float ModifyCriticalRate(int emotionLevel, float criticalRate)
     {
-        float mod = 0.05f * _level;
-        return criticalRate + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return criticalRate + 0.05f;
+                break;
+        }
     }
 }

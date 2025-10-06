@@ -13,14 +13,22 @@ public class EmotionGrudge : EmotionBase, IAttackModifier, IDexModifier
         _resistantEmotion = Emotion.Suspicion;
     }
     
-    public float ModifyAttack(float attack)
+    public float ModifyAttack(int emotionLevel ,float attack)
     {
-        float mod = 5 * _level;
-        return attack + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return attack + 5f;
+                break;
+        }
     }
-    public float ModifyDex(float dex)
+    public float ModifyDex(int emotionLevel ,float dex)
     {
-        float mod = 1 * _level;
-        return dex + mod;
+        switch(emotionLevel)
+        {
+            case 1:
+                return dex + 1f;
+                break;
+        }
     }
 }
