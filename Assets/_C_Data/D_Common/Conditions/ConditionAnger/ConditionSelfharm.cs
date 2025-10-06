@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu]
 /// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
 public class ConditionSelfharm : ConditionBase
 {
-
     private Emotion _emotion = Emotion.Anger;
-    [SerializeField] private int _damage = default;
+    [SerializeField] private int _damage = 20;
 
     /// <summary>自傷（怒り）自身に怒り属性継続ダメージ</summary>
-    public ConditionSelfharm(Condition condition) : base(condition)
+    public ConditionSelfharm()
     {
+        _condition = Condition.Selfharm;
         _name = "自傷";
         _type = ConditionActivationType.OnTurnEnd;
     }

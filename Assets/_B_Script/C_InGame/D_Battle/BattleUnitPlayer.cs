@@ -46,6 +46,9 @@ public class BattleUnitPlayer : BattleUnitBase
         var targetBattleUnitBase = _actionTarget.GetComponent<BattleUnitBase>();
         targetBattleUnitBase.OnAttacked(finalAttack, CurrentEmotion.Emotion);
 
+        //相手に自傷を付与
+        //ConditionBase conditionbase = ConditionDatabase.Database[Condition.Selfharm];
+        //conditionbase.ApplyConditionToTarget(targetBattleUnitBase);
     }
 
     public void SetActionTarget(GameObject target)

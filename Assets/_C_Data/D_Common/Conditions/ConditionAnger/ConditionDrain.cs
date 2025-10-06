@@ -11,8 +11,9 @@ public class ConditionDrain : ConditionBase
     [SerializeField] private float _hpRestoreScale = 0.1f;
 
     /// <summary>ドレイン（怒り）与えたダメージ * 0.1 回復する</summary>
-    public ConditionDrain(Condition condition) : base(condition)
+    public ConditionDrain()
     {
+        _condition = Condition.Drain;
         _name = "ドレイン";
         _type = ConditionActivationType.OnAttackExecute;
     }

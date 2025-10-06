@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 8131420}
   - component: {fileID: 8131424}
   - component: {fileID: 8131425}
+  - component: {fileID: 8131426}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -248,14 +249,14 @@ MonoBehaviour:
   UICanvas: {fileID: 46830099}
   _unitName: Player
   MaxHpBase: 0
-  AttackBase: 0
-  AttackScaleBase: 0
+  AttackBase: 50
+  AttackScaleBase: 1
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -265,7 +266,7 @@ MonoBehaviour:
   TentionUpRateBase: 0
   TentionDownRateBase: 0
   MaxHp: 0
-  Hp: 0
+  Hp: 100
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -276,8 +277,8 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
+  EmotionLevels: 0100000001000000010000000100000001000000
 --- !u!95 &8131425
 Animator:
   serializedVersion: 5
@@ -299,6 +300,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8131426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb4cc9d6994bb443842980083413e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _condition: 0
 --- !u!1 &27952617
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,6 +549,7 @@ RectTransform:
   - {fileID: 1746963821}
   - {fileID: 27952618}
   - {fileID: 1009225384}
+  - {fileID: 1822131156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1713,8 +1728,8 @@ MonoBehaviour:
   _gameoverText: {fileID: 27952619}
   _startText: {fileID: 1999588526}
   _targetSelectText: {fileID: 101839739}
-  _QTEPanel: {fileID: 0}
-  _phonePanel: {fileID: 0}
+  _QTEPanel: {fileID: 293337821}
+  _phonePanel: {fileID: 1822131155}
 --- !u!4 &875708477
 Transform:
   m_ObjectHideFlags: 0
@@ -2635,14 +2650,14 @@ MonoBehaviour:
   UICanvas: {fileID: 46830099}
   _unitName: EnemyB
   MaxHpBase: 0
-  AttackBase: 0
-  AttackScaleBase: 0
+  AttackBase: 50
+  AttackScaleBase: 1
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -2652,7 +2667,7 @@ MonoBehaviour:
   TentionUpRateBase: 0
   TentionDownRateBase: 0
   MaxHp: 0
-  Hp: 0
+  Hp: 100
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -2663,8 +2678,8 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
+  EmotionLevels: 0100000001000000010000000100000001000000
   _playerGo: {fileID: 8131419}
 --- !u!1 &1746963820
 GameObject:
@@ -2962,14 +2977,14 @@ MonoBehaviour:
   UICanvas: {fileID: 46830099}
   _unitName: EnemyA
   MaxHpBase: 0
-  AttackBase: 0
-  AttackScaleBase: 0
+  AttackBase: 50
+  AttackScaleBase: 1
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -2979,7 +2994,7 @@ MonoBehaviour:
   TentionUpRateBase: 0
   TentionDownRateBase: 0
   MaxHp: 0
-  Hp: 0
+  Hp: 100
   MaxTension: 0
   Tension: 0
   TensionLevel: 0
@@ -2990,9 +3005,84 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
+  EmotionLevels: 0100000001000000010000000100000001000000
   _playerGo: {fileID: 8131419}
+--- !u!1 &1822131155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1822131156}
+  - component: {fileID: 1822131158}
+  - component: {fileID: 1822131157}
+  m_Layer: 5
+  m_Name: TestPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1822131156
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822131155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 46830100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1822131157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822131155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1822131158
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822131155}
+  m_CullTransparentMesh: 1
 --- !u!1 &1925322498
 GameObject:
   m_ObjectHideFlags: 0

@@ -114,6 +114,10 @@ public class BattleLoopHandler : MonoBehaviour
     {
         // 行動隊列の先頭unitを行動配列の最後尾に移動
         BattleUnitBase unitToDequeue = BattleUnitQueue.Dequeue();
+
+        //ターンエンド時に発動する状態異常を発動
+        unitToDequeue.OnConditionActivate(ConditionActivationType.OnTurnEnd);
+
         BattleUnitQueue.Enqueue(unitToDequeue);
         _battleState = BattleState.TurnStart;
     }

@@ -5,19 +5,27 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class ConditionBase : ScriptableObject
+public abstract class ConditionBase
 {
     protected string _name;
     protected Condition _condition;
+    public Condition Condition
+    {
+        get { return _condition; }
+    }
     /// <summary>継続ターン数</summary>
     protected int _activeTurns = 1;
     protected ConditionActivationType _type;
+    public ConditionActivationType Type
+    {
+        get { return _type; }
+    }
     protected BattleUnitBase _target = default;
 
-    public ConditionBase(Condition condition)
-    {
-        _condition = condition;
-    }
+    //public ConditionBase(Condition condition)
+    //{
+    //    _condition = condition;
+    //}
 
     /// <summary>状態異常を付与。必要なパラメーター取得等</summary>
     public abstract void ApplyCondition();
@@ -36,9 +44,9 @@ public abstract class ConditionBase : ScriptableObject
     public void ApplyConditionToTarget(BattleUnitBase target)
     {
         _target = target;
-        Condition targetCondition = target.ConditionFlag;
+        //Condition targetConditionFlag = target.ConditionFlag;
 
-        if ((targetCondition & _condition) == _condition)
+        if ((target.ConditionFlag & _condition) == _condition)
         {
             ReapplyCondition();
         }
@@ -46,17 +54,19 @@ public abstract class ConditionBase : ScriptableObject
         {
             ApplyCondition();
         }
-        targetCondition |= _condition;
-        Debug.Log(_condition + "状態になりました");
+        target.ConditionFlag |= _condition;
+        //target.Conditions.Add(this);
+        Debug.Log(target + "が" + _condition + "状態になりました");
     }
 
     /// <summary>ターゲットの状態を戻してビットフラグから削除</summary>
 
     public void RemoveConditionFromTarget(BattleUnitBase target)
     {
-        Condition targetCondition = target.ConditionFlag;
+        Condition targetConditionFlag = target.ConditionFlag;
         RemoveCondition();
-        targetCondition &= ~_condition;
+        targetConditionFlag &= ~_condition;
+        target.Conditions.Remove(this);
         Debug.Log(_condition + "状態が解除されました");
     }
 }

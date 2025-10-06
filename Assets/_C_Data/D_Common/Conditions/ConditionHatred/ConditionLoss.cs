@@ -10,8 +10,9 @@ public class ConditionLoss : ConditionBase
     [SerializeField] private int _damage = default;
 
     /// <summary>喪失（嫌悪）自身に嫌悪属性継続ダメージ</summary>
-    public ConditionLoss(Condition condition) : base(condition)
+    public ConditionLoss()
     {
+        _condition = Condition.Loss;
         _name = "喪失";
         _type = ConditionActivationType.OnTurnEnd;
     }

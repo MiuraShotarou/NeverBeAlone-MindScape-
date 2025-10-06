@@ -10,8 +10,9 @@ public class ConditionAnxiety : ConditionBase
     [SerializeField] private int _damage = default;
 
     /// <summary>不安（猜疑）自身に猜疑属性継続ダメージ</summary>
-    public ConditionAnxiety(Condition condition) : base(condition)
+    public ConditionAnxiety()
     {
+        _condition = Condition.Anxiety;
         _name = "不安";
         _type = ConditionActivationType.OnTurnEnd;
     }
