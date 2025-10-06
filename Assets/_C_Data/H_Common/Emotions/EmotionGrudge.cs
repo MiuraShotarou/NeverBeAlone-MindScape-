@@ -19,7 +19,8 @@ public class EmotionGrudge : EmotionBase, IAttackModifier, IDexModifier
         {
             case 1:
                 return attack + 5f;
-                break;
+            default:
+                return attack;
         }
     }
     public float ModifyDex(int emotionLevel ,float dex)
@@ -28,7 +29,8 @@ public class EmotionGrudge : EmotionBase, IAttackModifier, IDexModifier
         {
             case 1:
                 return dex + 1f;
-                break;
+            default:
+                return dex;
         }
     }
 }

@@ -19,7 +19,8 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
         {
             case 1:
                 return attack + 2f;
-                break;
+            default:
+                return attack;
         }
     }
     public float ModifyDex(int emotionLevel, float dex)
@@ -28,7 +29,8 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
         {
             case 1:
                 return dex + 2f;
-                break;
+            default:
+                return dex;
         }
     }
     public float ModifyEvadeRate(int emotionLevel, float evadeRate)
@@ -37,7 +39,8 @@ public class EmotionSuspicion : EmotionBase, IAttackModifier, IDexModifier, IEva
         {
             case 1:
                 return evadeRate + 0.1f;
-                break;
+            default:
+                return evadeRate;
         }
     }
 }

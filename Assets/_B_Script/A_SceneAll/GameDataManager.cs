@@ -8,7 +8,6 @@ public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
     public PlayerData PlayerData;
-    public 
 
     void Awake()
     {

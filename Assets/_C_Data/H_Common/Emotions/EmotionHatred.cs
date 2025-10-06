@@ -19,7 +19,8 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
         {
             case 1:
                 return attack + 1f;
-                break;
+            default:
+                return attack;
         }
     }
     public float ModifyDefense(int emotionLevel ,float def)
@@ -28,7 +29,8 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
         {
             case 1:
                 return def + 4f;
-                break;
+            default:
+                return def;
         }
     }
     public float ModifyRegen(int emotionLevel ,float regen)
@@ -37,7 +39,8 @@ public class EmotionHatred : EmotionBase, IAttackModifier, IDefenseModifier, IRe
         {
             case 1:
                 return regen + 0.05f;
-                break;
+            default:
+                return regen;
         }
     }
 }

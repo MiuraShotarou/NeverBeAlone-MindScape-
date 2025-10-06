@@ -12,7 +12,7 @@ public abstract class EmotionBase
     {
         get { return _emotion; }
     }
-    protected int _level;
+    protected int _level; //不要説
     protected Emotion _weakEmotion;
     public Emotion WeakEmotion
     {

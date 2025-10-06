@@ -4,7 +4,7 @@ using UnityEngine;
 public class BattleLoopHandler : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] private PlayerData _playerData;
     private BattleUIController _uiController = default;
 
     public Queue<BattleUnitBase> BattleUnitQueue = default;
@@ -181,27 +181,28 @@ public class BattleLoopHandler : MonoBehaviour
         }
     }
 
-    void InitializePlayersFromData() // 追加
+    private void InitializePlayersFromData() // 追加
     {
         foreach (var player in _objects.PlayerUnits)
         {
-            player.Hp = playerData.hp;
-            player.MaxHp = playerData.maxHp;
-            player.ExpAmmount = playerData.exp;
-            player.Level = playerData.level;
+            player.Hp = _playerData.Hp;
+            player.MaxHp = _playerData.MaxHp;
+            player.ExpAmmount = _playerData.Exp;
+            player.Level = _playerData.Level;
         }
-        Debug.Log("Player初期化: Exp=" + playerData.exp + ", HP=" + playerData.hp);
+        Debug.Log("Player初期化: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
 
-    void UpdatePlayerDataFromPlayers() // 追加
+    private void UpdatePlayerDataFromPlayers() // 追加
     {
         foreach (var player in _objects.PlayerUnits)
         {
-            playerData.exp = player.ExpAmmount;
-            playerData.level = player.Level;
-            playerData.hp = player.Hp;
-            playerData.maxHp = player.MaxHp;
+            _playerData.Exp = player.ExpAmmount;
+            _playerData.Level = player.Level;
+            _playerData.Hp = player.Hp;
+           _playerData.MaxHp = player.MaxHp;
         }
-        Debug.Log("PlayerData更新: Exp=" + playerData.exp + ", HP=" + playerData.hp);
+        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
+
 }

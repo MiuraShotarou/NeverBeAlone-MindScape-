@@ -9,35 +9,38 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     [Header("基本ステータス")]
-    public int level;
-    public int exp;
-    public int hp;
-    public int maxHp;
-    public int tension;
-    public int maxTension;
+    public int Level;
+    public int Exp;
+    public int Hp;
+    public int MaxHp;
+    public int Tension;
+    public int MaxTension;
 
     [Header("能力値")]
-    public float baseAttack;
-    public int baseDefense;
-    public int agility;
-    public int baseEvadeRate;
-    public int baseCriticalRate;
-    public int baseCriticalDamageRate;
-    public int baseFluctuationRate;
-    public int baseTensionUpRate;
-    public int movement;
+    public float BaseAttack;
+    public int BaseDefense;
+    public int Agility;
+    public int BaseEvadeRate;
+    public int BaseCriticalRate;
+    public int BaseCriticalDamageRate;
+    public int BaseFluctuationRate;
+    public int BaseTensionUpRate;
+    public int Movement;
 
     [Header("装備品")]
-    public int equipmentCrystal;
-    public int equipmentJewel;
+    public int EquipmentCrystal;
+    public int EquipmentJewel;
 
     [Header("所持品")]
-    public List<string> itemsAccessory = new List<string>();
-    public List<string> itemsUsable = new List<string>();
+    public List<string> ItemsAccessory = new List<string>();
+    public List<string> ItemsUsable = new List<string>();
 
     [Header("スキル")]
-    public Dictionary<string, int> skillDict = new Dictionary<string, int>();
+    public Dictionary<string, int> SkillDict = new Dictionary<string, int>(); //戦闘システムに適用していない
+
+    [Header("感情レベル")]
+    public int[] EmotionLevelArray = new []{1, 1, 1, 1, 1};
 
     [Header("スマホ機能")]
-    public List<string> smartphone = new List<string>();
+    public List<string> Smartphone = new List<string>();
 }

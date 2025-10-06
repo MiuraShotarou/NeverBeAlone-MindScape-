@@ -27,8 +27,7 @@ public class BattleUnitPlayer : BattleUnitBase
     public void DecidePlayerMove(string skillName ,GameObject target)
     {
         _actionTarget = target;
-        _decideSkillKey = skillName;
-
+        SkillBase skill = GetSkill(skillName);
         TestAttack();
     }
 

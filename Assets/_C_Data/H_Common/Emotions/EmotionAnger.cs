@@ -19,7 +19,8 @@ public class EmotionAnger : EmotionBase, IAttackModifier, ICriticalRateModifier
         {
             case 1:
                 return attack + 5f;
-                break;
+            default:
+                return attack;
         }
     }
 
@@ -29,7 +30,8 @@ public class EmotionAnger : EmotionBase, IAttackModifier, ICriticalRateModifier
         {
             case 1:
                 return criticalRate + 0.05f;
-                break;
+            default:
+                return criticalRate;
         }
     }
 }
