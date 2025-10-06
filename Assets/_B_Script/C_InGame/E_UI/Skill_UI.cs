@@ -42,7 +42,10 @@ public class Skill_UI : ColorPallet, IUI
     void OnDisable()
     {
         _animator.enabled = false;
-        _objectManager.PlayerUnits[0].DecidePlayerMove(_chooseSkillName, _targetObj);
+        if (_objectManager.PlayerUnits[0])
+        {
+            _objectManager.PlayerUnits[0].DecidePlayerMove(_chooseSkillName, _targetObj);
+        }
     }
     public void DeactiveAnimator()
     {

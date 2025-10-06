@@ -183,7 +183,7 @@ public class BattleLoopHandler : MonoBehaviour
 
     private void InitializePlayersFromData() // 追加
     {
-        foreach (var player in _objects.PlayerUnits)
+        foreach (var player in _objects.PlayerUnits) //Playerは常に一人なのでforeachで回す必要がない
         {
             player.Hp = _playerData.Hp;
             player.MaxHp = _playerData.MaxHp;

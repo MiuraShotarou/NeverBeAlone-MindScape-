@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae466ceacb38ef4ca786ff3ef75f50a, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  level: 1
-  exp: 60
-  hp: 645
-  maxHp: 800
-  tension: 0
-  maxTension: 0
-  baseAttack: 0
-  baseDefense: 0
-  agility: 0
-  baseEvadeRate: 0
-  baseCriticalRate: 0
-  baseCriticalDamageRate: 0
-  baseFluctuationRate: 0
-  baseTensionUpRate: 0
-  movement: 0
-  equipmentCrystal: 0
-  equipmentJewel: 0
-  itemsAccessory: []
-  itemsUsable: []
-  skills: []
-  smartphone: []
+  Level: 1
+  Exp: 0
+  Hp: 100
+  MaxHp: 100
+  Tension: 0
+  MaxTension: 0
+  BaseAttack: 0
+  BaseDefense: 0
+  Agility: 0
+  BaseEvadeRate: 0
+  BaseCriticalRate: 0
+  BaseCriticalDamageRate: 0
+  BaseFluctuationRate: 0
+  BaseTensionUpRate: 0
+  Movement: 0
+  EquipmentCrystal: 0
+  EquipmentJewel: 0
+  ItemsAccessory: []
+  ItemsUsable: []
+  EmotionLevelArray: 0100000001000000010000000100000001000000
+  Smartphone: []
