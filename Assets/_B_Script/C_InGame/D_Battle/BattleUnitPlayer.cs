@@ -27,7 +27,7 @@ public class BattleUnitPlayer : BattleUnitBase
     public void DecidePlayerMove(string skillName ,GameObject target)
     {
         _actionTarget = target;
-
+        _decideSkillKey = skillName;
         TestAttack();
     }
 
@@ -37,7 +37,7 @@ public class BattleUnitPlayer : BattleUnitBase
     private void TestAttack()
     {
         _loopHandler.BattleState = BattleState.Busy; //削除するのはOKかもしれない
-        _loopHandler.PlayerOneMoreFlg = _isOneMoreAttack;
+        _loopHandler.PlayerOneMoreFlg = _decideSkillKey.Contains("OneMore")? true : false;
         _animator.Play("Attack1");
         OnAttackAnimationEnd();
     }

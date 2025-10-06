@@ -160,6 +160,7 @@ public class BattleEventController : MonoBehaviour
     public void ShowCommandMenu()
     {
         _uiController.ShowCommandPanel();
+        _uiController.ActiveBattleUI();
     }
     
     public void JudgeUnitsSurvive()
