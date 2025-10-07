@@ -347,4 +347,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         }
         return mod;
     }
+
+    /// <summary>状態異常の発動タイミングで呼び出す /// </summary>
+    public void OnConditionActivate(ConditionActivationType timing)
+    {
+        foreach (Condition condition in Enum.GetValues(typeof(Condition)))
+        {
+            if (ConditionFlag.HasFlag(condition) && condition != Condition.None)
+            {
+                ConditionBase conditionbase = ConditionDatabase.Database[condition];
+                if (conditionbase.Type == timing)
+                {
+                    conditionbase.ActivateConditionEffect();
+                }
+            }
+        }
+    }
 }
