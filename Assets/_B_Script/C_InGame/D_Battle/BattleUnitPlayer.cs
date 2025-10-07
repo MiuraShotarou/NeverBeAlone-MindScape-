@@ -175,6 +175,9 @@ public class BattleUnitPlayer : BattleUnitBase
         }
         return mod;
     }
+
+    public void KillDrain() => Hp += Mathf.RoundToInt(MaxHp * RegenerateBase);
+    
     private void SetTensionDownRate()
     {
         switch (TensionRank)

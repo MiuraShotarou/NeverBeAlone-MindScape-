@@ -22,6 +22,16 @@ public abstract class BattleUnitEnemyBase : BattleUnitBase
         }
     }
 
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        if (!_actionTarget.GetComponent<BattleUnitPlayer>().IsDead)
+        {
+            _actionTarget.GetComponent<BattleUnitPlayer>().KillDrain();
+            Debug.Log($"キルドレインで主人公のHPが{Mathf.RoundToInt(_actionTarget.GetComponent<BattleUnitPlayer>().MaxHp * _actionTarget.GetComponent<BattleUnitPlayer>().RegenerateBase)}回復した");
+        }
+    }
+
     public override void TakeDamage(int damage)
     {
         DamageText.gameObject.SetActive(true);

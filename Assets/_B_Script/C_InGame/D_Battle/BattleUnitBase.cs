@@ -280,7 +280,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 			}
 		}
 		// 弱点・耐性の効果を適用
-		Debug.Log(_skill != null);
 		mod = ModifyEmotionAffinityAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<BattleUnitBase>().CurrentEmotion);
         // 使用者の感情とスキルの感情が一致していた場合の効果を適用
 		mod = ModifyEmotionMatchAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<BattleUnitBase>().CurrentEmotion);
