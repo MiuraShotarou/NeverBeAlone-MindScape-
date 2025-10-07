@@ -39,7 +39,7 @@ public class Skill_UI : ColorPallet, IUI
     }
     public void SetTargetObject(GameObject targetObj) => _targetObj = targetObj;
 
-    void OnDisable()
+    private void OnDisable()
     {
         _animator.enabled = false;
         if (_objectManager.PlayerUnits[0])

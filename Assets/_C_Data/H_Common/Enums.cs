@@ -23,7 +23,7 @@ public enum Emotion
 /// テンションランク（興奮度・エネルギーレベル）
 /// </summary>
 [Serializable]
-public enum Tension
+public enum TensionRunk
 {
     /// <summary>平静状態</summary>
     Calm,

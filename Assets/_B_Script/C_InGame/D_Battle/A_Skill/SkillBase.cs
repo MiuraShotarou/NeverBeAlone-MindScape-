@@ -11,7 +11,7 @@ public abstract class SkillBase : ScriptableObject
     public abstract string ClientDescription { get;} //ユーザー用の説明文
     public abstract Emotion Emotion { get;} //スキルが持つ感情
     // public abstract AttackRange AttackRange(int level); // 攻撃範囲（未実装）
-    public abstract Tension NeedTension(int level); //スキルの使用に必要なテンションランク
+    public abstract TensionRunk NeedTension(int level); //スキルの使用に必要なテンションランク
     public abstract int AttackCount(int level); //攻撃回数
     public abstract ConditionActivationType ConditionActivationType { get;} //必要ないかもしれないけど一応
     public abstract SkillEffectBase SkillEffectBase { get;} //ステータス変動効果

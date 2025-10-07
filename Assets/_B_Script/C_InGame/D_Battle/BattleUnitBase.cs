@@ -37,7 +37,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("クリティカルヒットレート")] public float CriticalRateBase;
     [SerializeField, Tooltip("クリティカルダメージレート")] public float CriticalScaleBase;
     [SerializeField, Tooltip("回復力")] public float RegenerateBase;
-    [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTensionBase;
+    [SerializeField, Tooltip("テンションメータ最大値")] public int MaxTensionBase;
     [SerializeField, Tooltip("テンションゲージ上昇率")] public float TentionUpRateBase;
     [SerializeField, Tooltip("テンション減少率")] public float TentionDownRateBase;
 
@@ -47,9 +47,9 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
     [SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
     [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
-    [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTension;
+    [SerializeField, Tooltip("テンションメータ最大値")] public int MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
-    [SerializeField, Tooltip("テンションランク")] public Tension CurrentTension;
+    [SerializeField, Tooltip("テンションランク")] public TensionRunk TensionRunk;
     [SerializeField, Tooltip("攻撃力加算値")] public float AttackMod;
     [SerializeField, Tooltip("攻撃力倍率加算値")] public float AttackScaleMod;
     [SerializeField, Tooltip("防御力加算値")] public float DefenseMod;
@@ -60,6 +60,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions; //EmotionDict
     [SerializeField, Tooltip("現在感情")] public EmotionBase CurrentEmotion = new EmotionVoid(1);
     [SerializeField, Tooltip("スキルエフェクト")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
+    [SerializeField, Tooltip("所持バフ")] public List<ConditionBase> Conditions = new List<ConditionBase>();
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
     [SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = {1, 1, 1, 1, 1};
     [SerializeField, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
@@ -198,155 +199,127 @@ public abstract class BattleUnitBase : MonoBehaviour
     
     protected SkillBase GetSkill(string skillKey) => _objects.SkillBaseDict[skillKey];
 
-    /// <summary>
-    /// 最終攻撃力を算出
-    /// </summary>
-    /// <returns></returns>
-    public float CalcFinalAttack()
-    {
-        float valueMod = CalcAttackMod();
-        float scaleMod = CalcAttackScaleMod();
-        float finalAttack = (AttackBase + valueMod) * (AttackScaleBase + scaleMod);
-        CommonUtils.LogDebugLine(this, "CalcFinalAttack()", "攻撃側：" + _unitName);
-        CommonUtils.LogDebugLine(this, "CalcFinalAttack()",
-            "基礎攻撃力：" + AttackBase
-                     + ", 攻撃ボーナス：" + valueMod
-                     + ", 基礎攻撃力倍率：" + AttackScaleBase
-                     + ", 攻撃力倍率ボーナス：" + scaleMod
-                     + ", 最終攻撃力：" + finalAttack);
-        return finalAttack;
-    }
-    /// <summary>
-    /// 最終防御力を算出
-    /// </summary>
-    /// <returns></returns>
-    public float CalcFinalDefense()
-    {
-        float valueMod = CalcDefenseMod();
-        float scaleMod = CalcDefenseScaleMod();
-        float finalDefense = (DefenseBase + valueMod) * (DefenseScaleBase + scaleMod);
-        CommonUtils.LogDebugLine(this, "CalcFinalDefense()", "防御側：" + _unitName);
-        CommonUtils.LogDebugLine(this, "CalcFinalDefense()",
-            "基礎防御力：" + DefenseBase
-                     + ", 防御ボーナス：" + valueMod
-                     + ", 基礎防御力倍率：" + DefenseScaleBase
-                     + ", 防御力倍率ボーナス：" + scaleMod
-                     + ", 最終防御力：" + finalDefense);
-        return finalDefense;
-    }
-    /// <summary>
-    /// 攻撃ボーナスを算出
-    /// </summary>
-    /// <returns></returns>
-    public float CalcAttackMod()
-    {
-        float mod = 0;
-        // 感情ボーナスを適用
-        IAttackModifier emotionModifier = CurrentEmotion as IAttackModifier;
-        if (emotionModifier != null)
-        {
-            mod = emotionModifier.ModifyAttack(EmotionLevels[(int)CurrentEmotion.Emotion], mod); //PlayerDataから感情レベルを取得する
-        }
+	/// <summary>	
+	/// 最終攻撃力を算出
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcFinalAttack()
+	{
+	    float valueMod = CalcAttackMod();
+	    float scaleMod = CalcAttackScaleMod();
+	    float finalAttack = (AttackBase + valueMod) * (AttackScaleBase + scaleMod);
+	    CommonUtils.LogDebugLine(this, "CalcFinalAttack()", "攻撃側：" + _unitName);
+	    CommonUtils.LogDebugLine(this, "CalcFinalAttack()",
+	        "基礎攻撃力：" + AttackBase
+	                 + ", 攻撃ボーナス：" + valueMod
+	                 + ", 基礎攻撃力倍率：" + AttackScaleBase
+	                 + ", 攻撃力倍率ボーナス：" + scaleMod
+	                 + ", 最終攻撃力：" + finalAttack);
+	    return finalAttack;
+	}
+	
+	/// <summary>
+	/// 最終防御力を算出
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcFinalDefense()
+	{
+	    float valueMod = CalcDefenseMod();
+	    float scaleMod = CalcDefenseScaleMod();
+	    float finalDefense = (DefenseBase + valueMod) * (DefenseScaleBase + scaleMod);
+	    CommonUtils.LogDebugLine(this, "CalcFinalDefense()", "防御側：" + _unitName);
+	    CommonUtils.LogDebugLine(this, "CalcFinalDefense()",
+	        "基礎防御力：" + DefenseBase
+	                 + ", 防御ボーナス：" + valueMod
+	                 + ", 基礎防御力倍率：" + DefenseScaleBase
+	                 + ", 防御力倍率ボーナス：" + scaleMod
+	                 + ", 最終防御力：" + finalDefense);
+	    return finalDefense;
+	}
+	
+	/// <summary>
+	/// 攻撃ボーナスを算出
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcAttackMod()
+	{
+	    float mod = 0;
 
-        // TODO テンションボーナスを適用【未実装】
-
-        // スキルエフェクトの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IAttackModifier modifier = effect as IAttackModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyAttack(SkillDict[effect.Name], mod); //SkillDict<Enum Skill, int> の検索に変更したい。
-            }
-        }
-        return mod;
-    }
-    /// <summary>
-    /// 攻撃倍率ボーナスを算出
-    /// </summary>
-    /// <returns></returns>
-    public float CalcAttackScaleMod()
-    {
-        float mod = 0;
-        // 感情ボーナスを適用 仕様的にはいらないはず
-        IAttackScaleModifier emotionModifier = CurrentEmotion as IAttackScaleModifier;
-        if (emotionModifier != null)
-        {
-            mod = emotionModifier.ModifyAttackScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
-        }
-
-        // TODO テンションボーナスを適用【未実装】
-        
-        // スキル利用による倍率変動を適用
-        // これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
-        // スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
-
-        // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IAttackScaleModifier modifier = effect as IAttackScaleModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
-            }
-        }
-        return mod;
-    }
-
-    /// <summary>
-    /// 防御力ボーナスを算出する
-    /// </summary>
-    /// <returns></returns>
-    public float CalcDefenseMod()
-    {
-        float mod = 0;
-        // 感情ボーナスを適用
-        IDefenseModifier emotionModifier = CurrentEmotion as IDefenseModifier;
-        if (emotionModifier != null)
-        {
-            mod = emotionModifier.ModifyDefense(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
-        }
-
-        // TODO テンションボーナスを適用【未実装】
-
-        // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IDefenseModifier modifier = effect as IDefenseModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
-            }
-        }
-        return mod;
-    }
-    /// <summary>
-    /// 防御力倍率を算出
-    /// </summary>
-    /// <returns></returns>
-    public float CalcDefenseScaleMod()
-    {
-        float mod = 0;
-        // 感情ボーナスを適用
-        IDefenseScaleModifier emotionModifier = CurrentEmotion as IDefenseScaleModifier;
-        if (emotionModifier != null)
-        {
-            mod = emotionModifier.ModifyDefenseScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
-        }
-
-        // TODO テンションボーナスを適用【未実装】
-
-        // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
-            }
-        }
-        return mod;
-    }
+	    // TODO テンションボーナスを適用【未実装】
+	    // Tensionの影響を受けるのは主人公だけなのでBattleUnitPlayerのほうで実装した。
+	
+	    // スキルエフェクトの効果を適用
+	    foreach (SkillEffectBase effect in SkillEffects)
+	    {
+	        IAttackModifier modifier = effect as IAttackModifier;
+	        if (modifier != null)
+	        {
+	            mod = modifier.ModifyAttack(SkillDict[effect.Name], mod);
+	        }
+	    }
+	    return mod;
+	}
+	
+	/// <summary>
+	/// 攻撃倍率ボーナスを算出
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcAttackScaleMod()
+	{
+	    float mod = 0;
+	    // スキル利用による倍率変動を適用
+	    // これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
+	    // スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
+	
+	    // 所持バフの効果を適用
+	    foreach (SkillEffectBase effect in SkillEffects)
+	    {
+	        IAttackScaleModifier modifier = effect as IAttackScaleModifier;
+	        if (modifier != null)
+	        {
+	            mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
+	        }
+	    }
+	    return mod;
+	}
+	
+	/// <summary>
+	/// 防御力ボーナスを算出する
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcDefenseMod()
+	{
+	    float mod = 0;
+	    // 所持バフの効果を適用
+	    foreach (SkillEffectBase effect in SkillEffects)
+	    {
+	        IDefenseModifier modifier = effect as IDefenseModifier;
+	        if (modifier != null)
+	        {
+	            mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
+	        }
+	    }
+	    return mod;
+	}
+	
+	/// <summary>
+	/// 防御力倍率を算出
+	/// </summary>
+	/// <returns></returns>
+	protected virtual float CalcDefenseScaleMod()
+	{
+	    float mod = 0;
+	    // 所持バフの効果を適用
+	    foreach (SkillEffectBase effect in SkillEffects)
+	    {
+	        IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
+	        if (modifier != null)
+	        {
+	            mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
+	        }
+	    }
+	    return mod;
+	}
 
     /// <summary>状態異常の発動タイミングで呼び出す /// </summary>
     public void OnConditionActivate(ConditionActivationType timing)

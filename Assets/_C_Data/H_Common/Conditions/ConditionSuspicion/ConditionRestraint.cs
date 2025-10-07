@@ -33,7 +33,7 @@ public class ConditionRestraint : ConditionBase
 
         _activeTurns -= 1;
         CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "���������܂���");
-        var battleLoopHandler = FindObjectOfType<BattleLoopHandler>();
+        var battleLoopHandler = Object.FindObjectOfType<BattleLoopHandler>();
 
         if (battleLoopHandler != null)
         {
