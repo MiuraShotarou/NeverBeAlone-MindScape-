@@ -17,7 +17,7 @@ public class BattleUIController : MonoBehaviour
     [SerializeField] private Text _targetSelectText = default;
     [Header(".cs")]
     [SerializeField] private GameObject _statusPanel = default;
-    [Header(".cs")]
+    [Header("Skill_UI.cs")]
     [SerializeField] private GameObject _skillPanel = default;
     [Header("TransitionPhoneController.cs")]
     [SerializeField] private GameObject _phonePanel = default;
@@ -35,14 +35,6 @@ public class BattleUIController : MonoBehaviour
     public void DeactivateStartText()
     {
         _startText.gameObject.SetActive(false);
-    }
-    public void ShowTargetSelectText()
-    {
-        _targetSelectText.gameObject.SetActive(true);
-    }
-    public void DeactivateTargetSelectText()
-    {
-        _targetSelectText.gameObject.SetActive(false);
     }
     public void ShowVictoryText()
     {
@@ -74,14 +66,6 @@ public class BattleUIController : MonoBehaviour
     {
         _QTEPanel.SetActive(false);
     }
-    public void ShowCommandPanel()
-    {
-        CommandPanel.SetActive(true);
-    }
-    public void DeactivateCommandPanel()
-    {
-        CommandPanel.SetActive(false);
-    }
     /// <summary>
     /// 実質的な"戦闘UI表示メソッド"。元はTurnTable.SetActive(true)が書かれていた
     /// </summary>
@@ -91,6 +75,35 @@ public class BattleUIController : MonoBehaviour
         _skillPanel.SetActive(true);
         _phonePanel.SetActive(true);
         _allStatusPanel.SetActive(true);
+    }
+    /// <summary>
+    /// 使用しない。ActiveBattleUI()にてすでに表示されている
+    /// </summary>
+    public void ShowCommandPanel()
+    {
+        CommandPanel.SetActive(true);
+    }
+    /// <summary>
+    /// Skill_UIからスキルの選択後に一度だけ呼出される
+    /// </summary>
+    public void DeactivateCommandPanel()
+    {
+        CommandPanel.SetActive(false);
+    }
+    public void ShowTargetSelectText()
+    {
+        _targetSelectText.gameObject.SetActive(true);
+    }
+    /// <summary>
+    /// MouseSelectHandlerから一度だけ呼出される
+    /// そもそも、すべての戦闘用UIをDisableするように書かなければならない
+    /// </summary>
+    public void DeactivateTargetSelectText()
+    {
+        //ここでは、テスト用Sceneを壊さないように_targetSelectTextのセットアクティブもオフにしておく
+        _targetSelectText.gameObject.SetActive(false);
+        //本実装はこの行だけ。_skillPanelにアタッチされているOnDisableからダメージ計算メソッドへと移行する。
+        _skillPanel.gameObject.SetActive(false);
     }
     public void DeactivateTurnTable()
     {

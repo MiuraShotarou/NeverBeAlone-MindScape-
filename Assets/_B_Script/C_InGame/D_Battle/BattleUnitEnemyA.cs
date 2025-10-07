@@ -7,7 +7,7 @@ public class BattleUnitEnemyA : BattleUnitEnemyBase
 {
     private BattleUnitBase _actionTarget;
 
-    //ƒeƒXƒg—p
+    //ï¿½eï¿½Xï¿½gï¿½p
     private void Awake()
     {
         CurrentEmotion = new EmotionHatred(1);
