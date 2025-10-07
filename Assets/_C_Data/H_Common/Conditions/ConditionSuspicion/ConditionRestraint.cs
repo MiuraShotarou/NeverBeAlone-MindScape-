@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>‘©”›iàÈ‹^jŸ‚Ìƒ^[ƒ“‚Ü‚Ås“®•s”\</summary>
+/// <summary>ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½È‹^ï¿½jï¿½ï¿½ï¿½Ìƒ^ï¿½[ï¿½ï¿½ï¿½Ü‚Åsï¿½ï¿½ï¿½sï¿½\</summary>
 public class ConditionRestraint : ConditionBase
 {
 
     private Emotion _emotion = Emotion.Suspicion;
     [SerializeField] private int _damage = default;
 
-    /// <summary>•sˆÀiàÈ‹^j©g‚ÉàÈ‹^‘®«Œp‘±ƒ_ƒ[ƒW</summary>
-    public ConditionRestraint(Condition condition) : base(condition)
+    /// <summary>ï¿½sï¿½ï¿½ï¿½iï¿½È‹^ï¿½jï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‹^ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½[ï¿½W</summary>
+    public ConditionRestraint()
     {
-        _name = "‘©”›";
+        _condition = Condition.Restraint;
+        _name = "ï¿½ï¿½ï¿½ï¿½";
         _type = ConditionActivationType.OnTurnStart;
     }
 
@@ -31,8 +32,8 @@ public class ConditionRestraint : ConditionBase
         if (_activeTurns == 0) return;
 
         _activeTurns -= 1;
-        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "‚ª”­“®‚µ‚Ü‚µ‚½");
-        var battleLoopHandler = FindObjectOfType<BattleLoopHandler>();
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+        var battleLoopHandler = GameObject.FindObjectOfType<BattleLoopHandler>();
 
         if (battleLoopHandler != null)
         {
