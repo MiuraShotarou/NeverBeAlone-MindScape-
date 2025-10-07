@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>ƒhƒŒƒCƒ“i“{‚èj—^‚¦‚½ƒ_ƒ[ƒW * 0.1 ‰ñ•œ‚·‚é</summary>
+/// <summary>ãƒ‰ãƒ¬ã‚¤ãƒ³ï¼ˆæ€’ã‚Šï¼‰ä¸ãˆãŸãƒ€ãƒ¡ãƒ¼ã‚¸ * 0.1 å›å¾©ã™ã‚‹</summary>
 public class ConditionDrain : ConditionBase
 {
 
@@ -10,10 +10,11 @@ public class ConditionDrain : ConditionBase
     [SerializeField] private int _damageDealt = 10;
     [SerializeField] private float _hpRestoreScale = 0.1f;
 
-    /// <summary>ƒhƒŒƒCƒ“i“{‚èj—^‚¦‚½ƒ_ƒ[ƒW * 0.1 ‰ñ•œ‚·‚é</summary>
-    public ConditionDrain(Condition condition) : base(condition)
+    /// <summary>ãƒ‰ãƒ¬ã‚¤ãƒ³ï¼ˆæ€’ã‚Šï¼‰ä¸ãˆãŸãƒ€ãƒ¡ãƒ¼ã‚¸ * 0.1 å›å¾©ã™ã‚‹</summary>
+    public ConditionDrain()
     {
-        _name = "ƒhƒŒƒCƒ“";
+        _condition = Condition.Drain;
+        _name = "ãƒ‰ãƒ¬ã‚¤ãƒ³";
         _type = ConditionActivationType.OnAttackExecute;
     }
 
@@ -29,12 +30,12 @@ public class ConditionDrain : ConditionBase
 
     public override void ActivateConditionEffect()
     {
-        // TODO ©•ª‚ª“G‚É—^‚¦‚½ƒ_ƒ[ƒW‚ğ‚Á‚Ä‚­‚é
+        // TODO è‡ªåˆ†ãŒæ•µã«ä¸ãˆãŸãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’æŒã£ã¦ãã‚‹
         //_damageDealt = 
         int restoringHp = Mathf.RoundToInt(_damageDealt * _hpRestoreScale);
         restoringHp *= -1;
         _target.GetComponent<BattleUnitBase>().TakeDamage(restoringHp);
-        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "‚ª”­“®‚µ‚Ü‚µ‚½");
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "ãŒç™ºå‹•ã—ã¾ã—ãŸ");
     }
 
     public override void RemoveCondition()
