@@ -10,8 +10,9 @@ public class ConditionGnaw : ConditionBase
     [SerializeField] private int _damage = default;
 
     /// <summary>心蝕（怨念）自身に怨念属性継続ダメージ</summary>
-    public ConditionGnaw(Condition condition) : base(condition)
+    public ConditionGnaw()
     {
+        _condition = Condition.Gnaw;
         _name = "心蝕";
         _type = ConditionActivationType.OnTurnEnd;
     }

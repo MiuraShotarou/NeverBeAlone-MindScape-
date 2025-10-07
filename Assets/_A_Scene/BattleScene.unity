@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 8131420}
   - component: {fileID: 8131424}
   - component: {fileID: 8131425}
+  - component: {fileID: 8131426}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -252,10 +253,10 @@ MonoBehaviour:
   AttackScaleBase: 5
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -279,7 +280,6 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
 --- !u!95 &8131425
@@ -303,6 +303,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8131426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb4cc9d6994bb443842980083413e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _condition: 0
 --- !u!1 &27952617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,10 +2991,10 @@ MonoBehaviour:
   AttackScaleBase: 0
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -3005,7 +3018,6 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
   _playerGo: {fileID: 8131419}
@@ -3309,10 +3321,10 @@ MonoBehaviour:
   AttackScaleBase: 2
   AttackWeakpointScaleBase: 0
   AttackResistanceScaleBase: 0
-  DefenseBase: 0
-  DefenseScaleBase: 0
-  DefenseWeakpointScaleBase: 0
-  DefenseResistanceScaleBase: 0
+  DefenseBase: 20
+  DefenseScaleBase: 1
+  DefenseWeakpointScaleBase: 0.5
+  DefenseResistanceScaleBase: 1.5
   DexBase: 0
   EvadeRateBase: 0
   CriticalRateBase: 0
@@ -3336,7 +3348,6 @@ MonoBehaviour:
   Dex: 0
   EvadeRate: 0
   IsDead: 0
-  SkillEffects: []
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
   _playerGo: {fileID: 8131419}

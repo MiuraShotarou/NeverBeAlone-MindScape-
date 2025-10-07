@@ -57,9 +57,11 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("敏捷性")] public int Dex;
     [SerializeField, Tooltip("回避率")] public int EvadeRate;
     [SerializeField, Tooltip("死亡フラグ")] public bool IsDead;
-    [SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions;
+    //[SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions;
     [SerializeField, Tooltip("現在感情")] public EmotionBase CurrentEmotion = new EmotionVoid(1);
-    [SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
+    //ConditionBase型のリストに変更、状態異常になったらリストに追加
+    //[SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
+    [SerializeField, Tooltip("所持バフ")] public List<ConditionBase> Conditions = new List<ConditionBase>(); 
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
     [SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = {1, 1, 1, 1, 1};
 
@@ -242,14 +244,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IAttackModifier modifier = effect as IAttackModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyAttack(mod);
-            }
-        }
+        //foreach (SkillEffectBase effect in SkillEffects)
+        //{
+        //    IAttackModifier modifier = effect as IAttackModifier;
+        //    if (modifier != null)
+        //    {
+        //        mod = modifier.ModifyAttack(mod);
+        //    }
+        //}
         return mod;
     }
     /// <summary>
@@ -269,14 +271,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IAttackScaleModifier modifier = effect as IAttackScaleModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyAttackScale(mod);
-            }
-        }
+        //foreach (SkillEffectBase effect in SkillEffects)
+        //{
+        //    IAttackScaleModifier modifier = effect as IAttackScaleModifier;
+        //    if (modifier != null)
+        //    {
+        //        mod = modifier.ModifyAttackScale(mod);
+        //    }
+        //}
         return mod;
     }
 
@@ -297,14 +299,14 @@ public abstract class BattleUnitBase : MonoBehaviour
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
-        {
-            IDefenseModifier modifier = effect as IDefenseModifier;
-            if (modifier != null)
-            {
-                mod = modifier.ModifyDefense(mod);
-            }
-        }
+        //foreach (SkillEffectBase effect in SkillEffects)
+        //{
+        //    IDefenseModifier modifier = effect as IDefenseModifier;
+        //    if (modifier != null)
+        //    {
+        //        mod = modifier.ModifyDefense(mod);
+        //    }
+        //}
         return mod;
     }
     /// <summary>
@@ -324,14 +326,30 @@ public abstract class BattleUnitBase : MonoBehaviour
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        foreach (SkillEffectBase effect in SkillEffects)
+        //foreach (SkillEffectBase effect in SkillEffects)
+        //{
+        //    IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
+        //    if (modifier != null)
+        //    {
+        //        mod = modifier.ModifyDefenseScale(mod);
+        //    }
+        //}
+        return mod;
+    }
+
+    /// <summary>状態異常の発動タイミングで呼び出す /// </summary>
+    public void OnConditionActivate(ConditionActivationType timing)
+    {
+        foreach (Condition condition in Enum.GetValues(typeof(Condition)))
         {
-            IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
-            if (modifier != null)
+            if (ConditionFlag.HasFlag(condition) && condition != Condition.None)
             {
-                mod = modifier.ModifyDefenseScale(mod);
+                ConditionBase conditionbase = ConditionDatabase.Database[condition];
+                if (conditionbase.Type == timing)
+                {
+                    conditionbase.ActivateConditionEffect();
+                }
             }
         }
-        return mod;
     }
 }

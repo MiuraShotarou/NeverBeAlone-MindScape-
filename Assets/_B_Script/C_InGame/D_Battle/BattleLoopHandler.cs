@@ -105,6 +105,10 @@ public class BattleLoopHandler : MonoBehaviour
     public void EndTurn()
     {
         BattleUnitBase unitToDequeue = BattleUnitQueue.Dequeue();
+
+        //ターンエンド時に発動する状態異常を発動
+        unitToDequeue.OnConditionActivate(ConditionActivationType.OnTurnEnd);
+
         BattleUnitQueue.Enqueue(unitToDequeue);
         _battleState = BattleState.TurnStart;
     }

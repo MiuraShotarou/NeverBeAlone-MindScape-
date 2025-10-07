@@ -10,8 +10,9 @@ public class ConditionRestraint : ConditionBase
     [SerializeField] private int _damage = default;
 
     /// <summary>不安（猜疑）自身に猜疑属性継続ダメージ</summary>
-    public ConditionRestraint(Condition condition) : base(condition)
+    public ConditionRestraint()
     {
+        _condition = Condition.Restraint;
         _name = "束縛";
         _type = ConditionActivationType.OnTurnStart;
     }
@@ -32,7 +33,7 @@ public class ConditionRestraint : ConditionBase
 
         _activeTurns -= 1;
         CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "が発動しました");
-        var battleLoopHandler = FindObjectOfType<BattleLoopHandler>();
+        var battleLoopHandler = GameObject.FindObjectOfType<BattleLoopHandler>();
 
         if (battleLoopHandler != null)
         {
