@@ -5,40 +5,48 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class ConditionBase : ScriptableObject
+public abstract class ConditionBase
 {
     protected string _name;
     protected Condition _condition;
-    /// <summary>Œp‘±ƒ^[ƒ“”</summary>
+    public Condition Condition
+    {
+        get { return _condition; }
+    }
+    /// <summary>ç¶™ç¶šã‚¿ãƒ¼ãƒ³æ•°</summary>
     protected int _activeTurns = 1;
     protected ConditionActivationType _type;
+    public ConditionActivationType Type
+    {
+        get { return _type; }
+    }
     protected BattleUnitBase _target = default;
 
-    public ConditionBase(Condition condition)
-    {
-        _condition = condition;
-    }
+    //public ConditionBase(Condition condition)
+    //{
+    //    _condition = condition;
+    //}
 
-    /// <summary>ó‘ÔˆÙí‚ğ•t—^B•K—v‚Èƒpƒ‰ƒ[ƒ^[æ“¾“™</summary>
+    /// <summary>çŠ¶æ…‹ç•°å¸¸ã‚’ä»˜ä¸ã€‚å¿…è¦ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼å–å¾—ç­‰</summary>
     public abstract void ApplyCondition();
 
-    /// <summary>“¯‚¶ó‘ÔˆÙí‚ğ•t—^‚³‚ê‚½‚Æ‚«</summary>
+    /// <summary>åŒã˜çŠ¶æ…‹ç•°å¸¸ã‚’ä»˜ä¸ã•ã‚ŒãŸã¨ã</summary>
     public abstract void ReapplyCondition();
 
-    /// <summary>ó‘ÔˆÙí‚ÌŒø‰Ê‚ª”­“®‚·‚éuŠÔ‚Ìˆ—</summary>
+    /// <summary>çŠ¶æ…‹ç•°å¸¸ã®åŠ¹æœãŒç™ºå‹•ã™ã‚‹ç¬é–“ã®å‡¦ç†</summary>
     public abstract void ActivateConditionEffect();
 
-    /// <summary>ó‘ÔˆÙí‚ğ‰ğœ</summary>
+    /// <summary>çŠ¶æ…‹ç•°å¸¸ã‚’è§£é™¤</summary>
     public abstract void RemoveCondition();
 
-    /// <summary>ƒ^[ƒQƒbƒg‚Éó‘ÔˆÙí‚ğ•t—^‚µ‚Äƒrƒbƒgƒtƒ‰ƒO‚É’Ç‰Á</summary>
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«çŠ¶æ…‹ç•°å¸¸ã‚’ä»˜ä¸ã—ã¦ãƒ“ãƒƒãƒˆãƒ•ãƒ©ã‚°ã«è¿½åŠ </summary>
     /// <param name="targetCondition"></param>
     public void ApplyConditionToTarget(BattleUnitBase target)
     {
         _target = target;
-        Condition targetCondition = target.ConditionFlag;
+        //Condition targetConditionFlag = target.ConditionFlag;
 
-        if ((targetCondition & _condition) == _condition)
+        if ((target.ConditionFlag & _condition) == _condition)
         {
             ReapplyCondition();
         }
@@ -46,17 +54,19 @@ public abstract class ConditionBase : ScriptableObject
         {
             ApplyCondition();
         }
-        targetCondition |= _condition;
-        Debug.Log(_condition + "ó‘Ô‚É‚È‚è‚Ü‚µ‚½");
+        target.ConditionFlag |= _condition;
+        //target.Conditions.Add(this);
+        Debug.Log(target + "ãŒ" + _condition + "çŠ¶æ…‹ã«ãªã‚Šã¾ã—ãŸ");
     }
 
-    /// <summary>ƒ^[ƒQƒbƒg‚Ìó‘Ô‚ğ–ß‚µ‚Äƒrƒbƒgƒtƒ‰ƒO‚©‚çíœ</summary>
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®çŠ¶æ…‹ã‚’æˆ»ã—ã¦ãƒ“ãƒƒãƒˆãƒ•ãƒ©ã‚°ã‹ã‚‰å‰Šé™¤</summary>
 
     public void RemoveConditionFromTarget(BattleUnitBase target)
     {
-        Condition targetCondition = target.ConditionFlag;
+        Condition targetConditionFlag = target.ConditionFlag;
         RemoveCondition();
-        targetCondition &= ~_condition;
-        Debug.Log(_condition + "ó‘Ô‚ª‰ğœ‚³‚ê‚Ü‚µ‚½");
+        targetConditionFlag &= ~_condition;
+        target.Conditions.Remove(this);
+        Debug.Log(_condition + "çŠ¶æ…‹ãŒè§£é™¤ã•ã‚Œã¾ã—ãŸ");
     }
 }
