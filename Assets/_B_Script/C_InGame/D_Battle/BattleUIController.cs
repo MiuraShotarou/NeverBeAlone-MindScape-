@@ -15,10 +15,18 @@ public class BattleUIController : MonoBehaviour
     [SerializeField] private Text _gameoverText;
     [SerializeField] private Text _startText = default;
     [SerializeField] private Text _targetSelectText = default;
-    [Header("QTE_UI.cs")]
-    [SerializeField] private GameObject _QTEPanel = default;
+    [Header(".cs")]
+    [SerializeField] private GameObject _statusPanel = default;
+    [Header(".cs")]
+    [SerializeField] private GameObject _skillPanel = default;
     [Header("TransitionPhoneController.cs")]
     [SerializeField] private GameObject _phonePanel = default;
+    [Header(".cs")]
+    [SerializeField] private GameObject _allStatusPanel = default;
+    [Header("QTE_UI.cs")]
+    [SerializeField] private GameObject _QTEPanel = default;
+    [Header(".cs")]
+    [SerializeField] private GameObject _levelUpPanel = default;
 
     public void ShowStartText()
     {
@@ -55,14 +63,14 @@ public class BattleUIController : MonoBehaviour
     /// <summary>
     /// BattleState.QTE 時にマイフレーム呼び出される
     /// </summary>
-    public void ActuiveQTEPanel()
+    public void ActiveQTEPanel()
     {
         _QTEPanel.SetActive(true);
     }
     /// <summary>
     /// QTEEnd関数の最後にて一度だけ呼び出される
     /// </summary>
-    public void DeactivateRoulettePanel()
+    public void DeactivateQTEPanel()
     {
         _QTEPanel.SetActive(false);
     }
@@ -74,9 +82,15 @@ public class BattleUIController : MonoBehaviour
     {
         CommandPanel.SetActive(false);
     }
-    public void ShowTurnTable()
+    /// <summary>
+    /// 実質的な"戦闘UI表示メソッド"。元はTurnTable.SetActive(true)が書かれていた
+    /// </summary>
+    public void ActiveBattleUI()
     {
-        TurnTable.SetActive(true);
+        _statusPanel.SetActive(true);
+        _skillPanel.SetActive(true);
+        _phonePanel.SetActive(true);
+        _allStatusPanel.SetActive(true);
     }
     public void DeactivateTurnTable()
     {
