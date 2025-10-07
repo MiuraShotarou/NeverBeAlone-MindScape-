@@ -46,10 +46,10 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("現在正気度")] public int Hp;
     [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
     [SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
-    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安
+    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
     [SerializeField, Tooltip("テンションメータ最大値")] public float MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
-    [SerializeField, Tooltip("テンションレベル")] public int TensionLevel;
+    [SerializeField, Tooltip("テンションランク")] public Tension CurrentTension;
     [SerializeField, Tooltip("攻撃力加算値")] public float AttackMod;
     [SerializeField, Tooltip("攻撃力倍率加算値")] public float AttackScaleMod;
     [SerializeField, Tooltip("防御力加算値")] public float DefenseMod;
@@ -57,18 +57,18 @@ public abstract class BattleUnitBase : MonoBehaviour
     [SerializeField, Tooltip("敏捷性")] public int Dex;
     [SerializeField, Tooltip("回避率")] public int EvadeRate;
     [SerializeField, Tooltip("死亡フラグ")] public bool IsDead;
-    //[SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions;
+    [SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions; //EmotionDict
     [SerializeField, Tooltip("現在感情")] public EmotionBase CurrentEmotion = new EmotionVoid(1);
-    //ConditionBase型のリストに変更、状態異常になったらリストに追加
-    //[SerializeField, Tooltip("所持バフ")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
-    [SerializeField, Tooltip("所持バフ")] public List<ConditionBase> Conditions = new List<ConditionBase>(); 
+    [SerializeField, Tooltip("スキルエフェクト")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
     [SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
     [SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = {1, 1, 1, 1, 1};
+    [SerializeField, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
 
 
     public delegate void JudgeSurvival();
     protected void Start()
     {
+        Debug.Log($"{gameObject.name}, {Hp}");
         OnStart();
     }
 
@@ -89,11 +89,6 @@ public abstract class BattleUnitBase : MonoBehaviour
         //Emotions.Add(Emotion.Hatred, new EmotionHatred(EmotionLevels[(int)Emotion.Hatred]));
         //Emotions.Add(Emotion.Suspicion, new EmotionSuspicion(EmotionLevels[(int)Emotion.Suspicion]));
     }
-    /// <summary>
-    /// 被ダメージ処理
-    /// </summary>
-    /// <param name="damage">ダメージ値</param>
-    public abstract void TakeDamage(int damage);
 
     public virtual void OnDeath()
     {
@@ -133,7 +128,17 @@ public abstract class BattleUnitBase : MonoBehaviour
     {
         TakeDamage(CalculateFinalDamageTaken(damage, emotion));
     }
+    /// <summary>
+    /// 被ダメージ処理
+    /// </summary>
+    /// <param name="damage">ダメージ値</param>
+    public abstract void TakeDamage(int damage);
 
+    /// <summary>
+    /// 行っていること
+    /// 弱点・耐性の判断と計算
+    /// 乱数の追加
+    /// </summary>
     protected virtual int CalculateFinalDamageTaken(float damage, Emotion emotion)
     {
         float finalDefense = CalcFinalDefense();
@@ -190,6 +195,8 @@ public abstract class BattleUnitBase : MonoBehaviour
     //     effect.RemoveEffect(this, null);
     //     SkillEffects.Remove(effect);
     // }
+    
+    protected SkillBase GetSkill(string skillKey) => _objects.SkillBaseDict[skillKey];
 
     /// <summary>
     /// 最終攻撃力を算出
@@ -238,20 +245,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         IAttackModifier emotionModifier = CurrentEmotion as IAttackModifier;
         if (emotionModifier != null)
         {
-            mod = emotionModifier.ModifyAttack(mod);
+            mod = emotionModifier.ModifyAttack(EmotionLevels[(int)CurrentEmotion.Emotion], mod); //PlayerDataから感情レベルを取得する
         }
 
         // TODO テンションボーナスを適用【未実装】
 
-        // 所持バフの効果を適用
-        //foreach (SkillEffectBase effect in SkillEffects)
-        //{
-        //    IAttackModifier modifier = effect as IAttackModifier;
-        //    if (modifier != null)
-        //    {
-        //        mod = modifier.ModifyAttack(mod);
-        //    }
-        //}
+        // スキルエフェクトの効果を適用
+        foreach (SkillEffectBase effect in SkillEffects)
+        {
+            IAttackModifier modifier = effect as IAttackModifier;
+            if (modifier != null)
+            {
+                mod = modifier.ModifyAttack(SkillDict[effect.Name], mod); //SkillDict<Enum Skill, int> の検索に変更したい。
+            }
+        }
         return mod;
     }
     /// <summary>
@@ -261,24 +268,28 @@ public abstract class BattleUnitBase : MonoBehaviour
     public float CalcAttackScaleMod()
     {
         float mod = 0;
-        // 感情ボーナスを適用
+        // 感情ボーナスを適用 仕様的にはいらないはず
         IAttackScaleModifier emotionModifier = CurrentEmotion as IAttackScaleModifier;
         if (emotionModifier != null)
         {
-            mod = emotionModifier.ModifyAttackScale(mod);
+            mod = emotionModifier.ModifyAttackScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
 
         // TODO テンションボーナスを適用【未実装】
+        
+        // スキル利用による倍率変動を適用
+        // これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
+        // スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
 
         // 所持バフの効果を適用
-        //foreach (SkillEffectBase effect in SkillEffects)
-        //{
-        //    IAttackScaleModifier modifier = effect as IAttackScaleModifier;
-        //    if (modifier != null)
-        //    {
-        //        mod = modifier.ModifyAttackScale(mod);
-        //    }
-        //}
+        foreach (SkillEffectBase effect in SkillEffects)
+        {
+            IAttackScaleModifier modifier = effect as IAttackScaleModifier;
+            if (modifier != null)
+            {
+                mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
+            }
+        }
         return mod;
     }
 
@@ -293,20 +304,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         IDefenseModifier emotionModifier = CurrentEmotion as IDefenseModifier;
         if (emotionModifier != null)
         {
-            mod = emotionModifier.ModifyDefense(mod);
+            mod = emotionModifier.ModifyDefense(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
 
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        //foreach (SkillEffectBase effect in SkillEffects)
-        //{
-        //    IDefenseModifier modifier = effect as IDefenseModifier;
-        //    if (modifier != null)
-        //    {
-        //        mod = modifier.ModifyDefense(mod);
-        //    }
-        //}
+        foreach (SkillEffectBase effect in SkillEffects)
+        {
+            IDefenseModifier modifier = effect as IDefenseModifier;
+            if (modifier != null)
+            {
+                mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
+            }
+        }
         return mod;
     }
     /// <summary>
@@ -320,36 +331,20 @@ public abstract class BattleUnitBase : MonoBehaviour
         IDefenseScaleModifier emotionModifier = CurrentEmotion as IDefenseScaleModifier;
         if (emotionModifier != null)
         {
-            mod = emotionModifier.ModifyDefenseScale(mod);
+            mod = emotionModifier.ModifyDefenseScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
 
         // TODO テンションボーナスを適用【未実装】
 
         // 所持バフの効果を適用
-        //foreach (SkillEffectBase effect in SkillEffects)
-        //{
-        //    IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
-        //    if (modifier != null)
-        //    {
-        //        mod = modifier.ModifyDefenseScale(mod);
-        //    }
-        //}
-        return mod;
-    }
-
-    /// <summary>状態異常の発動タイミングで呼び出す /// </summary>
-    public void OnConditionActivate(ConditionActivationType timing)
-    {
-        foreach (Condition condition in Enum.GetValues(typeof(Condition)))
+        foreach (SkillEffectBase effect in SkillEffects)
         {
-            if (ConditionFlag.HasFlag(condition) && condition != Condition.None)
+            IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
+            if (modifier != null)
             {
-                ConditionBase conditionbase = ConditionDatabase.Database[condition];
-                if (conditionbase.Type == timing)
-                {
-                    conditionbase.ActivateConditionEffect();
-                }
+                mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
             }
         }
+        return mod;
     }
 }
