@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class BattleUnitEnemyBase : BattleUnitBase
 {
-    [SerializeField] protected GameObject _playerGo;
     /// <summary>
     /// テスト用：敵攻撃
     /// </summary>

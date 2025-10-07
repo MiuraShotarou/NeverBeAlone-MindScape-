@@ -9,7 +9,7 @@ public sealed class SkillOmoiokomete : SkillBase
     public override string ClientDescription => "敵一体に強力な一撃を与える。";
     public override Emotion Emotion => Emotion.Anger;
     // public abstract AttackRange AttackRange(int level); // 攻撃範囲（未実装）
-    public override TensionRunk NeedTension(int level) => TensionRunk.Calm;
+    public override TensionRank NeedTension(int level) => TensionRank.Calm;
     public override int AttackCount(int level) => 1; //攻撃回数
     public override ConditionActivationType ConditionActivationType => ConditionActivationType.Always; //必要ないかもしれないけど一応
     public override SkillEffectBase SkillEffectBase => new OmoiokometeEffect();

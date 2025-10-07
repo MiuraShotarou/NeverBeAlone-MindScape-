@@ -5,17 +5,15 @@ using UnityEngine;
 
 public class BattleUnitEnemyA : BattleUnitEnemyBase
 {
-    private BattleUnitBase _actionTarget;
-
     //�e�X�g�p
     private void Awake()
     {
         CurrentEmotion = new EmotionHatred(1);
     }
 
-    public override void DoAttack1(BattleUnitBase targetGo)
+    public override void DoAttack1(BattleUnitBase playerUnit)
     {
-        _actionTarget = targetGo;
+        SetTargetObject(playerUnit.gameObject);
         _animator.Play("Attack");
     }
     
