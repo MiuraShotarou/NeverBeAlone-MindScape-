@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>©i“{‚èj©g‚É“{‚è‘®«Œp‘±ƒ_ƒ[ƒW</summary>
+[CreateAssetMenu]
+/// <summary>è‡ªå‚·ï¼ˆæ€’ã‚Šï¼‰è‡ªèº«ã«æ€’ã‚Šå±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
 public class ConditionSelfharm : ConditionBase
 {
-
     private Emotion _emotion = Emotion.Anger;
-    [SerializeField] private int _damage = default;
+    [SerializeField] private int _damage = 20;
 
-    /// <summary>©i“{‚èj©g‚É“{‚è‘®«Œp‘±ƒ_ƒ[ƒW</summary>
-    public ConditionSelfharm(Condition condition) : base(condition)
+    /// <summary>è‡ªå‚·ï¼ˆæ€’ã‚Šï¼‰è‡ªèº«ã«æ€’ã‚Šå±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
+    public ConditionSelfharm()
     {
-        _name = "©";
+        _condition = Condition.Selfharm;
+        _name = "è‡ªå‚·";
         _type = ConditionActivationType.OnTurnEnd;
     }
 
@@ -32,7 +33,7 @@ public class ConditionSelfharm : ConditionBase
 
         _target.GetComponent<BattleUnitBase>().OnAttacked(_damage, _emotion);
         _activeTurns -= 1;
-        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "‚ª”­“®‚µ‚Ü‚µ‚½");
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "ãŒç™ºå‹•ã—ã¾ã—ãŸ");
 
         if (_activeTurns == 0)
         {
