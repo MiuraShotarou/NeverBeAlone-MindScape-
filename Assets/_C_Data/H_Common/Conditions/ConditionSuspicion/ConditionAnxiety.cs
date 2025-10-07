@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>•sˆÀiàÈ‹^j©g‚ÉàÈ‹^‘®«Œp‘±ƒ_ƒ[ƒW</summary>
+/// <summary>ä¸å®‰ï¼ˆçŒœç–‘ï¼‰è‡ªèº«ã«çŒœç–‘å±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
 public class ConditionAnxiety : ConditionBase
 {
 
     private Emotion _emotion = Emotion.Suspicion;
     [SerializeField] private int _damage = default;
 
-    /// <summary>•sˆÀiàÈ‹^j©g‚ÉàÈ‹^‘®«Œp‘±ƒ_ƒ[ƒW</summary>
-    public ConditionAnxiety(Condition condition) : base(condition)
+    /// <summary>ä¸å®‰ï¼ˆçŒœç–‘ï¼‰è‡ªèº«ã«çŒœç–‘å±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
+    public ConditionAnxiety()
     {
-        _name = "•sˆÀ";
+        _condition = Condition.Anxiety;
+        _name = "ä¸å®‰";
         _type = ConditionActivationType.OnTurnEnd;
     }
 
@@ -32,7 +33,7 @@ public class ConditionAnxiety : ConditionBase
 
         _target.GetComponent<BattleUnitBase>().OnAttacked(_damage, _emotion);
         _activeTurns -= 1;
-        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "‚ª”­“®‚µ‚Ü‚µ‚½");
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "ãŒç™ºå‹•ã—ã¾ã—ãŸ");
 
         if (_activeTurns == 0)
         {
