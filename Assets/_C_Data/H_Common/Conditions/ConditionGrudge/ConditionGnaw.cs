@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>SIi‰…”Oj©g‚É‰…”O‘®«Œp‘±ƒ_ƒ[ƒW</summary>
+/// <summary>å¿ƒè•ï¼ˆæ€¨å¿µï¼‰è‡ªèº«ã«æ€¨å¿µå±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
 public class ConditionGnaw : ConditionBase
 {
 
     private Emotion _emotion = Emotion.Grudge;
     [SerializeField] private int _damage = default;
 
-    /// <summary>SIi‰…”Oj©g‚É‰…”O‘®«Œp‘±ƒ_ƒ[ƒW</summary>
-    public ConditionGnaw(Condition condition) : base(condition)
+    /// <summary>å¿ƒè•ï¼ˆæ€¨å¿µï¼‰è‡ªèº«ã«æ€¨å¿µå±æ€§ç¶™ç¶šãƒ€ãƒ¡ãƒ¼ã‚¸</summary>
+    public ConditionGnaw()
     {
-        _name = "SI";
+        _condition = Condition.Gnaw;
+        _name = "å¿ƒè•";
         _type = ConditionActivationType.OnTurnEnd;
     }
 
@@ -32,7 +33,7 @@ public class ConditionGnaw : ConditionBase
 
         _target.GetComponent<BattleUnitBase>().OnAttacked(_damage, _emotion);
         _activeTurns -= 1;
-        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "‚ª”­“®‚µ‚Ü‚µ‚½");
+        CommonUtils.LogDebugLine(this, "ActivateConditionEffect()", _name + "ãŒç™ºå‹•ã—ã¾ã—ãŸ");
 
         if (_activeTurns == 0)
         {
