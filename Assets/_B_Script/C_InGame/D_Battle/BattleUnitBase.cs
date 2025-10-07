@@ -60,7 +60,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 	[SerializeField, Tooltip("所持バフ")] public List<ConditionBase> Conditions = new List<ConditionBase>();
 	[SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
 	[SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = { 1, 1, 1, 1, 1 };
-	[SerializeField, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
+	[HideInInspector, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
 	[SerializeField, Tooltip("使用スキル")] protected SkillBase _skill;
 
 
@@ -251,10 +251,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 	protected virtual float CalcAttackMod()
 	{
 		float mod = 0;
-
-		// TODO テンションボーナスを適用【未実装】
-		// Tensionの影響を受けるのは主人公だけなのでBattleUnitPlayerのほうで実装した。
-
 		// スキルエフェクトの効果を適用
 		foreach (SkillEffectBase effect in SkillEffects)
 		{
@@ -264,7 +260,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 				mod = modifier.ModifyAttack(SkillDict[effect.Name], mod);
 			}
 		}
-
 		return mod;
 	}
 
@@ -275,10 +270,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 	protected virtual float CalcAttackScaleMod()
 	{
 		float mod = 0;
-		// スキル利用による倍率変動を適用
-		// これまでの書き方であれば、ここにSkillData.csから情報を取得する処理を書かなければならない
-		// スキルの内容が複雑なので、ここの処理ではAttackSCale以外を取得したくない
-
 		// 所持バフの効果を適用
 		foreach (SkillEffectBase effect in SkillEffects)
 		{
@@ -288,11 +279,11 @@ public abstract class BattleUnitBase : MonoBehaviour
 				mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
 			}
 		}
-		// ターゲットとスキルの属性の相性を鑑みて、ダメージ計算を行なう処理を実装
-		mod = ModifyEmotionAffinityAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<EmotionBase>());
-        // 感情と状態が一致した時の弱点攻撃倍率のボーナスを適用
-		mod = ModifyEmotionMatchAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<EmotionBase>());
-
+		// 弱点・耐性の効果を適用
+		Debug.Log(_skill != null);
+		mod = ModifyEmotionAffinityAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<BattleUnitBase>().CurrentEmotion);
+        // 使用者の感情とスキルの感情が一致していた場合の効果を適用
+		mod = ModifyEmotionMatchAttackScale(mod, _skill.Emotion, _actionTarget.GetComponent<BattleUnitBase>().CurrentEmotion);
 		return mod;
 	}
 
@@ -312,7 +303,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 				mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
 			}
 		}
-
 		return mod;
 	}
 

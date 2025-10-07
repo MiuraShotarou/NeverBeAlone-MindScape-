@@ -4,10 +4,23 @@ using UnityEngine;
 
 public abstract class BattleUnitEnemyBase : BattleUnitBase
 {
+    [SerializeField, Header("所持スキル")] private SkillBase[] SkillArrays;
     /// <summary>
     /// テスト用：敵攻撃
     /// </summary>
     public abstract void DoAttack1(BattleUnitBase targetGo);
+
+    /// <summary>
+    /// テスト用：所持スキル
+    /// </summary>
+    /// <param name="damage"></param>
+    protected virtual void Awake()
+    {
+        if (SkillArrays[0] != null)
+        {
+            _skill = SkillArrays[0];
+        }
+    }
 
     public override void TakeDamage(int damage)
     {

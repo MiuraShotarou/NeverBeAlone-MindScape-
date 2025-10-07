@@ -84,7 +84,6 @@ public class BattleUnitPlayer : BattleUnitBase
         {
             mod = emotionModifier.ModifyAttack(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
-        
         return mod;
     }
 
@@ -95,18 +94,12 @@ public class BattleUnitPlayer : BattleUnitBase
     protected override float CalcAttackScaleMod()
     {
         float mod = base.CalcAttackScaleMod();
-
+        // 感情ステータスボーナスを適用
         IAttackScaleModifier emotionModifier = CurrentEmotion as IAttackScaleModifier;
         if (emotionModifier != null)
         {
             mod = emotionModifier.ModifyAttackScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
-        // 条件分岐をメソッドの中で行う
-        
-        // TODO テンションボーナスを適用【未実装】（楽しい +1.1, 覚醒 +1.2）弱点攻撃倍率にしか影響しない
-        // 弱点ヒット・耐性ヒットの判定をどこで取るかが大事だ
-        // 弱点を突かれたときの挙動 （テンションが減少、ダメージが変動）
-        
         return mod;
     }
 
@@ -123,9 +116,6 @@ public class BattleUnitPlayer : BattleUnitBase
         {
             mod = emotionModifier.ModifyDefense(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
-
-        // TODO テンションボーナスを適用【未実装】
-
         return mod;
     }
 
@@ -142,9 +132,6 @@ public class BattleUnitPlayer : BattleUnitBase
         {
             mod = emotionModifier.ModifyDefenseScale(EmotionLevels[(int)CurrentEmotion.Emotion], mod);
         }
-        
-        // TODO テンションボーナスを適用【未実装】（楽しい +0.05f, 覚醒 +0.1f）弱点耐性倍率にしか影響しない
-
         return mod;
     }
 
@@ -180,7 +167,7 @@ public class BattleUnitPlayer : BattleUnitBase
         if (skillEmotion == targetEmotion.WeakEmotion)
         {
             mod = ModifyWeekAttackScale(mod);
-            // mod = ModifyTensionBonusWeekAttackScale(mod);
+            // mod = ModifyTensionBonusWeekAttackScale(mod); //主人公のみ
         }
         else if (skillEmotion == targetEmotion.ResistantEmotion)
         {

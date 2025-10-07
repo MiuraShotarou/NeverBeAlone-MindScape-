@@ -6,8 +6,9 @@ using UnityEngine;
 public class BattleUnitEnemyA : BattleUnitEnemyBase
 {
     //�e�X�g�p
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         CurrentEmotion = new EmotionHatred(1);
     }
 

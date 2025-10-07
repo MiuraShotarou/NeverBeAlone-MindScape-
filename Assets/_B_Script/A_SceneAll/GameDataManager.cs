@@ -27,15 +27,15 @@ public class GameDataManager : MonoBehaviour
         PlayerData = playerData;
     }
     //<ダメージ計算パラメーター>
-    public float WeekAttackScale = 0.1f;
-    public float ResistAttacktScale = -0.2f;
-    public float EmotionMatchScale = 0.4f;
-    public float CalmWeekAttackScale = 0f;
-    public float ExcitedWeekAttackScale = 0f;
-    public float FunWeekAttackScale = 0.1f;
-    public float AwakeningWeekAttackScale = 0.2f;
-    public float CalmTensionDownRate = 0f;
-    public float ExcitedTensionDownRate = 0.1f;
-    public float FunTensionDownRate = 0.2f;
-    public float AwakeningTensionDownRate = 0.5f;
+    [HideInInspector] public float WeekAttackScale = 0.1f;
+    [HideInInspector] public float ResistAttacktScale = -0.2f;
+    [HideInInspector] public float EmotionMatchScale = 0.4f;
+    [HideInInspector] public float CalmWeekAttackScale = 0f;
+    [HideInInspector] public float ExcitedWeekAttackScale = 0f;
+    [HideInInspector] public float FunWeekAttackScale = 0.1f;
+    [HideInInspector] public float AwakeningWeekAttackScale = 0.2f;
+    [HideInInspector] public float CalmTensionDownRate = 0f;
+    [HideInInspector] public float ExcitedTensionDownRate = 0.1f;
+    [HideInInspector] public float FunTensionDownRate = 0.2f;
+    [HideInInspector] public float AwakeningTensionDownRate = 0.5f;
 }
