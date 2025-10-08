@@ -4,17 +4,33 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using DG.Tweening;
 
-public class TestOnClick : MonoBehaviour
+public class BuildScene : MonoBehaviour
 {
-    public void OnInGamePressed()
+    [SerializeField] private GameObject DoTweenObj;
+    public void OnBattleScenePressed()
     {
         SceneManager.LoadScene("BattleScene");
     }
-
+    public void OnTitlePressed()
+    {
+        SceneManager.LoadScene("Title");
+    }
+    public void OnInGamePressed()
+    {
+        SceneManager.LoadScene("InGame");
+    }
     public void OnSetUpPressed()
     {
-        SceneManager.LoadScene("SetUpScene");
+        SceneManager.LoadScene("SetUp");
+    }
+
+    public void OnDoTweenPressed()
+    {
+        DoTweenObj.transform
+            .DOLocalRotate(new Vector3(0, 0, 360f), 10, RotateMode.FastBeyond360) // Z軸を360度回転
+            .SetEase(Ease.Linear);
     }
 
     public void OnAddressableLoadPressed(string nameKey)

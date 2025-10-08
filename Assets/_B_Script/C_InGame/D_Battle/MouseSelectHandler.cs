@@ -54,7 +54,6 @@ public class MouseSelectHandler : MonoBehaviour
 
                 if (clickedUnit is BattleUnitEnemyBase && !clickedUnit.IsDead)
                 {
-                    Debug.Log("");
                     _skillUI.SetTargetObject(clickedObj); //コードは汚いが、ターゲットオブジェクトを渡さなくてはならないため
                     _uiController.DeactivateTargetSelectText(); //Deactive → OnDisable → Playerの行動処理
                     _battleLoopHandler.BattleState = BattleState.Busy;

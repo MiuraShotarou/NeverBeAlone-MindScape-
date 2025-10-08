@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class BattleUnitEnemyB : BattleUnitEnemyBase
 {
-    private BattleUnitBase _actionTarget;
-
-    public override void DoAttack1(BattleUnitBase targetGo)
+    public override void DoAttack1(BattleUnitBase playerUnit)
     {
-        _actionTarget = targetGo;
+        SetTargetObject(playerUnit.gameObject);
         _animator.Play("Attack");
     }
     
     public void OnAttackAnimationEnd()
     {
         float finalAttack = CalcFinalAttack();
-        _actionTarget.OnAttacked(finalAttack, CurrentEmotion.Emotion);
+        _actionTarget.GetComponent<BattleUnitBase>().OnAttacked(finalAttack, CurrentEmotion.Emotion);
     }
 }

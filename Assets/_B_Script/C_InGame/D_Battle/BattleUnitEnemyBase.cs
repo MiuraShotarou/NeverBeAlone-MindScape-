@@ -4,11 +4,33 @@ using UnityEngine;
 
 public abstract class BattleUnitEnemyBase : BattleUnitBase
 {
-    [SerializeField] protected GameObject _playerGo;
+    [SerializeField, Header("所持スキル")] private SkillBase[] SkillArrays;
     /// <summary>
     /// テスト用：敵攻撃
     /// </summary>
     public abstract void DoAttack1(BattleUnitBase targetGo);
+
+    /// <summary>
+    /// テスト用：所持スキル
+    /// </summary>
+    /// <param name="damage"></param>
+    protected virtual void Awake()
+    {
+        if (SkillArrays[0] != null)
+        {
+            _skill = SkillArrays[0];
+        }
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        if (!_actionTarget.GetComponent<BattleUnitPlayer>().IsDead)
+        {
+            _actionTarget.GetComponent<BattleUnitPlayer>().KillDrain();
+            Debug.Log($"キルドレインで主人公のHPが{Mathf.RoundToInt(_actionTarget.GetComponent<BattleUnitPlayer>().MaxHp * _actionTarget.GetComponent<BattleUnitPlayer>().RegenerateBase)}回復した");
+        }
+    }
 
     public override void TakeDamage(int damage)
     {

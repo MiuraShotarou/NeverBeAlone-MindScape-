@@ -62,6 +62,7 @@ public class BattleEventController : MonoBehaviour
     }
     public void QTEEnd(string rst)
     {
+        Debug.Log(rst);
         switch (rst)
         {
             case "Miss":

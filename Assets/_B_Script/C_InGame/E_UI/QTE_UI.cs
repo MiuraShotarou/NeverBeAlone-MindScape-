@@ -1,9 +1,10 @@
-using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem;
+using UnityEngine.Scripting;
 using Random = UnityEngine.Random;
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
@@ -48,26 +49,7 @@ public sealed class QTE_UI : ColorPallet
     /// </summary>
     private void OnEnable()
     {
-        AnimationClip qteClip = new AnimationClip();
-        AnimationEvent qteEvent = new AnimationEvent();
-        //QTEの発生タイミング
-        float timing = Random.Range(_timingMini, _timingMax);
-        //発生タイミングをeventに登録
-        qteEvent.time = timing;
-        //関数の登録。文字列の検索でしか関数の呼び出しはできない
-        qteEvent.functionName = "QTE"; // 呼ばれる関数名。該当するAnimatorがアタッチされているオブジェクトのMonoBehaviour付きコンポーネントをすべて確認し、文字列と一致する関数が見つかったらそれを呼び出す仕組み
-        //clipにeventを追加
-        qteClip.AddEvent(qteEvent);
-        //PlayableGraphを作成
-        _playableGraph = PlayableGraph.Create();
-        //AnimationClipPlayableを作成
-        AnimationClipPlayable animationClipPlayable = AnimationClipPlayable.Create(_playableGraph, qteClip);
-        //AnimationPlayableOutputを作成してAnimatorと紐づけ
-        AnimationPlayableOutput animationPlayableOutput = AnimationPlayableOutput.Create(_playableGraph, "AnimOutput", _animator);
-        animationPlayableOutput.SetSourcePlayable(animationClipPlayable);
-        //再生
-        _animator.enabled = true;
-        _playableGraph.Play();
+        QTE();
     }
     /// <summary>
     /// QTEのランダム要素を決定し、最後にQTEのアニメーションを再生する。OnEnableにて生成されたAnimationEVentから一度だけ呼び出される。
@@ -95,27 +77,12 @@ public sealed class QTE_UI : ColorPallet
         i_QTE_Circle_Excellent.transform.localEulerAngles = new Vector3(0, 0, excellentRightEdge);
         i_QTE_Circle_Good.GetComponent<Image>().fillAmount = goodFillAmount;
         i_QTE_Circle_Excellent.GetComponent<Image>().fillAmount = excellentFillAmount;
-        AnimationCurve curvePinRotationZ = AnimationCurve.Linear(_waitTime, 0f, _waitTime + qteTime, 0f + 360f);
-        //<PlayableGraphの作成>
-        //"QTE"という名前のついたanimationClipからコピーを新規作成
-        AnimationClip animationClip = new AnimationClip();
-        //QTE時間内にボタンが押されなかったときのAnimationEvent(Miss判定)を登録する
-        AnimationEvent animEvent = new AnimationEvent();
-        animEvent.time = _waitTime + qteTime;
-        animEvent.functionName = "JudgmentQTEResult";
-        animEvent.stringParameter = "Miss";
-        animationClip.AddEvent(animEvent);
-        // animationClipにanimationCurveを挿入する
-        animationClip.SetCurve(i_QTE_Pin.name, typeof(Transform), "localEulerAngles.z", curvePinRotationZ);
-        _playableGraph = PlayableGraph.Create();
-        AnimationClipPlayable animationClipPlayable = AnimationClipPlayable.Create(_playableGraph, animationClip);
-        AnimationPlayableOutput animationPlayableOutput = AnimationPlayableOutput.Create(_playableGraph, "AnimOutput", _animator);
-        animationPlayableOutput.SetSourcePlayable(animationClipPlayable);
         //再生
-        _animator.enabled = true;
-        _playableGraph.Play();
-        //音源の再生（AnimationEventでも良い）
         _isCanQTEEvent = true;
+        i_QTE_Pin.transform.eulerAngles = new Vector3(0, -180, 0);
+        // QTEのピン回転をDOTweenで制御
+        i_QTE_Pin.transform.DOLocalRotate(new Vector3(0, 0, 360f), qteTime, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetDelay(_waitTime).OnComplete(() =>{ _objectManager.BattleEventController.QTEEnd("Miss");});
+        // 音源の再生（AnimationEventでも良い）
     }
     /// <summary>
     /// 確率に重みをつける処理（フェーズ１終了時に追加でよい）。
@@ -154,6 +121,7 @@ public sealed class QTE_UI : ColorPallet
     /// </summary>
     void JudgmentQTEResult()
     {
+        i_QTE_Pin.transform.DOKill();
         string result = "";
         if (i_QTE_Pin.transform.rotation.eulerAngles.z <= i_QTE_Circle_Excellent.transform.rotation.eulerAngles.z
             &&
