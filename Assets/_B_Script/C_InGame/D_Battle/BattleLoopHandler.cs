@@ -46,14 +46,7 @@ public class BattleLoopHandler : MonoBehaviour
         switch (_battleState)
         {
             case BattleState.Init:
-                // 現在のプレイヤーデータを SaveData に詰める
-                SaveData data = new SaveData();
-                data.playerLevel = _playerData.Level;
-                data.playerHp = _playerData.Hp;
-                // data.playerPosition = _playerData.Position;
-                // 他にも保存したいなら追加
-                // SaveManager に渡してローカルJsonに保存
-                _saveManager.AutoSave(data);// AutoSaveに渡すだけ
+                SavePlayerData(); //add
                 _battleState = BattleState.Busy;
                 _battleEvents.InitBattleData();
                 break;
@@ -194,17 +187,36 @@ public class BattleLoopHandler : MonoBehaviour
         }
     }
 
-    private void InitializePlayersFromData() // 追加
+    private void InitializePlayersFromData()
     {
-        foreach (var player in _objects.PlayerUnits) //Playerは常に一人なのでforeachで回す必要がない
+        // SaveManagerからローカルのJSONを読み込み
+        SaveData loadedData = _saveManager.Load();
+
+        if (loadedData != null)
         {
-            player.Hp = _playerData.Hp;
-            player.MaxHp = _playerData.MaxHp;
-            player.ExpAmmount = _playerData.Exp;
-            player.Level = _playerData.Level;
+            // JSONから復元
+            foreach (var player in _objects.PlayerUnits) //Playerは常に一人なのでforeachで回す必要がない
+            {
+                player.Hp = loadedData.playerHp;
+                player.ExpAmmount = loadedData.playerExp;
+                player.Level = loadedData.playerLevel;
+            }
+            Debug.Log("JSONからロード完了: Exp=" + loadedData.playerExp + ", HP=" + loadedData.playerHp);
         }
-        Debug.Log("Player初期化: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+        else
+        {
+            // JSONがない場合、ScriptableObjectの初期値から
+            foreach (var player in _objects.PlayerUnits)
+            {
+                player.Hp = _playerData.Hp;
+                player.MaxHp = _playerData.MaxHp;
+                player.ExpAmmount = _playerData.Exp;
+                player.Level = _playerData.Level;
+            }
+            Debug.Log("PlayerData初期化: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+        }
     }
+
 
     private void UpdatePlayerDataFromPlayers() // 追加
     {
@@ -217,5 +229,14 @@ public class BattleLoopHandler : MonoBehaviour
         }
         Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
-
+    public void SavePlayerData()
+    {
+        SaveData data = new SaveData
+        {
+            playerLevel = _playerData.Level,
+            playerHp = _playerData.Hp,
+            playerPosition = _objects.PlayerUnits[0].transform.position
+        };
+        _saveManager.AutoSave(data);
+    }
 }

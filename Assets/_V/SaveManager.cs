@@ -52,6 +52,21 @@ public class SaveManager : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
     }
+    public SaveData Load()
+    {
+        string path = Application.persistentDataPath + "/savedata.json";
+        if (!File.Exists(path))
+        {
+            Debug.Log("SaveDataファイルが存在しません");
+            return null;
+        }
+
+        string json = File.ReadAllText(path);
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+        Debug.Log("SaveDataをロードしました: " + path);
+        return data;
+    }
+
     /// <summary>
     /// ローカルJsonをFirebaseにアップロード（データ移行用）
     /// </summary>
@@ -122,6 +137,7 @@ public class SaveManager : MonoBehaviour
 public class SaveData
 {
     // Saveしたいステータス等をここに代入
+    public int playerExp;
     public int playerLevel;
     public string playerName;
     public int playerHp;
