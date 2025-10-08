@@ -38,7 +38,7 @@ public class BattleLoopHandler : MonoBehaviour
         _battleEvents = gameObject.GetComponent<BattleEventController>();
         _battleState = BattleState.Init;
 
-        InitializePlayersFromData(); // 追加
+        InitializePlayersFromData();
     }
 
     void Update()
@@ -179,56 +179,36 @@ public class BattleLoopHandler : MonoBehaviour
     {
         int totalExp = 0; // この戦闘で獲得する総経験値
         foreach (var enemy in _objects.EnemyUnits)
-            totalExp += enemy.ExpReward;
-
-        foreach (var player in _objects.PlayerUnits)
         {
-            player.ExpAmmount += totalExp;
+            totalExp += enemy.ExpReward;
         }
+
+        var player = _objects.PlayerUnits[0];
+        player.ExpAmmount += totalExp;
     }
 
+    /// <summary>
+    /// 戦闘直前に呼ぶ。ScriptableObject → BattleUnitPlayer に反映し、同時に Json に保存する
+    /// </summary>
     private void InitializePlayersFromData()
     {
-        // SaveManagerからローカルのJSONを読み込み
-        SaveData loadedData = _saveManager.Load();
-
-        if (loadedData != null)
-        {
-            // JSONから復元
-            foreach (var player in _objects.PlayerUnits) //Playerは常に一人なのでforeachで回す必要がない
-            {
-                player.Hp = loadedData.playerHp;
-                player.ExpAmmount = loadedData.playerExp;
-                player.Level = loadedData.playerLevel;
-            }
-            Debug.Log("JSONからロード完了: Exp=" + loadedData.playerExp + ", HP=" + loadedData.playerHp);
-        }
-        else
-        {
-            // JSONがない場合、ScriptableObjectの初期値から
-            foreach (var player in _objects.PlayerUnits)
-            {
-                player.Hp = _playerData.Hp;
-                player.MaxHp = _playerData.MaxHp;
-                player.ExpAmmount = _playerData.Exp;
-                player.Level = _playerData.Level;
-            }
-            Debug.Log("PlayerData初期化: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
-        }
-    }
-
-
-    private void UpdatePlayerDataFromPlayers() // 追加
-    {
         foreach (var player in _objects.PlayerUnits)
         {
-            _playerData.Exp = player.ExpAmmount;
-            _playerData.Level = player.Level;
-            _playerData.Hp = player.Hp;
-           _playerData.MaxHp = player.MaxHp;
+            player.Hp = _playerData.Hp;
+            player.MaxHp = _playerData.MaxHp;
+            player.ExpAmmount = _playerData.Exp;
+            player.Level = _playerData.Level;
         }
-        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+
+        Debug.Log("BattleUnitPlayer初期化（ScriptableObjectから）: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+
+        // 戦闘直前の状態を Json に保存
+        SavePlayerData();
     }
+
+    /// <summary>
+    /// jsonに保存
+    /// </summary>
     public void SavePlayerData()
     {
         SaveData data = new SaveData
@@ -237,6 +217,19 @@ public class BattleLoopHandler : MonoBehaviour
             playerHp = _playerData.Hp,
             playerPosition = _objects.PlayerUnits[0].transform.position
         };
-        _saveManager.AutoSave(data);
+        _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
+        Debug.Log("戦闘直前のScriptableObjectデータをJsonに保存: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+    }
+
+    private void UpdatePlayerDataFromPlayers() // 追加
+    {
+        foreach (var player in _objects.PlayerUnits)
+        {
+            _playerData.Exp = player.ExpAmmount;
+            _playerData.Level = player.Level;
+            _playerData.Hp = player.Hp;
+            _playerData.MaxHp = player.MaxHp;
+        }
+        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
 }
