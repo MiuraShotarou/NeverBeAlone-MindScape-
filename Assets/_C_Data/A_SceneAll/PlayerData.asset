@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bae466ceacb38ef4ca786ff3ef75f50a, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  Level: 1
-  Exp: 0
-  Hp: 100
+  Level: 2
+  Exp: 160
+  Hp: 80
   MaxHp: 100
   Tension: 0
   MaxTension: 0
