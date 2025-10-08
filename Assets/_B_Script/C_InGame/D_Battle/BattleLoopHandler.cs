@@ -205,7 +205,7 @@ public class BattleLoopHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// jsonに保存
+    /// ここでjsonに保存する
     /// </summary>
     public void SavePlayerData()
     {
@@ -213,6 +213,7 @@ public class BattleLoopHandler : MonoBehaviour
         {
             playerLevel = _playerData.Level,
             playerHp = _playerData.Hp,
+            playerExp = _playerData.Exp,
             playerPosition = _objects.PlayerUnits[0].transform.position
         };
         _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
