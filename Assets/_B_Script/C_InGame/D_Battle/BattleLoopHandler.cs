@@ -192,13 +192,11 @@ public class BattleLoopHandler : MonoBehaviour
     /// </summary>
     private void InitializePlayersFromData()
     {
-        foreach (var player in _objects.PlayerUnits)
-        {
-            player.Hp = _playerData.Hp;
-            player.MaxHp = _playerData.MaxHp;
-            player.ExpAmmount = _playerData.Exp;
-            player.Level = _playerData.Level;
-        }
+        var player = _objects.PlayerUnits[0];
+        player.Hp = _playerData.Hp;
+        player.MaxHp = _playerData.MaxHp;
+        player.ExpAmmount = _playerData.Exp;
+        player.Level = _playerData.Level;
 
         Debug.Log("BattleUnitPlayer初期化（ScriptableObjectから）: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
 
@@ -221,15 +219,15 @@ public class BattleLoopHandler : MonoBehaviour
         Debug.Log("戦闘直前のScriptableObjectデータをJsonに保存: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
 
-    private void UpdatePlayerDataFromPlayers() // 追加
+    private void UpdatePlayerDataFromPlayers()
     {
-        foreach (var player in _objects.PlayerUnits)
-        {
-            _playerData.Exp = player.ExpAmmount;
-            _playerData.Level = player.Level;
-            _playerData.Hp = player.Hp;
-            _playerData.MaxHp = player.MaxHp;
-        }
+        var player = _objects.PlayerUnits[0];
+        _playerData.Exp = player.ExpAmmount;
+        _playerData.Level = player.Level;
+        _playerData.Hp = player.Hp;
+        _playerData.MaxHp = player.MaxHp;
+
         Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
+
 }
