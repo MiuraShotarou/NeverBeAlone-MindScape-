@@ -46,7 +46,7 @@ public class BattleLoopHandler : MonoBehaviour
         switch (_battleState)
         {
             case BattleState.Init:
-                SavePlayerData(); //add
+                // SavePlayerData(); //add
                 _battleState = BattleState.Busy;
                 _battleEvents.InitBattleData();
                 break;
