@@ -1,35 +1,35 @@
 using UnityEngine;
 using System.IO;
-using Firebase.Database;
-using Firebase.Extensions;
+// using Firebase.Database;
+// using Firebase.Extensions;
 
 /// <summary>
-/// ƒQ[ƒ€ƒf[ƒ^‚Ì•Û‘¶‚Æƒ[ƒh‚ğ’S“–‚·‚éƒ}ƒl[ƒWƒƒ[B
-/// í“¬‘OƒI[ƒgƒZ[ƒu‚Íí‚Éƒ[ƒJƒ‹Json‚É•Û‘¶B
-/// ƒf[ƒ^ˆÚs‚Ì‚İFirebase‚©‚çæ“¾‚µ‚Äƒ[ƒJƒ‹‚Éã‘‚«‚·‚éB
+/// ï¿½Qï¿½[ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Ì•Û‘ï¿½ï¿½Æƒï¿½ï¿½[ï¿½hï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½lï¿½[ï¿½Wï¿½ï¿½ï¿½[ï¿½B
+/// ï¿½í“¬ï¿½Oï¿½Iï¿½[ï¿½gï¿½Zï¿½[ï¿½uï¿½Íï¿½Éƒï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½É•Û‘ï¿½ï¿½B
+/// ï¿½fï¿½[ï¿½^ï¿½Úsï¿½ï¿½ï¿½Ì‚ï¿½Firebaseï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Äƒï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Éã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
-    private string savePath; // json‚ğ“ü‚ê‚é” 
+    private string savePath; // jsonï¿½ï¿½ï¿½ï¿½ï¿½é” 
 
     private void Awake()
     {
         savePath = Path.Combine(Application.persistentDataPath, "savedata.json");
-        Debug.Log("•Û‘¶ƒpƒX: " + savePath);
+        Debug.Log("ï¿½Û‘ï¿½ï¿½pï¿½X: " + savePath);
     }
 
     /// <summary>
-    /// í“¬‘O‚ÉŒÄ‚ÔƒI[ƒgƒZ[ƒuBí‚Éƒ[ƒJƒ‹Json‚É•Û‘¶B
+    /// ï¿½í“¬ï¿½Oï¿½ÉŒÄ‚ÔƒIï¿½[ï¿½gï¿½Zï¿½[ï¿½uï¿½Bï¿½ï¿½Éƒï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½É•Û‘ï¿½ï¿½B
     /// </summary>
     public void AutoSave(SaveData data)
     {
         SaveToLocal(data);
-        Debug.Log("í“¬‘OƒI[ƒgƒZ[ƒuŠ®—¹iƒ[ƒJƒ‹Jsonj");
+        Debug.Log("ï¿½í“¬ï¿½Oï¿½Iï¿½[ï¿½gï¿½Zï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½j");
     }
 
     /// <summary>
-    /// ƒQ[ƒ€ŠJn‚ÉŒÄ‚Ôƒ[ƒhB
-    /// Json‚ª‘¶İ‚·‚ê‚Î“Ç‚İ‚İA‚È‚¯‚ê‚ÎV‹Kƒf[ƒ^‚ğ•Ô‚·B
+    /// ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ÉŒÄ‚Ôƒï¿½ï¿½[ï¿½hï¿½B
+    /// Jsonï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½ï¿½Î“Ç‚İï¿½ï¿½İAï¿½È‚ï¿½ï¿½ï¿½ÎVï¿½Kï¿½fï¿½[ï¿½^ï¿½ï¿½Ô‚ï¿½ï¿½B
     /// </summary>
     public SaveData LoadGame()
     {
@@ -37,7 +37,7 @@ public class SaveManager : MonoBehaviour
         {
             string json = File.ReadAllText(savePath);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
-            Debug.Log("ƒQ[ƒ€ŠJn‚Éƒ[ƒJƒ‹Json‚©‚çƒ[ƒh");
+            Debug.Log("ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½Éƒï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½ï¿½ï¿½çƒï¿½[ï¿½h");
             return data;
         }
 
@@ -45,7 +45,7 @@ public class SaveManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Jsonƒtƒ@ƒCƒ‹‚Éƒf[ƒ^‚ğ•Û‘¶iã‘‚«jB
+    /// Jsonï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Éƒfï¿½[ï¿½^ï¿½ï¿½Û‘ï¿½ï¿½iï¿½ã‘ï¿½ï¿½ï¿½jï¿½B
     /// </summary>
     private void SaveToLocal(SaveData data)
     {
@@ -57,24 +57,24 @@ public class SaveManager : MonoBehaviour
         string path = Application.persistentDataPath + "/savedata.json";
         if (!File.Exists(path))
         {
-            Debug.Log("SaveDataƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ");
+            Debug.Log("SaveDataï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
             return null;
         }
 
         string json = File.ReadAllText(path);
         SaveData data = JsonUtility.FromJson<SaveData>(json);
-        Debug.Log("SaveData‚ğƒ[ƒh‚µ‚Ü‚µ‚½: " + path);
+        Debug.Log("SaveDataï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½: " + path);
         return data;
     }
 
     /// <summary>
-    /// ƒ[ƒJƒ‹Json‚ğFirebase‚ÉƒAƒbƒvƒ[ƒhiƒf[ƒ^ˆÚs—pj
+    /// ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½ï¿½Firebaseï¿½ÉƒAï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½iï¿½fï¿½[ï¿½^ï¿½Úsï¿½pï¿½j
     /// </summary>
     public void UploadDataToFirebase(string userId)
     {
         if (!File.Exists(savePath))
         {
-            Debug.LogWarning("ƒ[ƒJƒ‹ƒf[ƒ^‚ª‘¶İ‚µ‚Ü‚¹‚ñBƒAƒbƒvƒ[ƒh‚ğƒXƒLƒbƒv‚µ‚Ü‚·B");
+            Debug.LogWarning("ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Bï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½vï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B");
             return;
         }
 
@@ -83,60 +83,60 @@ public class SaveManager : MonoBehaviour
 
         string jsonToSave = JsonUtility.ToJson(data, true);
 
-        DatabaseReference dbRef = FirebaseDatabase.DefaultInstance.RootReference;
-        dbRef.Child("gameData").Child(userId)
-            .SetRawJsonValueAsync(jsonToSave)
-            .ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted)
-                    Debug.Log("ƒ[ƒJƒ‹ƒf[ƒ^‚ğFirebase‚ÉƒAƒbƒvƒ[ƒh‚µ‚Ü‚µ‚½");
-                else
-                    Debug.LogError("FirebaseƒAƒbƒvƒ[ƒh¸”s: " + task.Exception);
-            });
+        // DatabaseReference dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+        // dbRef.Child("gameData").Child(userId)
+        //     .SetRawJsonValueAsync(jsonToSave)
+        //     .ContinueWithOnMainThread(task =>
+        //     {
+        //         if (task.IsCompleted)
+        //             Debug.Log("ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½ï¿½Firebaseï¿½ÉƒAï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+        //         else
+        //             Debug.LogError("Firebaseï¿½Aï¿½bï¿½vï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½s: " + task.Exception);
+        //     });
     }
 
     /// <summary>
-    /// ƒf[ƒ^ˆÚs‚ÉŒÄ‚ÔB
-    /// Firebase‚©‚çæ“¾‚µ‚½ƒf[ƒ^‚ğƒ[ƒJƒ‹Json‚Éã‘‚«B
+    /// ï¿½fï¿½[ï¿½^ï¿½Úsï¿½ï¿½ï¿½ÉŒÄ‚ÔB
+    /// Firebaseï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½Éã‘ï¿½ï¿½ï¿½B
     /// </summary>
 
     public void MigrateDataFromFirebase(string userId)
     {
-        FirebaseDatabase.DefaultInstance.RootReference
-            .Child("gameData").Child(userId)
-            .GetValueAsync().ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted)
-                {
-                    var snapshot = task.Result;
-                    if (snapshot.Exists)
-                    {
-                        SaveData data = JsonUtility.FromJson<SaveData>(snapshot.GetRawJsonValue());
-                        SaveToLocal(data);
-                        Debug.Log("Firebase‚©‚çƒf[ƒ^ˆÚsŠ®—¹iƒ[ƒJƒ‹Jsonã‘‚«j");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Firebase‚Éƒ†[ƒU[ {userId} ‚Ìƒf[ƒ^‚ª‘¶İ‚µ‚Ü‚¹‚ñ");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Firebaseƒf[ƒ^æ“¾‚É¸”s: " + task.Exception);
-                }
-            });
+        // FirebaseDatabase.DefaultInstance.RootReference
+        //     .Child("gameData").Child(userId)
+        //     .GetValueAsync().ContinueWithOnMainThread(task =>
+        //     {
+        //         if (task.IsCompleted)
+        //         {
+        //             var snapshot = task.Result;
+        //             if (snapshot.Exists)
+        //             {
+        //                 SaveData data = JsonUtility.FromJson<SaveData>(snapshot.GetRawJsonValue());
+        //                 SaveToLocal(data);
+        //                 Debug.Log("Firebaseï¿½ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Úsï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½Jsonï¿½ã‘ï¿½ï¿½ï¿½j");
+        //             }
+        //             else
+        //             {
+        //                 Debug.LogWarning($"Firebaseï¿½Éƒï¿½ï¿½[ï¿½Uï¿½[ {userId} ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
+        //             }
+        //         }
+        //         else
+        //         {
+        //             Debug.LogError("Firebaseï¿½fï¿½[ï¿½^ï¿½æ“¾ï¿½Éï¿½ï¿½s: " + task.Exception);
+        //         }
+        //     });
     }
 
 
 }
 
 /// <summary>
-/// •Û‘¶‚·‚éƒQ[ƒ€ƒf[ƒ^‚Ì\‘¢
+/// ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Ì\ï¿½ï¿½
 /// </summary>
 [System.Serializable]
 public class SaveData
 {
-    // Save‚µ‚½‚¢ƒXƒe[ƒ^ƒX“™‚ğ‚±‚±‚É‘ã“ü
+    // Saveï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‘ï¿½ï¿½
     public int playerExp;
     public int playerLevel;
     public string playerName;
