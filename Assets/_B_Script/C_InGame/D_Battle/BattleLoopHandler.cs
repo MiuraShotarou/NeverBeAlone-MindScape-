@@ -5,6 +5,7 @@ public class BattleLoopHandler : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] SaveManager _saveManager;
     private BattleUIController _uiController = default;
 
     public Queue<BattleUnitBase> BattleUnitQueue = default;
@@ -45,6 +46,14 @@ public class BattleLoopHandler : MonoBehaviour
         switch (_battleState)
         {
             case BattleState.Init:
+                // 現在のプレイヤーデータを SaveData に詰める
+                SaveData data = new SaveData();
+                data.playerLevel = _playerData.Level;
+                data.playerHp = _playerData.Hp;
+                // data.playerPosition = _playerData.Position;
+                // 他にも保存したいなら追加
+                // SaveManager に渡してローカルJsonに保存
+                _saveManager.AutoSave(data);// AutoSaveに渡すだけ
                 _battleState = BattleState.Busy;
                 _battleEvents.InitBattleData();
                 break;

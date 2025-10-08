@@ -10,11 +10,12 @@ using Firebase.Extensions;
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
-    private string savePath;
+    private string savePath; // jsonを入れる箱
 
     private void Awake()
     {
         savePath = Path.Combine(Application.persistentDataPath, "savedata.json");
+        Debug.Log("保存パス: " + savePath);
     }
 
     /// <summary>
@@ -51,14 +52,43 @@ public class SaveManager : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
     }
+    /// <summary>
+    /// ローカルJsonをFirebaseにアップロード（データ移行用）
+    /// </summary>
+    public void UploadDataToFirebase(string userId)
+    {
+        if (!File.Exists(savePath))
+        {
+            Debug.LogWarning("ローカルデータが存在しません。アップロードをスキップします。");
+            return;
+        }
+
+        string json = File.ReadAllText(savePath);
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+        string jsonToSave = JsonUtility.ToJson(data, true);
+
+        DatabaseReference dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+        dbRef.Child("gameData").Child(userId)
+            .SetRawJsonValueAsync(jsonToSave)
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                    Debug.Log("ローカルデータをFirebaseにアップロードしました");
+                else
+                    Debug.LogError("Firebaseアップロード失敗: " + task.Exception);
+            });
+    }
 
     /// <summary>
-    /// データ移行ボタン押下時に呼ぶ。
+    /// データ移行時に呼ぶ。
     /// Firebaseから取得したデータをローカルJsonに上書き。
     /// </summary>
-    public void MigrateDataFromFirebase()
+
+    public void MigrateDataFromFirebase(string userId)
     {
-        FirebaseDatabase.DefaultInstance.RootReference.Child("gameData")
+        FirebaseDatabase.DefaultInstance.RootReference
+            .Child("gameData").Child(userId)
             .GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.IsCompleted)
@@ -72,7 +102,7 @@ public class SaveManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("Firebaseにデータが存在しません");
+                        Debug.LogWarning($"Firebaseにユーザー {userId} のデータが存在しません");
                     }
                 }
                 else
@@ -81,6 +111,8 @@ public class SaveManager : MonoBehaviour
                 }
             });
     }
+
+
 }
 
 /// <summary>
@@ -92,5 +124,6 @@ public class SaveData
     // Saveしたいステータス等をここに代入
     public int playerLevel;
     public string playerName;
-    // public Vector3 playerPosition;
+    public int playerHp;
+    public Vector3 playerPosition;
 }
