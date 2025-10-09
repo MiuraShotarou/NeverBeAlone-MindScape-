@@ -14,10 +14,10 @@ public class SaveTest : MonoBehaviour
         };
 
         // オートセーブ呼び出し
-        saveManager.AutoSave(data);
+        //saveManager.AutoSave(data);
 
         // ロードして確認
-        SaveData loaded = saveManager.LoadGame();
-        Debug.Log($"ロード結果: {loaded.playerName}, Lv {loaded.playerLevel}");
+        //SaveData loaded = saveManager.LoadGame();
+        //Debug.Log($"ロード結果: {loaded.playerName}, Lv {loaded.playerLevel}");
     }
 }
