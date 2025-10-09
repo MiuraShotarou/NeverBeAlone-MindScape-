@@ -69,7 +69,7 @@ public abstract class BattleUnitBase : MonoBehaviour
     public delegate void JudgeSurvival();
     protected void Start()
     {
-        Debug.Log($"{gameObject.name}, {Hp}");
+        Debug.Log($"{gameObject.name},HP {Hp}");
         OnStart();
     }
 

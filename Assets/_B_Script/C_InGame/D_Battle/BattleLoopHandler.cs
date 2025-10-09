@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleLoopHandler : MonoBehaviour
 {
@@ -229,6 +230,14 @@ public class BattleLoopHandler : MonoBehaviour
         _playerData.MaxHp = player.MaxHp;
 
         Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+    }
+    public void Retry()
+    {
+        // JSONからロード
+        // SaveData loadedData = _saveManager.LoadGame();
+        // _battleState = BattleState.Init;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
 
 }

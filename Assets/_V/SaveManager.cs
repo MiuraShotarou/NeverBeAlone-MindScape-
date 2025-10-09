@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.IO;
-using Firebase.Database;
-using Firebase.Extensions;
+// using Firebase.Database;
+// using Firebase.Extensions;
 
 /// <summary>
 /// ゲームデータの保存とロードを担当するマネージャー。
@@ -66,7 +66,7 @@ public class SaveManager : MonoBehaviour
         Debug.Log("SaveDataをロードしました: " + path);
         return data;
     }
-
+    /*
     /// <summary>
     /// ローカルJsonをFirebaseにアップロード（データ移行用）
     /// </summary>
@@ -82,8 +82,9 @@ public class SaveManager : MonoBehaviour
         SaveData data = JsonUtility.FromJson<SaveData>(json);
 
         string jsonToSave = JsonUtility.ToJson(data, true);
-
+ 
         DatabaseReference dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+
         dbRef.Child("gameData").Child(userId)
             .SetRawJsonValueAsync(jsonToSave)
             .ContinueWithOnMainThread(task =>
@@ -126,8 +127,7 @@ public class SaveManager : MonoBehaviour
                 }
             });
     }
-
-
+    */
 }
 
 /// <summary>
