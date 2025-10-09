@@ -50,12 +50,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fill: 27.5
+    - _Fill: 100
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _WaveHeight: 0.02
-    - _WaveLength: 10
-    - _WaveSpeedScale: 0.5
+    - _WaveHeight: 0.0025
+    - _WaveLength: 1
+    - _WaveSpeedScale: 2.5
     m_Colors:
     - _YBound: {r: -0.9, g: 0.9, b: 0, a: 0}
   m_BuildTextureStacks: []
