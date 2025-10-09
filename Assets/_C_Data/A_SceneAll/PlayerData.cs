@@ -15,6 +15,7 @@ public class PlayerData : ScriptableObject
     public int MaxHp;
     public int Tension;
     public int MaxTension;
+    public int EncountCount;
 
     [Header("能力値")]
     public float BaseAttack;

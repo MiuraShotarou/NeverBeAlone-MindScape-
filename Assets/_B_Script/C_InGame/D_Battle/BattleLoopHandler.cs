@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleLoopHandler : MonoBehaviour
 {
@@ -36,8 +37,8 @@ public class BattleLoopHandler : MonoBehaviour
     {
         _uiController = _objects.UIController;
         _battleEvents = gameObject.GetComponent<BattleEventController>();
+        JSONToScritable();
         _battleState = BattleState.Init;
-
         InitializePlayersFromData();
     }
 
@@ -63,7 +64,7 @@ public class BattleLoopHandler : MonoBehaviour
                 _battleEvents.SortBattleUnits();
                 _battleEvents.InitTurnTable();
                 break;
-                // エンカウント後はここから下の処理がターン経過ごとに一度だけ呼び出される
+            // エンカウント後はここから下の処理がターン経過ごとに一度だけ呼び出される
             case BattleState.TurnStart:
                 _battleState = BattleState.WaitForCommand;
                 InitializeOnTurnStart();
@@ -86,8 +87,15 @@ public class BattleLoopHandler : MonoBehaviour
             case BattleState.Victory:
                 _battleState = BattleState.Busy;
                 _uiController.ShowVictoryText();
-                UpdatePlayerStatus(); // 追加
-                UpdatePlayerDataFromPlayers(); // 追加
+
+                // バトル終了後のステータス反映
+                UpdatePlayerStatus();             // 経験値付与
+                UpdatePlayerDataFromPlayers();    // BattleUnitPlayer → ScriptableObject
+
+                // JSONに保存
+                SavePlayerData();                 // ScriptableObject → JSON保存
+
+                Debug.Log("戦闘終了後のデータをJsonに保存しました。");
                 break;
             case BattleState.GameOver:
                 _battleState = BattleState.Busy;
@@ -214,7 +222,7 @@ public class BattleLoopHandler : MonoBehaviour
             playerLevel = _playerData.Level,
             playerHp = _playerData.Hp,
             playerExp = _playerData.Exp,
-            playerPosition = _objects.PlayerUnits[0].transform.position
+            encountCount = _playerData.EncountCount
         };
         _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
         Debug.Log("戦闘直前のScriptableObjectデータをJsonに保存: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
@@ -228,7 +236,38 @@ public class BattleLoopHandler : MonoBehaviour
         _playerData.Hp = player.Hp;
         _playerData.MaxHp = player.MaxHp;
 
-        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+        // ScriptableObject の値を直接インクリメント
+        _playerData.EncountCount++;
+
+        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp + ", Count=" + _playerData.EncountCount);
+    }
+
+    public void Retry()
+    {
+        // JSONからロード
+        SaveData loadedData = _saveManager.LoadGame();
+        _battleState = BattleState.Init;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+    void JSONToScritable()
+    {
+        // JSONからロード
+        SaveData loadedData = _saveManager.LoadGame();
+
+        // ScriptableObjectに反映
+        _playerData.Level = loadedData.playerLevel;
+        _playerData.Hp = loadedData.playerHp;
+        _playerData.Exp = loadedData.playerExp;
+        _playerData.EncountCount = loadedData.encountCount;
+
+        // BattleUnitPlayer に反映
+        var player = _objects.PlayerUnits[0];
+        player.Hp = _playerData.Hp;
+        player.ExpAmmount = _playerData.Exp;
+        player.Level = _playerData.Level;
+
+        Debug.Log("JSON → ScriptableObject → BattleUnitPlayer 反映完了");
     }
 
 }

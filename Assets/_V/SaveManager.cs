@@ -126,8 +126,6 @@ public class SaveManager : MonoBehaviour
         //         }
         //     });
     }
-
-
 }
 
 /// <summary>
@@ -141,5 +139,6 @@ public class SaveData
     public int playerLevel;
     public string playerName;
     public int playerHp;
-    public Vector3 playerPosition;
+    public int encountCount;
+    // public Vector3 playerPosition;
 }
