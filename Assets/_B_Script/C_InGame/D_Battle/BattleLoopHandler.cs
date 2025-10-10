@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class BattleLoopHandler : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] SaveManager _saveManager;
+    // [SerializeField] SaveManager _saveManager;
     private BattleUIController _uiController = default;
 
     public Queue<BattleUnitBase> BattleUnitQueue = default;
@@ -216,7 +217,7 @@ public class BattleLoopHandler : MonoBehaviour
             playerExp = _playerData.Exp,
             playerPosition = _objects.PlayerUnits[0].transform.position
         };
-        _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
+        // _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
         Debug.Log("戦闘直前のScriptableObjectデータをJsonに保存: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
 
@@ -230,5 +231,54 @@ public class BattleLoopHandler : MonoBehaviour
 
         Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
     }
-
+    //
+    // private interface IState
+    // {
+    //     public IState Tick();
+    // }
+    //
+    // private class Idle : IState
+    // {
+    //     public IState Tick()
+    //     {
+    //         //idle処理
+    //
+    //         int rnd = Random.Range(0, 100);
+    //         
+    //         if (rnd < 50)
+    //         {
+    //             return new Move(this);
+    //         }
+    //         
+    //         return this;
+    //     }
+    // }
+    //
+    // private class Move : IState
+    // {
+    //     public Move(Idle idle)
+    //     {
+    //         
+    //     }
+    //     
+    //     public IState Tick()
+    //     {
+    //         //move
+    //         int rnd = Random.Range(0, 100);
+    //         
+    //         if (rnd < 50)
+    //         {
+    //             return new Idle();
+    //         }
+    //         
+    //         return this;
+    //     }
+    // }
+    //
+    // private IState _currentState;
+    //
+    // private void Tick()
+    // {
+    //     _currentState = _currentState.Tick();
+    // }
 }

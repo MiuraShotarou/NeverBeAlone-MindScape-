@@ -1,10 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Animations;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem;
-using UnityEngine.Scripting;
 using Random = UnityEngine.Random;
 /// <summary>
 /// BattleUIController.csからOnEnable一度だけ呼び出される
