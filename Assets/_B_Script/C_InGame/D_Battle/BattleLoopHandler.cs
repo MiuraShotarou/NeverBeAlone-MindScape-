@@ -20,36 +20,36 @@ public class BattleLoopHandler : MonoBehaviour
     public ResultQTE ResultQTE { get => _resultQte; set => _resultQte = value; }
     public bool PlayerOneMoreFlg { get => _playerOneMoreFlg; set => _playerOneMoreFlg = value; }
 
-    private string userId; // 端末ごとの一意ID
-
-    void Start()
+    private void Start()
     {
         _uiController = _objects.UIController;
         _battleEvents = GetComponent<BattleEventController>();
 
-        userId = SystemInfo.deviceUniqueIdentifier; // 宣言で代入できないのでここで
+        // Firebase UID 初回取得後にローカルデータ読み込み＆戦闘前オートセーブ
+        _saveManager.EnsureSignedIn(() =>
+        {
+            SaveData loadedData = _saveManager.LoadFromLocal();
+            _playerData.Exp = loadedData.playerExp;
+            _playerData.Level = loadedData.playerLevel;
+            _playerData.Hp = loadedData.playerHp;
+            _playerData.EncountCount = loadedData.encountCount;
 
-        SaveData loadedData = _saveManager.LoadFromLocal();
-        _playerData.Exp = loadedData.playerExp;
-        _playerData.Level = loadedData.playerLevel;
-        _playerData.Hp = loadedData.playerHp;
-        _playerData.EncountCount = loadedData.encountCount;
+            var player = _objects.PlayerUnits[0];
+            player.Hp = _playerData.Hp;
+            player.ExpAmmount = _playerData.Exp;
+            player.Level = _playerData.Level;
+            player.EncountCount = _playerData.EncountCount;
 
-        var player = _objects.PlayerUnits[0];
-        player.Hp = _playerData.Hp;
-        player.ExpAmmount = _playerData.Exp;
-        player.Level = _playerData.Level;
-        player.EncountCount = _playerData.EncountCount;
+            Debug.Log("ローカルJSON → ScriptableObject → BattleUnitPlayer 反映完了");
 
-        Debug.Log("ローカルJSON → ScriptableObject → BattleUnitPlayer 反映完了");
-
-        // 戦闘開始前にオートセーブ（JSON → Firebase）
-        SavePlayerDataToAll();
+            // 戦闘前オートセーブ（Firebase にも書き込み）
+            _saveManager.AutoSave(CreateSaveDataFromPlayer());
+        });
 
         _battleState = BattleState.Init;
     }
 
-    void Update()
+    private void Update()
     {
         switch (_battleState)
         {
@@ -97,8 +97,8 @@ public class BattleLoopHandler : MonoBehaviour
                 UpdatePlayerStatus();
                 UpdatePlayerDataFromPlayers();
 
-                // JSONはローカルにのみ保存（Firebase更新は戦闘前のオートセーブのみ）
-                SavePlayerDataToLocalOnly();
+                // JSON はローカルのみ保存（Firebase は戦闘前オートセーブ済み）
+                _saveManager.SaveToLocal(CreateSaveDataFromPlayer());
 
                 Debug.Log("戦闘終了後のデータをローカルJSONに保存完了");
                 break;
@@ -145,14 +145,26 @@ public class BattleLoopHandler : MonoBehaviour
         else _battleState = BattleState.JudgeTurnEnd;
     }
 
+    /// <summary>
+    /// PlayerBaseの値にバトル後のデータを代入
+    /// </summary>
     public void UpdatePlayerStatus()
     {
         int totalExp = 0;
-        foreach (var enemy in _objects.EnemyUnits) totalExp += enemy.ExpReward;
+        foreach (var enemy in _objects.EnemyUnits)
+        {
+            totalExp += enemy.ExpReward;
+        }
+
+        // ここに追加
         var player = _objects.PlayerUnits[0];
         player.ExpAmmount += totalExp;
+        player.EncountCount++;
     }
 
+    /// <summary>
+    /// 現在のPlayerBaseをScriptableObjectのデータに代入
+    /// </summary>
     private void UpdatePlayerDataFromPlayers()
     {
         var player = _objects.PlayerUnits[0];
@@ -160,35 +172,27 @@ public class BattleLoopHandler : MonoBehaviour
         _playerData.Level = player.Level;
         _playerData.Hp = player.Hp;
         _playerData.MaxHp = player.MaxHp;
-        _playerData.EncountCount++;
+        _playerData.EncountCount = player.EncountCount;
     }
 
-    private void SavePlayerDataToAll()
+    /// <summary>
+    /// JSON用クラスに入れる
+    /// </summary>
+    private SaveData CreateSaveDataFromPlayer()
     {
-        SaveData data = new SaveData
+        var player = _objects.PlayerUnits[0];
+        return new SaveData
         {
-            playerLevel = _playerData.Level,
-            playerHp = _playerData.Hp,
-            playerExp = _playerData.Exp,
-            encountCount = _playerData.EncountCount
+            playerLevel = player.Level,
+            playerHp = player.Hp,
+            playerExp = player.ExpAmmount,
+            encountCount = player.EncountCount
         };
-
-        _saveManager.AutoSave(userId, data);
     }
 
-    private void SavePlayerDataToLocalOnly()
-    {
-        SaveData data = new SaveData
-        {
-            playerLevel = _playerData.Level,
-            playerHp = _playerData.Hp,
-            playerExp = _playerData.Exp,
-            encountCount = _playerData.EncountCount
-        };
-
-        _saveManager.SaveToLocal(data);
-    }
-
+    /// <summary>
+    /// OnClick()等で呼べばもう一回やり直せる 勝利後に呼ぶならデータ更新される
+    /// </summary>
     public void Retry()
     {
         SaveData loadedData = _saveManager.LoadFromLocal();
