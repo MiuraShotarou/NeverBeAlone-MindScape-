@@ -20,32 +20,33 @@ public class BattleLoopHandler : MonoBehaviour
     public ResultQTE ResultQTE { get => _resultQte; set => _resultQte = value; }
     public bool PlayerOneMoreFlg { get => _playerOneMoreFlg; set => _playerOneMoreFlg = value; }
 
-    private string userId = "Player1"; // ユーザーID。必要に応じて変更
+    private string userId; // 端末ごとの一意ID
 
     void Start()
     {
         _uiController = _objects.UIController;
         _battleEvents = GetComponent<BattleEventController>();
 
-        // Firebase → JSON → ScriptableObject → BattleUnitPlayer
-        _saveManager.LoadFromFirebase(userId, loadedData =>
-        {
-            _playerData.Exp = loadedData.playerExp;
-            _playerData.Level = loadedData.playerLevel;
-            _playerData.Hp = loadedData.playerHp;
-            _playerData.EncountCount = loadedData.encountCount;
+        userId = SystemInfo.deviceUniqueIdentifier; // 宣言で代入できないのでここで
 
-            var player = _objects.PlayerUnits[0];
-            player.Hp = _playerData.Hp;
-            player.ExpAmmount = _playerData.Exp;
-            player.Level = _playerData.Level;
-            player.EncountCount = _playerData.EncountCount;
+        SaveData loadedData = _saveManager.LoadFromLocal();
+        _playerData.Exp = loadedData.playerExp;
+        _playerData.Level = loadedData.playerLevel;
+        _playerData.Hp = loadedData.playerHp;
+        _playerData.EncountCount = loadedData.encountCount;
 
-            Debug.Log("Firebase → JSON → Scriptable → BattleUnitPlayer 反映完了");
-        });
+        var player = _objects.PlayerUnits[0];
+        player.Hp = _playerData.Hp;
+        player.ExpAmmount = _playerData.Exp;
+        player.Level = _playerData.Level;
+        player.EncountCount = _playerData.EncountCount;
+
+        Debug.Log("ローカルJSON → ScriptableObject → BattleUnitPlayer 反映完了");
+
+        // 戦闘開始前にオートセーブ（JSON → Firebase）
+        SavePlayerDataToAll();
 
         _battleState = BattleState.Init;
-        InitializePlayersFromData();
     }
 
     void Update()
@@ -96,10 +97,10 @@ public class BattleLoopHandler : MonoBehaviour
                 UpdatePlayerStatus();
                 UpdatePlayerDataFromPlayers();
 
-                // BattleUnitPlayer → ScriptableObject → JSON → Firebase
-                SavePlayerDataToAll();
+                // JSONはローカルにのみ保存（Firebase更新は戦闘前のオートセーブのみ）
+                SavePlayerDataToLocalOnly();
 
-                Debug.Log("戦闘終了後のデータをJSONとFirebaseに保存しました。");
+                Debug.Log("戦闘終了後のデータをローカルJSONに保存完了");
                 break;
             case BattleState.GameOver:
                 _battleState = BattleState.Busy;
@@ -152,15 +153,14 @@ public class BattleLoopHandler : MonoBehaviour
         player.ExpAmmount += totalExp;
     }
 
-    private void InitializePlayersFromData()
+    private void UpdatePlayerDataFromPlayers()
     {
         var player = _objects.PlayerUnits[0];
-        player.Hp = _playerData.Hp;
-        player.MaxHp = _playerData.MaxHp;
-        player.ExpAmmount = _playerData.Exp;
-        player.Level = _playerData.Level;
-
-        SavePlayerDataToAll();
+        _playerData.Exp = player.ExpAmmount;
+        _playerData.Level = player.Level;
+        _playerData.Hp = player.Hp;
+        _playerData.MaxHp = player.MaxHp;
+        _playerData.EncountCount++;
     }
 
     private void SavePlayerDataToAll()
@@ -173,18 +173,20 @@ public class BattleLoopHandler : MonoBehaviour
             encountCount = _playerData.EncountCount
         };
 
-        // JSON と Firebase に保存
-        _saveManager.SaveToAll(userId, data);
+        _saveManager.AutoSave(userId, data);
     }
 
-    private void UpdatePlayerDataFromPlayers()
+    private void SavePlayerDataToLocalOnly()
     {
-        var player = _objects.PlayerUnits[0];
-        _playerData.Exp = player.ExpAmmount;
-        _playerData.Level = player.Level;
-        _playerData.Hp = player.Hp;
-        _playerData.MaxHp = player.MaxHp;
-        _playerData.EncountCount++;
+        SaveData data = new SaveData
+        {
+            playerLevel = _playerData.Level,
+            playerHp = _playerData.Hp,
+            playerExp = _playerData.Exp,
+            encountCount = _playerData.EncountCount
+        };
+
+        _saveManager.SaveToLocal(data);
     }
 
     public void Retry()
@@ -192,19 +194,5 @@ public class BattleLoopHandler : MonoBehaviour
         SaveData loadedData = _saveManager.LoadFromLocal();
         _battleState = BattleState.Init;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void JSONToScritable()
-    {
-        SaveData loadedData = _saveManager.LoadFromLocal();
-        _playerData.Level = loadedData.playerLevel;
-        _playerData.Hp = loadedData.playerHp;
-        _playerData.Exp = loadedData.playerExp;
-        _playerData.EncountCount = loadedData.encountCount;
-
-        var player = _objects.PlayerUnits[0];
-        player.Hp = _playerData.Hp;
-        player.ExpAmmount = _playerData.Exp;
-        player.Level = _playerData.Level;
     }
 }

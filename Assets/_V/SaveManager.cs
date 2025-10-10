@@ -15,18 +15,13 @@ public class SaveManager : MonoBehaviour
         _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    /// <summary>
-    /// BattleUnitPlayer → ScriptableObject → JSON → Firebase
-    /// </summary>
-    public void SaveToAll(string userId, SaveData data)
+    // BattleUnitPlayer → ScriptableObject → JSON → Firebase
+    public void AutoSave(string userId, SaveData data)
     {
         SaveToLocal(data);
         UploadDataToFirebase(userId, data);
     }
 
-    /// <summary>
-    /// JSON をローカルに保存
-    /// </summary>
     public void SaveToLocal(SaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
@@ -34,9 +29,6 @@ public class SaveManager : MonoBehaviour
         Debug.Log("JSONに保存完了: " + savePath);
     }
 
-    /// <summary>
-    /// Firebase にアップロード
-    /// </summary>
     public void UploadDataToFirebase(string userId, SaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
@@ -45,15 +37,12 @@ public class SaveManager : MonoBehaviour
             .ContinueWithOnMainThread(task =>
             {
                 if (task.IsCompleted)
-                    Debug.Log("Firebase に保存完了");
+                    Debug.Log("<color=red>Firebase に保存完了</color>");
                 else
                     Debug.LogError("Firebase 保存エラー: " + task.Exception);
             });
     }
 
-    /// <summary>
-    /// Firebase → JSON → ScriptableObject
-    /// </summary>
     public void LoadFromFirebase(string userId, System.Action<SaveData> callback)
     {
         _dbRef.Child("gameData").Child(userId)
@@ -84,9 +73,6 @@ public class SaveManager : MonoBehaviour
             });
     }
 
-    /// <summary>
-    /// JSON をローカルから読み込み
-    /// </summary>
     public SaveData LoadFromLocal()
     {
         if (!File.Exists(savePath))
