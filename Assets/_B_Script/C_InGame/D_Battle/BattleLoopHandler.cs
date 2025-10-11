@@ -1,52 +1,59 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleLoopHandler : MonoBehaviour
 {
     [SerializeField] private ObjectManager _objects;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] SaveManager _saveManager;
+    [SerializeField] private SaveManager _saveManager;
     private BattleUIController _uiController = default;
 
     public Queue<BattleUnitBase> BattleUnitQueue = default;
     [HideInInspector] public BattleUnitBase CurrentBattleUnit = null;
     private bool _playerOneMoreFlg = false;
     private BattleState _battleState;
-    private ResultQTE _resultQte = global::ResultQTE.Stop;
+    private ResultQTE _resultQte = ResultQTE.Stop;
     private BattleEventController _battleEvents;
 
-    public BattleState BattleState
-    {
-        get { return _battleState; }
-        set { _battleState = value; }
-    }
+    public BattleState BattleState { get => _battleState; set => _battleState = value; }
+    public ResultQTE ResultQTE { get => _resultQte; set => _resultQte = value; }
+    public bool PlayerOneMoreFlg { get => _playerOneMoreFlg; set => _playerOneMoreFlg = value; }
 
-    public ResultQTE ResultQTE
-    {
-        get => _resultQte;
-        set => _resultQte = value;
-    }
-    public bool PlayerOneMoreFlg
-    {
-        get => _playerOneMoreFlg;
-        set => _playerOneMoreFlg = value;
-    }
-
-    void Start()
+    private void Start()
     {
         _uiController = _objects.UIController;
-        _battleEvents = gameObject.GetComponent<BattleEventController>();
-        _battleState = BattleState.Init;
+        _battleEvents = GetComponent<BattleEventController>();
 
-        InitializePlayersFromData();
+        // Firebase UID 初回取得後にローカルデータ読み込み＆戦闘前オートセーブ
+        _saveManager.EnsureSignedIn(() =>
+        {
+            SaveData loadedData = _saveManager.LoadFromLocal();
+            _playerData.Exp = loadedData.playerExp;
+            _playerData.Level = loadedData.playerLevel;
+            _playerData.Hp = loadedData.playerHp;
+            _playerData.EncountCount = loadedData.encountCount;
+
+            var player = _objects.PlayerUnits[0];
+            player.Hp = _playerData.Hp;
+            player.ExpAmmount = _playerData.Exp;
+            player.Level = _playerData.Level;
+            player.EncountCount = _playerData.EncountCount;
+
+            Debug.Log("ローカルJSON → ScriptableObject → BattleUnitPlayer 反映完了");
+
+            // 戦闘前オートセーブ（Firebase にも書き込み）
+            _saveManager.AutoSave(CreateSaveDataFromPlayer());
+        });
+
+        _battleState = BattleState.Init;
     }
 
-    void Update()
+    private void Update()
     {
         switch (_battleState)
         {
             case BattleState.Init:
-                // SavePlayerData(); //add
                 _battleState = BattleState.Busy;
                 _battleEvents.InitBattleData();
                 break;
@@ -63,7 +70,6 @@ public class BattleLoopHandler : MonoBehaviour
                 _battleEvents.SortBattleUnits();
                 _battleEvents.InitTurnTable();
                 break;
-                // エンカウント後はここから下の処理がターン経過ごとに一度だけ呼び出される
             case BattleState.TurnStart:
                 _battleState = BattleState.WaitForCommand;
                 InitializeOnTurnStart();
@@ -86,32 +92,29 @@ public class BattleLoopHandler : MonoBehaviour
             case BattleState.Victory:
                 _battleState = BattleState.Busy;
                 _uiController.ShowVictoryText();
-                UpdatePlayerStatus(); // 追加
-                UpdatePlayerDataFromPlayers(); // 追加
+
+                // 経験値・ステータス更新
+                UpdatePlayerStatus();
+                UpdatePlayerDataFromPlayers();
+
+                // JSON はローカルのみ保存（Firebase は戦闘前オートセーブ済み）
+                _saveManager.SaveToLocal(CreateSaveDataFromPlayer());
+
+                Debug.Log("戦闘終了後のデータをローカルJSONに保存完了");
                 break;
             case BattleState.GameOver:
                 _battleState = BattleState.Busy;
                 _uiController.ShowGameOverText();
                 break;
-            case BattleState.Busy:
-            case BattleState.WaitForCommand:
-            default:
-                break;
         }
     }
 
-    public void InitializeOnTurnStart()
-    {
-        _playerOneMoreFlg = false;
-    }
+    public void InitializeOnTurnStart() => _playerOneMoreFlg = false;
 
     public void EndTurn()
     {
         BattleUnitBase unitToDequeue = BattleUnitQueue.Dequeue();
-
-        //ターンエンド時に発動する状態異常を発動
         unitToDequeue.OnConditionActivate(ConditionActivationType.OnTurnEnd);
-
         BattleUnitQueue.Enqueue(unitToDequeue);
         _battleState = BattleState.TurnStart;
     }
@@ -121,19 +124,9 @@ public class BattleLoopHandler : MonoBehaviour
         if (CurrentBattleUnit is BattleUnitEnemyBase)
         {
             _battleState = BattleState.TurnEnd;
-            CommonUtils.LogDebugLine(this, "JudgeTurnEnd()", "敵側。結果：" + _battleState);
             return;
         }
-
-        if (_playerOneMoreFlg)
-        {
-            _battleState = BattleState.TurnStart;
-        }
-        else
-        {
-            _battleState = BattleState.TurnEnd;
-        }
-        CommonUtils.LogDebugLine(this, "JudgeTurnEnd()", "プレイヤー。結果：" + _battleState);
+        _battleState = _playerOneMoreFlg ? BattleState.TurnStart : BattleState.TurnEnd;
     }
 
     public void JudgeBattleEnd()
@@ -141,85 +134,37 @@ public class BattleLoopHandler : MonoBehaviour
         bool playerWipeout = true;
         bool enemyWipeout = true;
 
-        foreach (BattleUnitEnemyBase unit in _objects.EnemyUnits)
-        {
-            if (!unit.IsDead)
-            {
-                enemyWipeout = false;
-                break;
-            }
-        }
+        foreach (var unit in _objects.EnemyUnits)
+            if (!unit.IsDead) { enemyWipeout = false; break; }
 
-        foreach (BattleUnitPlayer unit in _objects.PlayerUnits)
-        {
-            if (!unit.IsDead)
-            {
-                playerWipeout = false;
-                break;
-            }
-        }
+        foreach (var unit in _objects.PlayerUnits)
+            if (!unit.IsDead) { playerWipeout = false; break; }
 
-        if (playerWipeout)
-        {
-            _battleState = BattleState.GameOver;
-        }
-        else if (enemyWipeout)
-        {
-            _battleState = BattleState.Victory;
-        }
-        else
-        {
-            _battleState = BattleState.JudgeTurnEnd;
-        }
-
-        Debug.Log("JudgeBattleEnd実行。結果：" + _battleState);
+        if (playerWipeout) _battleState = BattleState.GameOver;
+        else if (enemyWipeout) _battleState = BattleState.Victory;
+        else _battleState = BattleState.JudgeTurnEnd;
     }
 
+    /// <summary>
+    /// PlayerBaseの値にバトル後のデータを代入
+    /// </summary>
     public void UpdatePlayerStatus()
     {
-        int totalExp = 0; // この戦闘で獲得する総経験値
+        int totalExp = 0;
         foreach (var enemy in _objects.EnemyUnits)
         {
             totalExp += enemy.ExpReward;
         }
 
+        // ここに追加
         var player = _objects.PlayerUnits[0];
         player.ExpAmmount += totalExp;
+        player.EncountCount++;
     }
 
     /// <summary>
-    /// 戦闘直前に呼ぶ。ScriptableObject → BattleUnitPlayer に反映し、同時に Json に保存する
+    /// 現在のPlayerBaseをScriptableObjectのデータに代入
     /// </summary>
-    private void InitializePlayersFromData()
-    {
-        var player = _objects.PlayerUnits[0];
-        player.Hp = _playerData.Hp;
-        player.MaxHp = _playerData.MaxHp;
-        player.ExpAmmount = _playerData.Exp;
-        player.Level = _playerData.Level;
-
-        Debug.Log("BattleUnitPlayer初期化（ScriptableObjectから）: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
-
-        // 戦闘直前の状態を Json に保存
-        SavePlayerData();
-    }
-
-    /// <summary>
-    /// ここでjsonに保存する
-    /// </summary>
-    public void SavePlayerData()
-    {
-        SaveData data = new SaveData
-        {
-            playerLevel = _playerData.Level,
-            playerHp = _playerData.Hp,
-            playerExp = _playerData.Exp,
-            playerPosition = _objects.PlayerUnits[0].transform.position
-        };
-        _saveManager.AutoSave(data); // これで戦闘直前のScriptableObjectデータをJsonに保存
-        Debug.Log("戦闘直前のScriptableObjectデータをJsonに保存: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
-    }
-
     private void UpdatePlayerDataFromPlayers()
     {
         var player = _objects.PlayerUnits[0];
@@ -227,8 +172,31 @@ public class BattleLoopHandler : MonoBehaviour
         _playerData.Level = player.Level;
         _playerData.Hp = player.Hp;
         _playerData.MaxHp = player.MaxHp;
-
-        Debug.Log("PlayerData更新: Exp=" + _playerData.Exp + ", HP=" + _playerData.Hp);
+        _playerData.EncountCount = player.EncountCount;
     }
 
+    /// <summary>
+    /// JSON用クラスに入れる
+    /// </summary>
+    private SaveData CreateSaveDataFromPlayer()
+    {
+        var player = _objects.PlayerUnits[0];
+        return new SaveData
+        {
+            playerLevel = player.Level,
+            playerHp = player.Hp,
+            playerExp = player.ExpAmmount,
+            encountCount = player.EncountCount
+        };
+    }
+
+    /// <summary>
+    /// OnClick()等で呼べばもう一回やり直せる 勝利後に呼ぶならデータ更新される
+    /// </summary>
+    public void Retry()
+    {
+        SaveData loadedData = _saveManager.LoadFromLocal();
+        _battleState = BattleState.Init;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
