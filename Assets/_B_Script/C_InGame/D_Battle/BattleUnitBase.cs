@@ -43,10 +43,11 @@ public abstract class BattleUnitBase : MonoBehaviour
 	
 	[Space(20)] [SerializeField, Tooltip("最大正気度")]
 	public int MaxHp;
-	[SerializeField, Tooltip("現在正気度")] public int Hp;
-	[SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
-	[SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
-	[SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
+    [SerializeField, Tooltip("現在正気度")] public int Hp;
+    [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
+    [SerializeField, Tooltip("総経験値")] public int ExpAmmount = 0; // publicなので不安
+    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
+    [SerializeField, Tooltip("エンカウント回数")] public int EncountCount = 0;
 	[SerializeField, Tooltip("攻撃力加算値")] public float AttackMod;
 	[SerializeField, Tooltip("攻撃力倍率加算値")] public float AttackScaleMod;
 	[SerializeField, Tooltip("防御力加算値")] public float DefenseMod;

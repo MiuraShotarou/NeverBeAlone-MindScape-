@@ -1,145 +1,162 @@
-using UnityEngine;
+using System;
 using System.IO;
-// using Firebase.Database;
-// using Firebase.Extensions;
+using UnityEngine;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 /// <summary>
-/// �Q�[���f�[�^�̕ۑ��ƃ��[�h��S������}�l�[�W���[�B
-/// �퓬�O�I�[�g�Z�[�u�͏�Ƀ��[�J��Json�ɕۑ��B
-/// �f�[�^�ڍs���̂�Firebase����擾���ă��[�J���ɏ㏑������B
+/// JSON → Firebase への保存・読み込みを担当
+/// 匿名サインインは初回のみで UID を保持、以降は同じ UID を使用
 /// </summary>
 public class SaveManager : MonoBehaviour
 {
-    private string savePath; // json�����锠
+    string savePath;
+    DatabaseReference _dbRef;
+    FirebaseAuth _auth;
+    string _userId;
+    const string UIDKEY = "FirebaseUID"; // PlayerPrefs で保存
 
-    private void Awake()
+    void Awake()
     {
         savePath = Path.Combine(Application.persistentDataPath, "savedata.json");
-        Debug.Log("�ۑ��p�X: " + savePath);
+        Debug.Log("ローカル保存パス: " + savePath);
+
+        _auth = FirebaseAuth.DefaultInstance;
+        _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     /// <summary>
-    /// �퓬�O�ɌĂԃI�[�g�Z�[�u�B��Ƀ��[�J��Json�ɕۑ��B
+    /// 初回のみ匿名サインインし、UID を保持する
+    /// </summary>
+    public void EnsureSignedIn(Action onSignedIn)
+    {
+        // すでに UID を PlayerPrefs に保持していればそれを利用
+        if (PlayerPrefs.HasKey(UIDKEY))
+        {
+            _userId = PlayerPrefs.GetString(UIDKEY);
+            Debug.Log("既存 UID を使用: " + _userId);
+            onSignedIn?.Invoke();
+            return;
+        }
+
+        // 初回のみ匿名サインイン
+        _auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
+            {
+                _userId = _auth.CurrentUser.UserId;
+                PlayerPrefs.SetString(UIDKEY, _userId);
+                PlayerPrefs.Save();
+
+                Debug.Log("Firebase Auth サインイン完了 UID: " + _userId);
+                onSignedIn?.Invoke();
+            }
+            else
+            {
+                Debug.LogError("Firebase Auth サインイン失敗: " + task.Exception);
+            }
+        });
+    }
+
+    /// <summary>
+    /// ローカルと Firebase に保存（戦闘前オートセーブ用）
     /// </summary>
     public void AutoSave(SaveData data)
     {
         SaveToLocal(data);
-        Debug.Log("�퓬�O�I�[�g�Z�[�u�����i���[�J��Json�j");
-    }
 
-    /// <summary>
-    /// �Q�[���J�n���ɌĂԃ��[�h�B
-    /// Json�����݂���Γǂݍ��݁A�Ȃ���ΐV�K�f�[�^��Ԃ��B
-    /// </summary>
-    public SaveData LoadGame()
-    {
-        if (File.Exists(savePath))
+        if (string.IsNullOrEmpty(_userId))
         {
-            string json = File.ReadAllText(savePath);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-            Debug.Log("�Q�[���J�n���Ƀ��[�J��Json���烍�[�h");
-            return data;
+            Debug.LogWarning("Firebase UID 未取得、保存スキップ");
+            return;
         }
 
-        return new SaveData();
+        UploadDataToFirebase(_userId, data);
     }
 
     /// <summary>
-    /// Json�t�@�C���Ƀf�[�^��ۑ��i�㏑���j�B
+    /// JSON をローカルに保存
     /// </summary>
-    private void SaveToLocal(SaveData data)
+    public void SaveToLocal(SaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-    }
-    public SaveData Load()
-    {
-        string path = Application.persistentDataPath + "/savedata.json";
-        if (!File.Exists(path))
-        {
-            Debug.Log("SaveData�t�@�C�������݂��܂���");
-            return null;
-        }
-
-        string json = File.ReadAllText(path);
-        SaveData data = JsonUtility.FromJson<SaveData>(json);
-        Debug.Log("SaveData�����[�h���܂���: " + path);
-        return data;
+        Debug.Log("JSONに保存完了: " + savePath);
     }
 
     /// <summary>
-    /// ���[�J��Json��Firebase�ɃA�b�v���[�h�i�f�[�^�ڍs�p�j
+    /// Firebase にアップロード
     /// </summary>
-    public void UploadDataToFirebase(string userId)
+    void UploadDataToFirebase(string userId, SaveData data)
+    {
+        string json = JsonUtility.ToJson(data, true);
+        _dbRef.Child("gameData").Child(userId)
+            .SetRawJsonValueAsync(json)
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                    Debug.Log("Firebase に保存完了 UID: " + userId);
+                else
+                    Debug.LogError("Firebase 保存エラー: " + task.Exception);
+            });
+    }
+
+    /// <summary>
+    /// Firebase → JSON → ScriptableObject
+    /// </summary>
+    public void LoadFromFirebase(Action<SaveData> callback)
+    {
+        if (string.IsNullOrEmpty(_userId))
+        {
+            Debug.LogWarning("Firebase UID 未取得、ロードスキップ");
+            callback?.Invoke(new SaveData());
+            return;
+        }
+
+        _dbRef.Child("gameData").Child(_userId)
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted && task.Result.Exists)
+                {
+                    SaveData data = JsonUtility.FromJson<SaveData>(task.Result.GetRawJsonValue());
+                    SaveToLocal(data);
+                    Debug.Log("Firebase からデータ取得 → JSON 保存完了");
+                    callback?.Invoke(data);
+                }
+                else
+                {
+                    Debug.LogWarning("Firebase にデータなし UID: " + _userId);
+                    callback?.Invoke(new SaveData());
+                }
+            });
+    }
+
+    /// <summary>
+    /// JSON をローカルから読み込み
+    /// </summary>
+    public SaveData LoadFromLocal()
     {
         if (!File.Exists(savePath))
         {
-            Debug.LogWarning("���[�J���f�[�^�����݂��܂���B�A�b�v���[�h���X�L�b�v���܂��B");
-            return;
+            Debug.LogWarning("JSONファイルなし: " + savePath);
+            return new SaveData();
         }
 
         string json = File.ReadAllText(savePath);
         SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-        string jsonToSave = JsonUtility.ToJson(data, true);
-
-        // DatabaseReference dbRef = FirebaseDatabase.DefaultInstance.RootReference;
-        // dbRef.Child("gameData").Child(userId)
-        //     .SetRawJsonValueAsync(jsonToSave)
-        //     .ContinueWithOnMainThread(task =>
-        //     {
-        //         if (task.IsCompleted)
-        //             Debug.Log("���[�J���f�[�^��Firebase�ɃA�b�v���[�h���܂���");
-        //         else
-        //             Debug.LogError("Firebase�A�b�v���[�h���s: " + task.Exception);
-        //     });
+        Debug.Log("JSONからロード完了: " + savePath);
+        return data;
     }
-
-    /// <summary>
-    /// �f�[�^�ڍs���ɌĂԁB
-    /// Firebase����擾�����f�[�^�����[�J��Json�ɏ㏑���B
-    /// </summary>
-
-    public void MigrateDataFromFirebase(string userId)
-    {
-        // FirebaseDatabase.DefaultInstance.RootReference
-        //     .Child("gameData").Child(userId)
-        //     .GetValueAsync().ContinueWithOnMainThread(task =>
-        //     {
-        //         if (task.IsCompleted)
-        //         {
-        //             var snapshot = task.Result;
-        //             if (snapshot.Exists)
-        //             {
-        //                 SaveData data = JsonUtility.FromJson<SaveData>(snapshot.GetRawJsonValue());
-        //                 SaveToLocal(data);
-        //                 Debug.Log("Firebase����f�[�^�ڍs�����i���[�J��Json�㏑���j");
-        //             }
-        //             else
-        //             {
-        //                 Debug.LogWarning($"Firebase�Ƀ��[�U�[ {userId} �̃f�[�^�����݂��܂���");
-        //             }
-        //         }
-        //         else
-        //         {
-        //             Debug.LogError("Firebase�f�[�^�擾�Ɏ��s: " + task.Exception);
-        //         }
-        //     });
-    }
-
-
 }
 
-/// <summary>
-/// �ۑ�����Q�[���f�[�^�̍\��
-/// </summary>
 [System.Serializable]
 public class SaveData
 {
-    // Save�������X�e�[�^�X���������ɑ��
     public int playerExp;
     public int playerLevel;
     public string playerName;
     public int playerHp;
-    public Vector3 playerPosition;
+    public int encountCount;
 }
