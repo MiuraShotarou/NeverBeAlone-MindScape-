@@ -60,6 +60,7 @@ public class BattleLoopHandler : MonoBehaviour
             case BattleState.Intro:
                 _battleState = BattleState.Busy;
                 _battleEvents.PlayBattleIntro();
+                _battleEvents.DecideEnemy();
                 break;
             case BattleState.QTE:
                 _battleState = BattleState.WaitForCommand;
@@ -70,7 +71,7 @@ public class BattleLoopHandler : MonoBehaviour
                 _battleEvents.SortBattleUnits();
                 _battleEvents.InitTurnTable();
                 break;
-            case BattleState.TurnStart:
+            case BattleState.TurnStart: //ここ以下のステートはターンごとに呼び出される
                 _battleState = BattleState.WaitForCommand;
                 InitializeOnTurnStart();
                 CurrentBattleUnit = BattleUnitQueue.Peek().GetComponent<BattleUnitBase>();

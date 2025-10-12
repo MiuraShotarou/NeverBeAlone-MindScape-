@@ -4,10 +4,11 @@ using UnityEngine.Rendering;
 public class BattleUnitPlayer : BattleUnitBase
 {
     private TensionRank _tensionRank;
+    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
+    [SerializeField, Tooltip("総経験値")] public int ExpAmount = 0; // publicなので不安
     [SerializeField, Tooltip("テンションメータ最大値")] public int MaxTensionBase;
     [SerializeField, Tooltip("テンションゲージ上昇率")] public float TentionUpRateBase;
     [SerializeField, Tooltip("テンション減少率")] public float TentionDownRateBase;
-    // [SerializeField, Tooltip("テンション弱点倍率")] public float TensionUpAttackScale; //仕様書から削除する可能性あり
     [SerializeField, Tooltip("テンションメータ最大値")] public int MaxTension;
     [SerializeField, Tooltip("テンション")] public int Tension;
     [SerializeField, Tooltip("テンションランク")]public TensionRank TensionRank{get => _tensionRank; set{ if(value != _tensionRank){SetTensionDownRate();}_tensionRank = value;}}
@@ -176,7 +177,7 @@ public class BattleUnitPlayer : BattleUnitBase
         return mod;
     }
 
-    public void KillDrain() => Hp += Mathf.RoundToInt(MaxHp * RegenerateBase);
+    public void KillDrain() => Hp += Mathf.RoundToInt(MaxHp * HealScaleBase);
     
     private void SetTensionDownRate()
     {

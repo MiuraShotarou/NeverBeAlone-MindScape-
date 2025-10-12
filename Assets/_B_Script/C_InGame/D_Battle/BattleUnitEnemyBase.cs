@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Playerと同じように、敵を作成する際の最終派生先クラス
+/// </summary>
 public abstract class BattleUnitEnemyBase : BattleUnitBase
 {
-    [SerializeField, Header("所持スキル")] private SkillBase[] SkillArrays;
+    [SerializeField, Tooltip("付与する経験値")] public int ExpReward; // publicなので不安
+    [SerializeField, Header("所持スキル")] private SkillBase[] SkillArrays; //EnemyDataに移行する
     /// <summary>
     /// テスト用：敵攻撃
     /// </summary>
@@ -20,6 +23,7 @@ public abstract class BattleUnitEnemyBase : BattleUnitBase
         {
             _skill = SkillArrays[0];
         }
+        ExpReward = 10; //テスト用
     }
 
     public override void OnDeath()
@@ -28,7 +32,7 @@ public abstract class BattleUnitEnemyBase : BattleUnitBase
         if (!_actionTarget.GetComponent<BattleUnitPlayer>().IsDead)
         {
             _actionTarget.GetComponent<BattleUnitPlayer>().KillDrain();
-            Debug.Log($"キルドレインで主人公のHPが{Mathf.RoundToInt(_actionTarget.GetComponent<BattleUnitPlayer>().MaxHp * _actionTarget.GetComponent<BattleUnitPlayer>().RegenerateBase)}回復した");
+            Debug.Log($"キルドレインで主人公のHPが{Mathf.RoundToInt(_actionTarget.GetComponent<BattleUnitPlayer>().MaxHp * _actionTarget.GetComponent<BattleUnitPlayer>().HealScaleBase)}回復した");
         }
     }
 

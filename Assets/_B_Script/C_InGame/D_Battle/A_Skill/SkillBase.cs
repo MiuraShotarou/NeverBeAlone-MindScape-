@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 /// <summary>
 /// スキルの基底クラス。使用者のステータスに影響しない値を格納する。
 /// </summary>

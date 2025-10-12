@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-//using System.Diagnostics;
-using System.Runtime.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+//using System.Diagnostics;
 //using static System.Net.Mime.MediaTypeNames;
 using Random = UnityEngine.Random;
 
@@ -22,48 +19,29 @@ public abstract class BattleUnitBase : MonoBehaviour
 
 	[Space(20)] [SerializeField] public string _unitName;
 
-	[Header("基礎値")] [SerializeField, Tooltip("最大正気度")]
-	public int MaxHpBase;
-
 	[SerializeField, Tooltip("攻撃力")] public int AttackBase;
 	[SerializeField, Tooltip("攻撃力倍率")] public float AttackScaleBase;
-	[SerializeField, Tooltip("弱点攻撃力倍率")] public float AttackWeakpointScaleBase;
-	[SerializeField, Tooltip("耐性攻撃力倍率")] public float AttackResistanceScaleBase;
 	[SerializeField, Tooltip("防御力")] public int DefenseBase;
 	[SerializeField, Tooltip("防御力倍率")] public float DefenseScaleBase;
-	[SerializeField, Tooltip("耐性防御力倍率")] public float DefenseWeakpointScaleBase;
-	[SerializeField, Tooltip("弱点防御力倍率")] public float DefenseResistanceScaleBase;
-	[SerializeField, Tooltip("敏捷性")] public float DexBase;
+	[SerializeField, Tooltip("敏捷性")] public int AgilityBase;
 	[SerializeField, Tooltip("回避率")] public float EvadeRateBase;
 	[SerializeField, Tooltip("クリティカルヒットレート")]
 	public float CriticalRateBase;
 	[SerializeField, Tooltip("クリティカルダメージレート")]
 	public float CriticalScaleBase;
-	[SerializeField, Tooltip("回復力")] public float RegenerateBase;
+	[SerializeField, Tooltip("回復力")] public float HealScaleBase;
 	
 	[Space(20)] [SerializeField, Tooltip("最大正気度")]
 	public int MaxHp;
     [SerializeField, Tooltip("現在正気度")] public int Hp;
-    [SerializeField, Tooltip("付与する経験値")] public int ExpReward = 10; // publicなので不安
-    [SerializeField, Tooltip("総経験値")] public int ExpAmount = 0; // publicなので不安
-    [SerializeField, Tooltip("レベル")] public int Level = 1; // publicなので不安 → EmotionLevels[0]がレベルなので削除対象かもです
     [SerializeField, Tooltip("エンカウント回数")] public (int Infiltration, int EncounterCount) Progress;
-	[SerializeField, Tooltip("攻撃力加算値")] public float AttackMod;
-	[SerializeField, Tooltip("攻撃力倍率加算値")] public float AttackScaleMod;
-	[SerializeField, Tooltip("防御力加算値")] public float DefenseMod;
-	[SerializeField, Tooltip("防御力倍率加算値")] public float DefenseScaleMod;
-	[SerializeField, Tooltip("敏捷性")] public int Dex;
-	[SerializeField, Tooltip("回避率")] public int EvadeRate;
 	[SerializeField, Tooltip("死亡フラグ")] public bool IsDead;
-	[SerializeField, Tooltip("感情状態")] public Dictionary<Emotion, EmotionBase> Emotions; //EmotionDict
 	[SerializeField, Tooltip("現在感情")] public EmotionBase CurrentEmotion = new EmotionVoid(1);
 	[SerializeField, Tooltip("スキルエフェクト")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
-	[SerializeField, Tooltip("所持バフ")] public List<ConditionBase> Conditions = new List<ConditionBase>();
 	[SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
 	[SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = { 1, 1, 1, 1, 1 };
-	[HideInInspector, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
+	[HideInInspector, Tooltip("スキル")] public Dictionary<string, int> HasSkillDict = new Dictionary<string, int>();
 	[SerializeField, Tooltip("使用スキル")] protected SkillBase _skill;
-
 
 	public delegate void JudgeSurvival();
 
@@ -84,11 +62,11 @@ public abstract class BattleUnitBase : MonoBehaviour
 		_objects.BattleEventController.DoJudgeSurvival += DoJudgeSurvival;
 
 		//Emotion EnumとEmotionクラスの紐づけ。いらないかも
-		//Emotions.Add(Emotion.Void, new EmotionVoid(EmotionLevels[(int)Emotion.Void]));
-		//Emotions.Add(Emotion.Anger, new EmotionAnger(EmotionLevels[(int)Emotion.Anger]));
-		//Emotions.Add(Emotion.Grudge, new EmotionGrudge(EmotionLevels[(int)Emotion.Grudge]));
-		//Emotions.Add(Emotion.Hatred, new EmotionHatred(EmotionLevels[(int)Emotion.Hatred]));
-		//Emotions.Add(Emotion.Suspicion, new EmotionSuspicion(EmotionLevels[(int)Emotion.Suspicion]));
+		//EmotionDict.Add(Emotion.Void, new EmotionVoid(EmotionLevels[(int)Emotion.Void]));
+		//EmotionDict.Add(Emotion.Anger, new EmotionAnger(EmotionLevels[(int)Emotion.Anger]));
+		//EmotionDict.Add(Emotion.Grudge, new EmotionGrudge(EmotionLevels[(int)Emotion.Grudge]));
+		//EmotionDict.Add(Emotion.Hatred, new EmotionHatred(EmotionLevels[(int)Emotion.Hatred]));
+		//EmotionDict.Add(Emotion.Suspicion, new EmotionSuspicion(EmotionLevels[(int)Emotion.Suspicion]));
 	}
 
 	public virtual void OnDeath()
@@ -149,15 +127,13 @@ public abstract class BattleUnitBase : MonoBehaviour
 
 		if (emotion == CurrentEmotion.WeakEmotion)
 		{
-			finalDefense *= DefenseWeakpointScaleBase;
 			CommonUtils.LogDebugLine(this, "CulculateFinalDamageTaken()",
-				"弱点, 防御" + DefenseWeakpointScaleBase + "倍, 防御力：" + finalDefense);
+				"弱点, 防御力：" + finalDefense);
 		}
 		else if (emotion == CurrentEmotion.ResistantEmotion)
 		{
-			finalDefense *= DefenseResistanceScaleBase;
 			CommonUtils.LogDebugLine(this, "CulculateFinalDamageTaken()",
-				"耐性, 防御" + DefenseResistanceScaleBase + "倍, 防御力：" + finalDefense);
+				"耐性, 防御力：" + finalDefense);
 		}
 
 		float damageBlurScale = Random.Range(0.95f, 1.05f);
@@ -258,7 +234,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IAttackModifier modifier = effect as IAttackModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyAttack(SkillDict[effect.Name], mod);
+				mod = modifier.ModifyAttack(HasSkillDict[effect.Name], mod);
 			}
 		}
 		return mod;
@@ -277,7 +253,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IAttackScaleModifier modifier = effect as IAttackScaleModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
+				mod = modifier.ModifyAttackScale(HasSkillDict[effect.Name], mod);
 			}
 		}
 		// 弱点・耐性の効果を適用
@@ -300,7 +276,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IDefenseModifier modifier = effect as IDefenseModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
+				mod = modifier.ModifyDefense(HasSkillDict[effect.Name], mod);
 			}
 		}
 		return mod;
@@ -319,7 +295,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
+				mod = modifier.ModifyDefenseScale(HasSkillDict[effect.Name], mod);
 			}
 		}
 

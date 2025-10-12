@@ -35,7 +35,7 @@ public class PlayerData : ScriptableObject
     [Header("所持品")]
     public List<string> ItemsAccessory = new List<string>();
     public List<string> ItemsUsable = new List<string>();
-
+    
     [Header("スキル")]
     public Dictionary<string, int> SkillDict = new Dictionary<string, int>(); //戦闘システムに適用していない
 

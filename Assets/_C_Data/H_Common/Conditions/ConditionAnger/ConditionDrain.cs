@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>�h���C���i�{��j�^�����_���[�W * 0.1 �񕜂���</summary>
 public class ConditionDrain : ConditionBase
 {
-
     private Emotion _emotion = Emotion.Anger;
     [SerializeField] private int _damageDealt = 10;
     [SerializeField] private float _hpRestoreScale = 0.1f;

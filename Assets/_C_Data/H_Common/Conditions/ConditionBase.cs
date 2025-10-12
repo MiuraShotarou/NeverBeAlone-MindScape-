@@ -60,13 +60,12 @@ public abstract class ConditionBase
     }
 
     /// <summary>ターゲットの状態を戻してビットフラグから削除</summary>
-
     public void RemoveConditionFromTarget(BattleUnitBase target)
     {
         Condition targetConditionFlag = target.ConditionFlag;
         RemoveCondition();
         targetConditionFlag &= ~_condition;
-        target.Conditions.Remove(this);
+        // target.Conditions.Remove(this); 不要説
         Debug.Log(_condition + "状態が解除されました");
     }
 }
