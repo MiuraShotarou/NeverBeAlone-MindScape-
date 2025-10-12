@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698297bc7c148ca4c9856be1b514e839, type: 3}
+  m_Name: FuninnkiNoUtaite
+  m_EditorClassIdentifier: 
+  Name: FuninnkiNoUtaite
+  BaseAttack: 0
+  BaseDefense: 0
+  Agility: 0
+  BaseEvadeRate: 0
+  BaseCriticalRate: 0
+  BaseCriticalDamageRate: 0
+  BaseFluctuationRate: 0
+  Movement: 0
+  Hp: 100
+  MaxHp: 100
+  ClientName: "\u4E0D\u4EBA\u6C17\u306E\u6B4C\u3044\u624B"
+  Emotion: 2

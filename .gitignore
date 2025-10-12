@@ -104,3 +104,22 @@ GoogleService-Info.plist
 firebase.json
 .firebaserc
 Assets/google-services.json.meta
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebaserc
+
+# 環境変数ファイル
+.env
+.env.local
+.env.*.local
+
+# サービスアカウントキー
+*-firebase-adminsdk-*.json
+serviceAccountKey.json
+
+# ビルドファイル
+node_modules/
+dist/
+build/

@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,7 +26,7 @@ public class BattleEventController : MonoBehaviour
         _uiController = _objects.UIController;
         _director = _objects.PlayableDirector;
     }
-
+    
     public void InitBattleData()
     {
         // TODO 初期化処理
@@ -41,6 +41,54 @@ public class BattleEventController : MonoBehaviour
     {
         _uiController.ShowStartText();
         _director.Play();
+    }
+    /// <summary>
+    /// 敵を決定する
+    /// </summary>
+    public void DecideEnemy()
+    {
+        //<仕様>
+        //潜入につき１体確定でボーナスエネミーが出現する。
+        //出現パターン（毎回固定）+（強敵 + ボーナスエネミー がセットになった戦闘が指定したタイミングで確率によって差し込まれる）
+        //ボス戦まで計14回（強敵 + ボーナスエネミーがあった場合は計15回）の雑魚戦を挟む
+        
+        //<設計>
+        //GameDataManager からプランナーが設定した敵の出現リストを取得する
+        
+        //リストにConcatか？
+        EnemyData[] enemyDataArray = GameDataManager.Instance.GetEnemyData(_objects.PlayerUnits[0].Progress); //未実装
+        BattleUnitList = EnemyUnitBaseConverter(enemyDataArray);
+        
+    }
+
+    private List<BattleUnitBase> EnemyUnitBaseConverter(EnemyData[] enemyDataArray) //Playerと統合したい
+    {
+        //enemyDataArrayの中身をBattleUnitEnemyBaseの内部変数にコピーする
+        // EnemyDataの中身
+        BattleUnitBase[] enemyUnitArray = new BattleUnitBase[enemyDataArray.Length];
+        for (int i = 0; i < enemyDataArray.Length; i++)
+        {
+            enemyUnitArray[i].AttackBase = enemyDataArray[i].BaseAttack;
+            // enemyUnitArray[i].AttackScaleBase = enemyDataArray[i].BaseAttackScale;
+            enemyUnitArray[i].DefenseBase = enemyDataArray[i].BaseDefense;
+            // enemyUnitArray[i].DefenseScaleBase = enemyDataArray[i].BaseDefenseScale;
+            enemyUnitArray[i].AgilityBase = enemyDataArray[i].BaseAgility;
+            enemyUnitArray[i].EvadeRateBase = enemyDataArray[i].BaseEvadeRate;
+            enemyUnitArray[i].CriticalRateBase = enemyDataArray[i].BaseCriticalRate;
+            enemyUnitArray[i].CriticalScaleBase = enemyDataArray[i].BaseCriticalScale;
+            enemyUnitArray[i].HealScaleBase = enemyDataArray[i].BaseHealScale;
+            enemyUnitArray[i].MaxHp = enemyDataArray[i].MaxHp;
+            enemyUnitArray[i].Hp = enemyDataArray[i].Hp;
+            enemyUnitArray[i].Progress = enemyDataArray[i].Progress;
+            enemyUnitArray[i].IsDead = enemyDataArray[i].IsDead;
+            enemyUnitArray[i].CurrentEmotion = enemyDataArray[i].CurrentEmotion;
+            enemyUnitArray[i].SkillEffects = enemyDataArray[i].SkillEffects;
+            enemyUnitArray[i].ConditionFlag = enemyDataArray[i].ConditionFlag;
+            enemyUnitArray[i].EmotionLevels = enemyDataArray[i].EmotionLevels;
+            enemyUnitArray[i].HasSkillDict = enemyDataArray[i].HasSkillDict;
+            enemyUnitArray[i]._skill = enemyDataArray[i]._skill;
+        }
+        return null;
     }
 
     /// <summary>
@@ -129,7 +177,9 @@ public class BattleEventController : MonoBehaviour
     {
         _uiController.SetImageAsLastSibling(_uiController.TurnTable, _loopHandler.CurrentBattleUnit.Icon);
     }
-    
+    /// <summary>
+    /// QTE判定後に行動順を決定する。
+    /// </summary>
     public void SortBattleUnits()
     {
         // QTE判定がMiss以外の場合
@@ -139,7 +189,7 @@ public class BattleEventController : MonoBehaviour
             BattleUnitList.AddRange(_objects.EnemyUnits);
             BattleUnitList.Sort((a, b) =>
             {
-                return b.GetComponent<BattleUnitBase>().Dex - a.GetComponent<BattleUnitBase>().Dex;
+                return b.GetComponent<BattleUnitBase>().AgilityBase - a.GetComponent<BattleUnitBase>().AgilityBase;
             });
             // プレイヤーを戦闘に差し込む
             BattleUnitList.InsertRange(0, _objects.PlayerUnits);
@@ -153,7 +203,7 @@ public class BattleEventController : MonoBehaviour
             BattleUnitList.InsertRange(0, _objects.PlayerUnits);
             BattleUnitList.Sort((a, b) =>
             {
-                return b.GetComponent<BattleUnitBase>().Dex - a.GetComponent<BattleUnitBase>().Dex;
+                return b.GetComponent<BattleUnitBase>().AgilityBase - a.GetComponent<BattleUnitBase>().AgilityBase;
             });
             _loopHandler.BattleUnitQueue = new Queue<BattleUnitBase>(BattleUnitList);
         }

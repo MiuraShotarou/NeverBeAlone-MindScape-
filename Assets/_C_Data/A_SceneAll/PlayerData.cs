@@ -18,7 +18,7 @@ public class PlayerData : ScriptableObject
     public (int Infiltration, int EncounterCount) EncounterCount; //単純なint 型から異世界潜入 / 敵との遭遇回数 に変更
 
     [Header("能力値")]
-    public float BaseAttack;
+    public int BaseAttack;
     public int BaseDefense;
     public int Agility;
     public int BaseEvadeRate;
@@ -35,7 +35,7 @@ public class PlayerData : ScriptableObject
     [Header("所持品")]
     public List<string> ItemsAccessory = new List<string>();
     public List<string> ItemsUsable = new List<string>();
-
+    
     [Header("スキル")]
     public Dictionary<string, int> SkillDict = new Dictionary<string, int>(); //戦闘システムに適用していない
 
