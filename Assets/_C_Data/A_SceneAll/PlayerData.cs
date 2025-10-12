@@ -15,7 +15,7 @@ public class PlayerData : ScriptableObject
     public int MaxHp;
     public int Tension;
     public int MaxTension;
-    public int EncountCount;
+    public (int Infiltration, int EncounterCount) EncounterCount; //単純なint 型から異世界潜入 / 敵との遭遇回数 に変更
 
     [Header("能力値")]
     public float BaseAttack;

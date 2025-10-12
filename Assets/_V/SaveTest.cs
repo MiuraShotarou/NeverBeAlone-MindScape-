@@ -6,18 +6,18 @@ public class SaveTest : MonoBehaviour
 
     void Start()
     {
-        // ‰¼ƒf[ƒ^ì¬
+        // ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½ì¬
         SaveData data = new SaveData
         {
-            playerLevel = 5,
-            playerName = "TestPlayer"
+            PlayerLevel = 5,
+            PlayerName = "TestPlayer"
         };
 
-        // ƒI[ƒgƒZ[ƒuŒÄ‚Ño‚µ
+        // ï¿½Iï¿½[ï¿½gï¿½Zï¿½[ï¿½uï¿½Ä‚Ñoï¿½ï¿½
         //saveManager.AutoSave(data);
 
-        // ƒ[ƒh‚µ‚ÄŠm”F
+        // ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ÄŠmï¿½F
         //SaveData loaded = saveManager.LoadGame();
-        //Debug.Log($"ƒ[ƒhŒ‹‰Ê: {loaded.playerName}, Lv {loaded.playerLevel}");
+        //Debug.Log($"ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½: {loaded.playerName}, Lv {loaded.playerLevel}");
     }
 }

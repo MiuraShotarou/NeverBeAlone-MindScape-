@@ -151,12 +151,12 @@ public class SaveManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SaveData
 {
-    public int playerExp;
-    public int playerLevel;
-    public string playerName;
-    public int playerHp;
-    public int encountCount;
+    public int PlayerExp;
+    public int PlayerLevel;
+    public string PlayerName;
+    public int PlayerHp;
+    public (int Infiltration, int EncounterCount) EncounterCount; // 異世界潜入 / 敵との遭遇回数
 }

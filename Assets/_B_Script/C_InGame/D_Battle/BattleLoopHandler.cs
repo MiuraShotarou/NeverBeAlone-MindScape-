@@ -29,16 +29,16 @@ public class BattleLoopHandler : MonoBehaviour
         _saveManager.EnsureSignedIn(() =>
         {
             SaveData loadedData = _saveManager.LoadFromLocal();
-            _playerData.Exp = loadedData.playerExp;
-            _playerData.Level = loadedData.playerLevel;
-            _playerData.Hp = loadedData.playerHp;
-            _playerData.EncountCount = loadedData.encountCount;
+            _playerData.Exp = loadedData.PlayerExp;
+            _playerData.Level = loadedData.PlayerLevel;
+            _playerData.Hp = loadedData.PlayerHp;
+            _playerData.EncounterCount = loadedData.EncounterCount;
 
             var player = _objects.PlayerUnits[0];
             player.Hp = _playerData.Hp;
-            player.ExpAmmount = _playerData.Exp;
+            player.ExpAmount = _playerData.Exp;
             player.Level = _playerData.Level;
-            player.EncountCount = _playerData.EncountCount;
+            player.Progress = _playerData.EncounterCount;
 
             Debug.Log("ローカルJSON → ScriptableObject → BattleUnitPlayer 反映完了");
 
@@ -158,8 +158,8 @@ public class BattleLoopHandler : MonoBehaviour
 
         // ここに追加
         var player = _objects.PlayerUnits[0];
-        player.ExpAmmount += totalExp;
-        player.EncountCount++;
+        player.ExpAmount += totalExp;
+        player.Progress.EncounterCount++;
     }
 
     /// <summary>
@@ -168,11 +168,11 @@ public class BattleLoopHandler : MonoBehaviour
     private void UpdatePlayerDataFromPlayers()
     {
         var player = _objects.PlayerUnits[0];
-        _playerData.Exp = player.ExpAmmount;
+        _playerData.Exp = player.ExpAmount;
         _playerData.Level = player.Level;
         _playerData.Hp = player.Hp;
         _playerData.MaxHp = player.MaxHp;
-        _playerData.EncountCount = player.EncountCount;
+        _playerData.EncounterCount = player.Progress;
     }
 
     /// <summary>
@@ -183,10 +183,10 @@ public class BattleLoopHandler : MonoBehaviour
         var player = _objects.PlayerUnits[0];
         return new SaveData
         {
-            playerLevel = player.Level,
-            playerHp = player.Hp,
-            playerExp = player.ExpAmmount,
-            encountCount = player.EncountCount
+            PlayerLevel = player.Level,
+            PlayerHp = player.Hp,
+            PlayerExp = player.ExpAmount,
+            EncounterCount = player.Progress
         };
     }
 
