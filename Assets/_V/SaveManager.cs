@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Firebase.Database;
-using Firebase.Auth;
-using Firebase.Extensions;
+// using Firebase.Database;
+// using Firebase.Auth;
+// using Firebase.Extensions;
 
 /// <summary>
 /// JSON → Firebase への保存・読み込みを担当
@@ -12,18 +12,18 @@ using Firebase.Extensions;
 public class SaveManager : MonoBehaviour
 {
     string savePath;
-    DatabaseReference _dbRef;
-    FirebaseAuth _auth;
+    // DatabaseReference _dbRef;
+    // FirebaseAuth _auth;
     string _userId;
     const string UIDKEY = "FirebaseUID"; // PlayerPrefs で保存
 
     void Awake()
     {
-        savePath = Path.Combine(Application.persistentDataPath, "savedata.json");
-        Debug.Log("ローカル保存パス: " + savePath);
+        // savePath = Path.Combine(Application.persistentDataPath, "savedata.json");
+        // Debug.Log("ローカル保存パス: " + savePath);
 
-        _auth = FirebaseAuth.DefaultInstance;
-        _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+        // _auth = FirebaseAuth.DefaultInstance;
+        // _dbRef = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     /// <summary>
@@ -41,22 +41,22 @@ public class SaveManager : MonoBehaviour
         }
 
         // 初回のみ匿名サインイン
-        _auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
-            {
-                _userId = _auth.CurrentUser.UserId;
-                PlayerPrefs.SetString(UIDKEY, _userId);
-                PlayerPrefs.Save();
-
-                Debug.Log("Firebase Auth サインイン完了 UID: " + _userId);
-                onSignedIn?.Invoke();
-            }
-            else
-            {
-                Debug.LogError("Firebase Auth サインイン失敗: " + task.Exception);
-            }
-        });
+        // _auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
+        // {
+        //     if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
+        //     {
+        //         _userId = _auth.CurrentUser.UserId;
+        //         PlayerPrefs.SetString(UIDKEY, _userId);
+        //         PlayerPrefs.Save();
+        //
+        //         Debug.Log("Firebase Auth サインイン完了 UID: " + _userId);
+        //         onSignedIn?.Invoke();
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError("Firebase Auth サインイン失敗: " + task.Exception);
+        //     }
+        // });
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        UploadDataToFirebase(_userId, data);
+        // UploadDataToFirebase(_userId, data);
     }
 
     /// <summary>
@@ -88,19 +88,19 @@ public class SaveManager : MonoBehaviour
     /// <summary>
     /// Firebase にアップロード
     /// </summary>
-    void UploadDataToFirebase(string userId, SaveData data)
-    {
-        string json = JsonUtility.ToJson(data, true);
-        _dbRef.Child("gameData").Child(userId)
-            .SetRawJsonValueAsync(json)
-            .ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted)
-                    Debug.Log("Firebase に保存完了 UID: " + userId);
-                else
-                    Debug.LogError("Firebase 保存エラー: " + task.Exception);
-            });
-    }
+    // void UploadDataToFirebase(string userId, SaveData data)
+    // {
+    //     string json = JsonUtility.ToJson(data, true);
+    //     _dbRef.Child("gameData").Child(userId)
+    //         .SetRawJsonValueAsync(json)
+    //         .ContinueWithOnMainThread(task =>
+    //         {
+    //             if (task.IsCompleted)
+    //                 Debug.Log("Firebase に保存完了 UID: " + userId);
+    //             else
+    //                 Debug.LogError("Firebase 保存エラー: " + task.Exception);
+    //         });
+    // }
 
     /// <summary>
     /// Firebase → JSON → ScriptableObject
@@ -114,23 +114,23 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        _dbRef.Child("gameData").Child(_userId)
-            .GetValueAsync()
-            .ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted && task.Result.Exists)
-                {
-                    SaveData data = JsonUtility.FromJson<SaveData>(task.Result.GetRawJsonValue());
-                    SaveToLocal(data);
-                    Debug.Log("Firebase からデータ取得 → JSON 保存完了");
-                    callback?.Invoke(data);
-                }
-                else
-                {
-                    Debug.LogWarning("Firebase にデータなし UID: " + _userId);
-                    callback?.Invoke(new SaveData());
-                }
-            });
+        // _dbRef.Child("gameData").Child(_userId)
+        //     .GetValueAsync()
+        //     .ContinueWithOnMainThread(task =>
+        //     {
+        //         if (task.IsCompleted && task.Result.Exists)
+        //         {
+        //             SaveData data = JsonUtility.FromJson<SaveData>(task.Result.GetRawJsonValue());
+        //             SaveToLocal(data);
+        //             Debug.Log("Firebase からデータ取得 → JSON 保存完了");
+        //             callback?.Invoke(data);
+        //         }
+        //         else
+        //         {
+        //             Debug.LogWarning("Firebase にデータなし UID: " + _userId);
+        //             callback?.Invoke(new SaveData());
+        //         }
+        //     });
     }
 
     /// <summary>
