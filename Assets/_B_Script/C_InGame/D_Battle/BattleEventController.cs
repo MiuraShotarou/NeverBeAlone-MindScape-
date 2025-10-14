@@ -81,14 +81,8 @@ public class BattleEventController : MonoBehaviour
             enemyUnitArray[i].HealScaleBase = enemyDataArray[i].BaseHealScale;
             enemyUnitArray[i].MaxHp = enemyDataArray[i].MaxHp;
             enemyUnitArray[i].Hp = enemyDataArray[i].Hp;
-            enemyUnitArray[i].Progress = enemyDataArray[i].Progress;
-            enemyUnitArray[i].IsDead = enemyDataArray[i].IsDead;
-            enemyUnitArray[i].CurrentEmotion = enemyDataArray[i].CurrentEmotion;
-            enemyUnitArray[i].SkillEffects = enemyDataArray[i].SkillEffects;
-            enemyUnitArray[i].ConditionFlag = enemyDataArray[i].ConditionFlag;
-            enemyUnitArray[i].EmotionLevels = enemyDataArray[i].EmotionLevels;
-            enemyUnitArray[i].HasSkillDict = enemyDataArray[i].HasSkillDict;
-            enemyUnitArray[i]._skill = enemyDataArray[i]._skill;
+            enemyUnitArray[i].SkillDict = enemyDataArray[i].SkillArray .ToDictionary(skill => skill.SkillName, 
+                                                                                     skill => skill.SkillLevel);
         }
         return null;
     }

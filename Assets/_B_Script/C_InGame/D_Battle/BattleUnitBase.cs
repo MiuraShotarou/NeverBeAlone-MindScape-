@@ -40,7 +40,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 	[SerializeField, Tooltip("スキルエフェクト")] public List<SkillEffectBase> SkillEffects = new List<SkillEffectBase>();
 	[SerializeField, Tooltip("状態異常フラグ")] public Condition ConditionFlag = Condition.None;
 	[SerializeField, Tooltip("感情レベル")] public int[] EmotionLevels = { 1, 1, 1, 1, 1 };
-	[HideInInspector, Tooltip("スキル")] public Dictionary<string, int> HasSkillDict = new Dictionary<string, int>();
+	[HideInInspector, Tooltip("スキル")] public Dictionary<string, int> SkillDict = new Dictionary<string, int>();
 	[SerializeField, Tooltip("使用スキル")] protected SkillBase _skill;
 
 	public delegate void JudgeSurvival();
@@ -234,7 +234,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IAttackModifier modifier = effect as IAttackModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyAttack(HasSkillDict[effect.Name], mod);
+				mod = modifier.ModifyAttack(SkillDict[effect.Name], mod);
 			}
 		}
 		return mod;
@@ -253,7 +253,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IAttackScaleModifier modifier = effect as IAttackScaleModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyAttackScale(HasSkillDict[effect.Name], mod);
+				mod = modifier.ModifyAttackScale(SkillDict[effect.Name], mod);
 			}
 		}
 		// 弱点・耐性の効果を適用
@@ -276,7 +276,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IDefenseModifier modifier = effect as IDefenseModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyDefense(HasSkillDict[effect.Name], mod);
+				mod = modifier.ModifyDefense(SkillDict[effect.Name], mod);
 			}
 		}
 		return mod;
@@ -295,7 +295,7 @@ public abstract class BattleUnitBase : MonoBehaviour
 			IDefenseScaleModifier modifier = effect as IDefenseScaleModifier;
 			if (modifier != null)
 			{
-				mod = modifier.ModifyDefenseScale(HasSkillDict[effect.Name], mod);
+				mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
 			}
 		}
 
