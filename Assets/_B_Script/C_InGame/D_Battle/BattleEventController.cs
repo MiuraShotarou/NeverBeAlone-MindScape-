@@ -59,6 +59,8 @@ public class BattleEventController : MonoBehaviour
         EnemyData[] enemyDataArray = GameDataManager.Instance.GetEnemyData(_objects.PlayerUnits[0].Progress); //未実装
         BattleUnitList = EnemyUnitBaseConverter(enemyDataArray);
         
+        // EnemyData[] enemyDataArray = GameDataManager.Instance.GetEnemyData(_objects.PlayerUnits[0].Progress); //未実装
+        // BattleUnitList = EnemyUnitBaseConverter(enemyDataArray);
     }
 
     private List<BattleUnitBase> EnemyUnitBaseConverter(EnemyData[] enemyDataArray) //Playerと統合したい

@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: FuninnkiNoUtaite
   m_EditorClassIdentifier: 
   Name: FuninnkiNoUtaite
+  Hp: 100
+  MaxHp: 100
+  ClientName: "\u4E0D\u4EBA\u6C17\u306E\u6B4C\u3044\u624B"
+  Name: SuitOKitaOtoko
   BaseAttack: 0
   BaseDefense: 0
   Agility: 0

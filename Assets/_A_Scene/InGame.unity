@@ -1982,6 +1982,15 @@ MonoBehaviour:
   HealScaleBase: 0
   MaxHp: 100
   Hp: 100
+  ExpReward: 10
+  ExpAmount: 0
+  Level: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
   IsDead: 0
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
@@ -2149,6 +2158,15 @@ MonoBehaviour:
   HealScaleBase: 0
   MaxHp: 100
   Hp: 10
+  ExpReward: 10
+  ExpAmount: 0
+  Level: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
   IsDead: 0
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
@@ -34107,6 +34125,15 @@ MonoBehaviour:
   HealScaleBase: 0
   MaxHp: 100
   Hp: 10
+  ExpReward: 10
+  ExpAmount: 0
+  Level: 1
+  AttackMod: 0
+  AttackScaleMod: 0
+  DefenseMod: 0
+  DefenseScaleMod: 0
+  Dex: 0
+  EvadeRate: 0
   IsDead: 0
   ConditionFlag: 0
   EmotionLevels: 0100000001000000010000000100000001000000
