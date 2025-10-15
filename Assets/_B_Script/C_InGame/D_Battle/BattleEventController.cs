@@ -57,34 +57,34 @@ public class BattleEventController : MonoBehaviour
         
         //リストにConcatか？
         EnemyData[] enemyDataArray = GameDataManager.Instance.GetEnemyData(_objects.PlayerUnits[0].Progress); //未実装
-        BattleUnitList = EnemyUnitBaseConverter(enemyDataArray);
+        BattleUnitList = UnitBaseConverter(enemyDataArray);
         
         // EnemyData[] enemyDataArray = GameDataManager.Instance.GetEnemyData(_objects.PlayerUnits[0].Progress); //未実装
-        // BattleUnitList = EnemyUnitBaseConverter(enemyDataArray);
+        // BattleUnitList = UnitBaseConverter(enemyDataArray);
     }
 
-    private List<BattleUnitBase> EnemyUnitBaseConverter(EnemyData[] enemyDataArray) //Playerと統合したい
+    private List<BattleUnitBase> UnitBaseConverter(EnemyData[] DataArray) //Playerと統合したい
     {
         //enemyDataArrayの中身をBattleUnitEnemyBaseの内部変数にコピーする
         // EnemyDataの中身
-        BattleUnitBase[] enemyUnitArray = new BattleUnitBase[enemyDataArray.Length];
-        for (int i = 0; i < enemyDataArray.Length; i++)
+        BattleUnitBase[] UnitArray = new BattleUnitBase[DataArray.Length];
+        for (int i = 0; i < DataArray.Length; i++)
         {
-            enemyUnitArray[i].AttackBase = enemyDataArray[i].BaseAttack;
-            // enemyUnitArray[i].AttackScaleBase = enemyDataArray[i].BaseAttackScale;
-            enemyUnitArray[i].DefenseBase = enemyDataArray[i].BaseDefense;
-            // enemyUnitArray[i].DefenseScaleBase = enemyDataArray[i].BaseDefenseScale;
-            enemyUnitArray[i].AgilityBase = enemyDataArray[i].BaseAgility;
-            enemyUnitArray[i].EvadeRateBase = enemyDataArray[i].BaseEvadeRate;
-            enemyUnitArray[i].CriticalRateBase = enemyDataArray[i].BaseCriticalRate;
-            enemyUnitArray[i].CriticalScaleBase = enemyDataArray[i].BaseCriticalScale;
-            enemyUnitArray[i].HealScaleBase = enemyDataArray[i].BaseHealScale;
-            enemyUnitArray[i].MaxHp = enemyDataArray[i].MaxHp;
-            enemyUnitArray[i].Hp = enemyDataArray[i].Hp;
-            enemyUnitArray[i].SkillDict = enemyDataArray[i].SkillArray .ToDictionary(skill => skill.SkillName, 
+            UnitArray[i].AttackBase = DataArray[i].BaseAttack;
+            // enemyUnitArray[i].AttackScaleBase = DataArray[i].BaseAttackScale;
+            UnitArray[i].DefenseBase = DataArray[i].BaseDefense;
+            // enemyUnitArray[i].DefenseScaleBase = DataArray[i].BaseDefenseScale;
+            UnitArray[i].AgilityBase = DataArray[i].BaseAgility;
+            UnitArray[i].EvadeRateBase = DataArray[i].BaseEvadeRate;
+            UnitArray[i].CriticalRateBase = DataArray[i].BaseCriticalRate;
+            UnitArray[i].CriticalScaleBase = DataArray[i].BaseCriticalScale;
+            UnitArray[i].HealScaleBase = DataArray[i].BaseHealScale;
+            UnitArray[i].MaxHp = DataArray[i].MaxHp;
+            UnitArray[i].Hp = DataArray[i].Hp;
+            UnitArray[i].SkillDict = DataArray[i].SkillArray .ToDictionary(skill => skill.SkillName, 
                                                                                      skill => skill.SkillLevel);
         }
-        return null;
+        return UnitArray.ToList();
     }
 
     /// <summary>

@@ -298,7 +298,6 @@ public abstract class BattleUnitBase : MonoBehaviour
 				mod = modifier.ModifyDefenseScale(SkillDict[effect.Name], mod);
 			}
 		}
-
 		return mod;
 	}
 

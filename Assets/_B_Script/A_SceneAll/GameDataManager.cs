@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -44,15 +42,7 @@ public class GameDataManager : MonoBehaviour
     /// <returns></returns>
     public EnemyData[] GetEnemyData((int Infiltration, int EncounterCount) progress)
     {
-        // 現在のprogressからなんの敵を出現させるべきかを決定する。
-        // 敵の情報がBattleUnitEnemyBase[] に格納されていたとすると要素.name
-        // _enemySpawnSpecification.
-                                                ////<潜入○回目m>から何行下にあるかどうかで検索（取得）しなければならない
-        // string[] enemyArray = //csvから取得した
-        // BattleUnitEnemyBase[] AllBattleUnitEnemy;
-        // List<BattleUnitEnemyBase> decideUnitEnemy = EnemyArray.Where(enemy => enemy.name.Contains(enemyArray));
-
-        return null;
+        return null; //未実装
     }
     
     //<ダメージ計算パラメーター>
